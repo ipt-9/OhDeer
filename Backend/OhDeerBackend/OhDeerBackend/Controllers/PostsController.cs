@@ -15,6 +15,7 @@ namespace OhDeerBackend.Controllers
             _logger = logger;
         }
 
+        // To be deleted after db connection
         public List<Post> Posts = new List<Post>()
         {
             new Post(0, "Broken Chair", "This chair is broken, I don't want it anymore.", 6.80),
