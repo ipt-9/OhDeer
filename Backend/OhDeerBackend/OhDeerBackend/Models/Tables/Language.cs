@@ -1,7 +1,7 @@
 ﻿using OhDeerBackend.Models.Base_Classes;
 using System.ComponentModel.DataAnnotations;
 
-namespace OhDeerBackend.Models
+namespace OhDeerBackend.Models.Tables
 {
     public class Language : BaseEntity
     {

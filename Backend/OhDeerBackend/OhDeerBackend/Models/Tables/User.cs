@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using OhDeerBackend.Models.Base_Classes;
 
-namespace OhDeerBackend.Models
+namespace OhDeerBackend.Models.Tables
 {
     public class User : BaseEntity
     {
