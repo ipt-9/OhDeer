@@ -1,6 +1,6 @@
-@OhDeerBackend_HostAddress = http://localhost:5022
+@OhDeerBackend_HostAddress = http://localhost:5001
 
-GET {{OhDeerBackend_HostAddress}}/weatherforecast/
+GET {{OhDeerBackend_HostAddress}}/Posts/GetPosts
 Accept: application/json
 
 ###
