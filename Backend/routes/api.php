@@ -2,15 +2,22 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\PostController;
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/posts/all', [\App\Http\Controllers\PostController::class, 'index']);
+Route::prefix('user')->controller(UserController::class)->group(function () {
+    Route::get('{id}', 'GetUserInfo')->whereNumber('id');
+});
 
-Route::get('/user/{id}', [App\Http\Controllers\UserController::class, 'GetUserInfo'])->whereNumber('id');
+Route::prefix('posts')->controller(PostController::class)->group(function () {
+    Route::get('all', 'index');
+    Route::get('{id}', 'GetOnePost')->whereNumber('id');
+    Route::put('update/{id}', 'update')->whereNumber('id')->middleware('auth:sanctum');
+    Route::post('create', 'store')->middleware('auth:sanctum');
+});
 
-Route::get('/post/{id}', [App\Http\Controllers\PostController::class, 'GetOnePost'])->whereNumber('id');
-Route::get('/post/create', [App\Http\Controllers\PostController::class, 'store'])->middleware('auth:sanctum');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreatePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
 use http\Message;
 use Illuminate\Http\Request;
@@ -30,8 +31,17 @@ class PostController extends Controller
         $post->is_repair = $request->is_repair;
         $post->is_complete = false;
         $post->category_id = $request->category()->id;
-        $post->customer_id = $request->user()->id;
+        $post->customer_id = $request->customer()->id;
 
+        $post->save();
+
+        return $post;
+    }
+
+    public function update($id, UpdatePostRequest $request)
+    {
+        $post =Post::findOrFail($id);
+        $post->fill($request->validated());
         $post->save();
 
         return $post;
