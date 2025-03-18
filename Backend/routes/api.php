@@ -9,3 +9,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
+Route::get('/user/{id}', [App\Http\Controllers\UserController::class, 'GetUserInfo'])->whereNumber('id');
