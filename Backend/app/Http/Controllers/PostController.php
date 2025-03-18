@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreatePostRequest;
 use App\Models\Post;
 use http\Message;
 use Illuminate\Http\Request;
@@ -12,4 +13,29 @@ class PostController extends Controller
     {
         return Post::all();
     }
+
+    public function GetOnePost($id)
+    {
+        return Post::findOrFail($id);
+    }
+
+    public function store(CreatePostRequest $request)
+    {
+        $user = $request->user();
+
+        $post = new Post;
+        $post->title = $request->title;
+        $post->description = $request->description;
+        $post->price = $request->price;
+        $post->is_repair = $request->is_repair;
+        $post->is_complete = false;
+        $post->category_id = $request->category()->id;
+        $post->customer_id = $request->user()->id;
+
+        $post->save();
+
+        return $post;
+    }
+
+
 }
