@@ -16,7 +16,7 @@ return new class extends Migration
             $table->integer('Price');
             $table->boolean('IsRepair')->default(false);
             $table->boolean('IsComplete')->default(false);
-            $table->foreignId('CategoryId')->constrained()->onDelete('cascade');
+            $table->foreignId('CategoryId')->constrained('categories')->onDelete('cascade');
             $table->foreignId('UserId')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });

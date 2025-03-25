@@ -16,7 +16,7 @@ class Post extends Model
         'IsRepair',
         'IsComplete',
         'CategoryId',
-        'CustomerId'
+        'UserId'
     ];
 
     protected $casts = [
@@ -31,7 +31,7 @@ class Post extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'UserId');
+        return $this->belongsTo(User::class );
     }
 
     public function purchases()
