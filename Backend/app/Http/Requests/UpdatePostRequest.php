@@ -24,7 +24,7 @@ class UpdatePostRequest extends FormRequest
         return [
             'title' => 'sometimes|string|min:3',
             'description' => 'sometimes|string',
-            'price' => 'sometimes|decimal:2,4',
+            'price' => 'sometimes|numeric',
             'is_repair' => 'sometimes|boolean',
             'category_id' => 'sometimes|numeric|exists:categories,id',
         ];

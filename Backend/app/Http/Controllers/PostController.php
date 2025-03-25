@@ -23,8 +23,8 @@ class PostController extends Controller
 
     public function store(CreatePostRequest $request)
     {
-        $user = $request->user();
-        $category = $request->category();
+        //$user = $request->user();
+        //$category = $request->category();
 
         $post = new Post;
         $post->title = $request->title;
@@ -32,10 +32,10 @@ class PostController extends Controller
         $post->price = $request->price;
         $post->is_repair = $request->is_repair;
         $post->is_complete = false;
-        //$post->category_id = $request->category()->id;
-        //$post->customer_id = $request->user()->id;
+        $post->category_id = $request->category()->id;
+        $post->user_id = $request->user()->id;
 
-        //$post->save();
+        $post->save();
 
         return response()->json($post, 200);
     }
@@ -45,7 +45,6 @@ class PostController extends Controller
         $post = Post::findOrFail($id);
         $post->fill($request->validated());
         $post->save();
-
         return response()->json($post, 200);
     }
 
