@@ -16,7 +16,7 @@ class PostController extends Controller
         return Post::all();
     }
 
-    public function GetOnePost($id)
+    public function getOnePost($id)
     {
         return Post::findOrFail($id);
     }
@@ -51,8 +51,13 @@ class PostController extends Controller
 
     public function delete($id)
     {
-        $post = Post::FindOrFail($id);
+        $post = Post::findOrFail($id);
         $post->delete();
         return ['message' => 'Post has been deleted / removed from the database successfully' ];
+    }
+
+    public function getCategoryPosts($cat_id)
+    {
+        return Post::where('category_id', $cat_id)->get();
     }
 }
