@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreatePostRequest;
 use App\Http\Requests\UpdatePostRequest;
+use App\Models\Category;
 use App\Models\Post;
 use http\Message;
 use Illuminate\Http\Request;
@@ -23,6 +24,7 @@ class PostController extends Controller
     public function store(CreatePostRequest $request)
     {
         $user = $request->user();
+        $category = $request->category();
 
         $post = new Post;
         $post->title = $request->title;
@@ -30,22 +32,27 @@ class PostController extends Controller
         $post->price = $request->price;
         $post->is_repair = $request->is_repair;
         $post->is_complete = false;
-        $post->category_id = $request->category()->id;
-        $post->customer_id = $request->customer()->id;
+        $post->category_id = $category->id;
+        $post->customer_id = $user->id;
 
         $post->save();
 
-        return $post;
+        return response()->json($post, 200);
     }
 
     public function update($id, UpdatePostRequest $request)
     {
-        $post =Post::findOrFail($id);
+        $post = Post::findOrFail($id);
         $post->fill($request->validated());
         $post->save();
 
-        return $post;
+        return response()->json($post, 200);
     }
 
-
+    public function delete($id)
+    {
+        $post = Post::FindOrFail($id);
+        $post->delete();
+        return ['message' => 'Post has been deleted / removed from the database successfully' ];
+    }
 }

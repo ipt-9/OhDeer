@@ -17,7 +17,8 @@ Route::prefix('user')->controller(UserController::class)->group(function () {
 Route::prefix('posts')->controller(PostController::class)->group(function () {
     Route::get('all', 'index');
     Route::get('{id}', 'GetOnePost')->whereNumber('id');
-    Route::put('update/{id}', 'update')->whereNumber('id')->middleware('auth:sanctum');
+    Route::put('update/{id}', 'update')->whereNumber('id'); //->middleware('auth:sanctum');
     Route::post('create', 'store')->middleware('auth:sanctum');
+    Route::delete('delete/{id}', 'delete')->whereNumber('id')->middleware('auth:sanctum');
 });
 
