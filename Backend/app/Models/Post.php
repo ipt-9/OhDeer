@@ -10,18 +10,18 @@ class Post extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title',
-        'description',
-        'price',
-        'is_repair',
-        'is_complete',
-        'category_id',
-        'customer_id'
+        'Title',
+        'Description',
+        'Price',
+        'IsRepair',
+        'IsComplete',
+        'CategoryId',
+        'CustomerId'
     ];
 
     protected $casts = [
-        'is_repair' => 'boolean',
-        'is_complete' => 'boolean',
+        'IsRepair' => 'boolean',
+        'IsComplete' => 'boolean',
     ];
 
     public function category()
@@ -29,9 +29,9 @@ class Post extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function customer()
+    public function user()
     {
-        return $this->belongsTo(User::class, 'customer_id');
+        return $this->belongsTo(User::class, 'UserId');
     }
 
     public function purchases()

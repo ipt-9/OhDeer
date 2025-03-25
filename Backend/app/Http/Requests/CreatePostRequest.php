@@ -24,9 +24,10 @@ class CreatePostRequest extends FormRequest
         return [
             'title' => 'required|string|min:3',
             'description' => 'required|string',
-            'price' => 'required|numeric|min:0',
+            'price' => 'required|decimal:2,4',
             'is_repair' => 'required|boolean',
             'category_id' => 'required|numeric|exists:categories,id',
+            'customer_id' => 'required|numeric|exists:customers,id',
         ];
     }
 }

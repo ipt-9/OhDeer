@@ -32,10 +32,10 @@ class PostController extends Controller
         $post->price = $request->price;
         $post->is_repair = $request->is_repair;
         $post->is_complete = false;
-        $post->category_id = $category->id;
-        $post->customer_id = $user->id;
+        //$post->category_id = $request->category()->id;
+        //$post->customer_id = $request->customer()->id;
 
-        $post->save();
+        //$post->save();
 
         return response()->json($post, 200);
     }

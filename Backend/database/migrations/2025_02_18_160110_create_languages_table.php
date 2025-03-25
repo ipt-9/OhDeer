@@ -8,15 +8,15 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('languages', function (Blueprint $table) {
+        Schema::create('Languages', function (Blueprint $table) {
             $table->id();
-            $table->string('language_name', 50);
+            $table->string('LanguageName', 50);
             $table->timestamps();
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('languages');
+        Schema::dropIfExists('Languages');
     }
 };

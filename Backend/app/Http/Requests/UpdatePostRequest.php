@@ -11,7 +11,7 @@ class UpdatePostRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -24,7 +24,7 @@ class UpdatePostRequest extends FormRequest
         return [
             'title' => 'sometimes|string|min:3',
             'description' => 'sometimes|string',
-            'price' => 'sometimes|numeric|min:0',
+            'price' => 'sometimes|decimal:2,4',
             'is_repair' => 'sometimes|boolean',
             'category_id' => 'sometimes|numeric|exists:categories,id',
         ];
