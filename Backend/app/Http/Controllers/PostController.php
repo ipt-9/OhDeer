@@ -22,7 +22,7 @@ class PostController extends Controller
 
     public function store(CreatePostRequest $request)
     {
-        $user = $request->user();
+       // $user = $request->user();
 
         $post = new Post;
         $post->title = $request->title;
@@ -30,10 +30,10 @@ class PostController extends Controller
         $post->price = $request->price;
         $post->is_repair = $request->is_repair;
         $post->is_complete = false;
-        $post->category_id = $request->category()->id;
-        $post->customer_id = $request->customer()->id;
+        //$post->category_id = $request->category()->id;
+        //$post->customer_id = $request->customer()->id;
 
-        $post->save();
+        //$post->save();
 
         return $post;
     }

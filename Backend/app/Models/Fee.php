@@ -9,11 +9,11 @@ class Fee extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['is_paid', 'due_date', 'amount'];
+    protected $fillable = ['IsPaid', 'DueDate', 'Amount'];
 
     protected $casts = [
-        'is_paid' => 'boolean',
-        'due_date' => 'datetime',
+        'IsPaid' => 'boolean',
+        'DueDate' => 'datetime',
     ];
 
     public function purchases()

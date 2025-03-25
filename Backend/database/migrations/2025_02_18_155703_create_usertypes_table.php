@@ -8,15 +8,15 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('user_types', function (Blueprint $table) {
+        Schema::create('UserTypes', function (Blueprint $table) {
             $table->id();
-            $table->string('user_type_name', 50);
+            $table->string('UserTypeName', 50);
             $table->timestamps();
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('user_types');
+        Schema::dropIfExists('UserTypes');
     }
 };

@@ -8,24 +8,24 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('purchases', function (Blueprint $table) {
+        Schema::create('Purchases', function (Blueprint $table) {
             $table->id();
-            $table->integer('amount');
-            $table->time('timestamp');
-            $table->date('date');
-            $table->boolean('is_outstanding')->default(false);
-            $table->integer('repair_rating');
-            $table->integer('general_rating');
-            $table->text('rating_comment')->nullable();
-            $table->foreignId('post_id')->constrained()->onDelete('cascade');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('fee_id')->constrained()->onDelete('cascade');
+            $table->integer('Amount');
+            $table->time('Timestamp');
+            $table->date('Date');
+            $table->boolean('IsOutstanding')->default(false);
+            $table->integer('RepairRating');
+            $table->integer('GeneralRating');
+            $table->text('RatingComment')->nullable();
+            $table->foreignId('PostId')->constrained()->onDelete('cascade');
+            $table->foreignId('UserId')->constrained()->onDelete('cascade');
+            $table->foreignId('FeeId')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('purchases');
+        Schema::dropIfExists('Purchases');
     }
 };
