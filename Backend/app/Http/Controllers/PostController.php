@@ -52,7 +52,9 @@ class PostController extends Controller
     {
         $post = Post::findOrFail($id);
         $post->delete();
-        return ['message' => 'Post has been deleted / removed from the database successfully' ];
+        return response()->json(['message' => 'Post has been deleted / removed from the database successfully',
+                'post' => $post
+        ]);
     }
 
     public function getCategoryPosts($cat_id)

@@ -17,7 +17,7 @@ class UserController extends Controller
     {
         $user = $request->user();
         $user->delete();
-        return ['message' => 'User has been removed from database' ];
+        return response()->json(['message' => 'User has been removed from database', 'user' => $user ]);
     }
 
     public function update(UpdateUserRequest $request)
@@ -26,7 +26,7 @@ class UserController extends Controller
         $user->fill($request->validated());
         $user->save();
 
-        return ['message' => 'User has been updated' ];
+        return response()->json(['message' => 'User has been updated', 'user' => $user ]);
     }
 
 }

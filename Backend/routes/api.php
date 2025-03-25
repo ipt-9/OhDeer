@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PurchaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -25,3 +26,7 @@ Route::prefix('posts')->controller(PostController::class)->group(function () {
     Route::get('category/{id}', 'getCategoryPosts')->whereNumber('id');
 });
 
+Route::prefix('purchases')->controller(PurchaseController::class)->group(function () {
+    Route::get('all', 'index')->middleware('auth:sanctum');
+    Route::get('{id}', 'show')->whereNumber('id')->middleware('auth:sanctum');
+});
