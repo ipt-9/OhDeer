@@ -13,6 +13,18 @@
       <div class="introText"></div>
       <div class="shop">
         <div class="shopCategoriesComponent">
+          <h3>Categories</h3>
+          <div class="categoryGrid">
+            <router-link
+              v-for="category in categories"
+              :key="category.id"
+              :to="`/category/${category.slug}`"
+              class="categoryCard"
+              :style="{ backgroundImage: `url(${category.image})` }"
+            >
+              <h3>{{ category.name }}</h3>
+            </router-link>
+          </div>
 
         </div>
         <div class="shopComponent">
@@ -44,6 +56,9 @@
         </div>
       </div>
     </div>
+    <div>
+
+    </div>
     </div>
   </div>
 </div>
@@ -54,11 +69,20 @@ import { ref } from "vue";
 
 const shopItems = ref([
   { id: 1, title: "Wooden Table", description: "A handcrafted wooden table", price: 120, is_repair: 0 , image: "https://www.ikea.com/ch/en/images/products/ekedalen-extendable-table-oak__0736964_pe740828_s5.jpg?f=s"},
-  { id: 2, title: "Vintage Chair", description: "A classic wooden chair", price: 80, is_repair: 0 , image: "https://www.ikea.com/ch/en/images/products/ekedalen-extendable-table-oak__0736964_pe740828_s5.jpg?f=s"},
+  { id: 2, title: "Vintage Broken Chair", description: "A classic wooden chair", price: 80, is_repair: 0 , image: "https://www.ikea.com/ch/en/images/products/ekedalen-extendable-table-oak__0736964_pe740828_s5.jpg?f=s"},
   { id: 3, title: "Furniture Repair", description: "We repair your furniture", price: 50, is_repair: 1 , image: "https://www.ikea.com/ch/en/images/products/ekedalen-extendable-table-oak__0736964_pe740828_s5.jpg?f=s"},
   { id: 4, title: "Sofa Repair", description: "Fixing broken sofas", price: 100, is_repair: 1 , image: "https://www.ikea.com/ch/en/images/products/ekedalen-extendable-table-oak__0736964_pe740828_s5.jpg?f=s"},
 ]);
-
+const categories = ref([
+  { id: 1, name: "Furniture & Home Items", slug: "furniture-home", image: "https://example.com/furniture.jpg" },
+  { id: 2, name: "Electronics", slug: "electronics", image: "https://example.com/electronics.jpg" },
+  { id: 3, name: "Household Appliances", slug: "household-appliances", image: "https://example.com/appliances.jpg" },
+  { id: 4, name: "Clothing & Accessories", slug: "clothing-accessories", image: "https://example.com/clothing.jpg" },
+  { id: 5, name: "Vehicles & Mobility", slug: "vehicles-mobility", image: "https://example.com/vehicles.jpg" },
+  { id: 6, name: "Luxury & Accessories", slug: "luxury-accessories", image: "https://example.com/luxury.jpg" },
+  { id: 7, name: "Toys & Hobby Items", slug: "toys-hobby", image: "https://example.com/toys.jpg" },
+  { id: 8, name: "More Categories", slug: "more-categories", image: "https://example.com/more.jpg" }
+]);
 
 const nonRepairItems = computed(() => shopItems.value.filter(item => item.is_repair === 0));
 const repairItems = computed(() => shopItems.value.filter(item => item.is_repair === 1));
@@ -88,6 +112,33 @@ const nextSlide = () => {
   font-family: 'Poppins', sans-serif;
 }
 
+.categoryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+  padding-top: 10px;
+}
+
+.categoryCard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-size: cover;
+  background-position: center;
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+  height: 150px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.categoryCard:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
 .head {
   text-align: center;
   margin-bottom: 20px;
@@ -137,7 +188,7 @@ const nextSlide = () => {
   background: rgba(0, 0, 0, 0.8);
 }
 
-/* SHOP SECTION */
+
 .shop {
   display: flex;
   flex-direction: column;
