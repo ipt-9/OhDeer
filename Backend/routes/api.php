@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\LoginController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -24,6 +25,9 @@ Route::prefix('posts')->controller(PostController::class)->group(function () {
     Route::post('create', 'store')->middleware('auth:sanctum');
     Route::delete('delete/{id}', 'delete')->whereNumber('id')->middleware('auth:sanctum');
     Route::get('category/{id}', 'getCategoryPosts')->whereNumber('id');
+});
+Route::prefix('auth')->controller(LoginController::class)->group(function () {
+   Route::post('login', 'authenticate');
 });
 
 Route::prefix('purchases')->controller(PurchaseController::class)->group(function () {
