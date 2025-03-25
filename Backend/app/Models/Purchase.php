@@ -10,22 +10,22 @@ class Purchase extends Model
     use HasFactory;
 
     protected $fillable = [
-        'Amount',
-        'Timestamp',
-        'Date',
-        'IsOutstanding',
-        'RepairRating',
-        'GeneralRating',
-        'RatingComment',
-        'PostId',
-        'UserId',
-        'FeeId'
+        'amount',
+        'timestamp',
+        'date',
+        'is_outstanding',
+        'repair_rating',
+        'general_rating',
+        'rating_comment',
+        'post_id',
+        'user_id',
+        'fee_id'
     ];
 
     protected $casts = [
-        'Timestamp' => 'datetime:H:i:s',
-        'Date' => 'datetime',
-        'IsOutstanding' => 'boolean',
+        'timestamp' => 'datetime:H:i:s',
+        'date' => 'datetime',
+        'is_outstanding' => 'boolean',
     ];
 
     public function post()

@@ -10,18 +10,18 @@ class Post extends Model
     use HasFactory;
 
     protected $fillable = [
-        'Title',
-        'Description',
-        'Price',
-        'IsRepair',
-        'IsComplete',
-        'CategoryId',
-        'UserId'
+        'title',
+        'description',
+        'price',
+        'is_repair',
+        'is_complete',
+        'category_id',
+        'user_id'
     ];
 
     protected $casts = [
-        'IsRepair' => 'boolean',
-        'IsComplete' => 'boolean',
+        'is_repair' => 'boolean',
+        'is_complete' => 'boolean',
     ];
 
     public function category()

@@ -13,30 +13,30 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $fillable = [
-        'Username',
-        'Password',
-        'Email',
-        'RepairRating',
-        'GeneralRating',
-        'Address',
-        'PhoneNumber',
-        'IBAN',
-        'UserTypeId',
-        'LanguageId',
-        'SubscriptionId',
-        'HashSalt'
+        'username',
+        'password',
+        'email',
+        'repair_rating',
+        'general_rating',
+        'address',
+        'phone_number',
+        'iban',
+        'user_type_id',
+        'language_id',
+        'subscription_id',
+        'hash_salt'
     ];
 
     protected $hidden = [
-        'Password',
-        'RememberToken',
-        'HashSalt',
+        'password',
+        'remember_token',
+        'hash_salt',
     ];
 
     protected $casts = [
-        'EmailVerifiedAt' => 'datetime',
-        'Password' => 'hashed',
-        'PhoneNumber' => 'integer',
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+        'phone_number' => 'integer',
     ];
 
     public function userType()

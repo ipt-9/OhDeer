@@ -9,7 +9,7 @@ class Language extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['LanguageName'];
+    protected $fillable = ['language_name'];
 
     public function users()
     {

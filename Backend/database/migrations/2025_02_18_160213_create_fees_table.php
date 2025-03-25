@@ -8,17 +8,17 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('Fees', function (Blueprint $table) {
+        Schema::create('fees', function (Blueprint $table) {
             $table->id();
-            $table->boolean('IsPaid')->default(false);
-            $table->date('DueDate');
-            $table->integer('Amount');
+            $table->boolean('is_paid')->default(false);
+            $table->date('due_date');
+            $table->integer('amount');
             $table->timestamps();
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('Fees');
+        Schema::dropIfExists('fees');
     }
 };

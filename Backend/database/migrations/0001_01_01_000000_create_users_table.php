@@ -9,28 +9,28 @@ return new class extends Migration
 
     public function up()
     {
-        Schema::create('Users', function (Blueprint $table) {
+        Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('Username', 50);
-            $table->string('Password');
-            $table->string('Email')->unique();
-            $table->integer('RepairRating')->default(0);
-            $table->integer('GeneralRating')->default(0);
-            $table->string('Address', 100);
-            $table->bigInteger('PhoneNumber');
-            $table->string('IBAN', 34);
-            $table->string('HashSalt', 50);
-            $table->foreignId('UserTypeId')->constrained()->onDelete('cascade');
-            $table->foreignId('LanguageId')->constrained()->onDelete('cascade');
-            $table->foreignId('SubscriptionId')->constrained()->onDelete('cascade');
-            $table->timestamp('EmailVerifiedAt')->nullable();
+            $table->string('username', 50);
+            $table->string('password');
+            $table->string('email')->unique();
+            $table->integer('repair_rating')->default(0);
+            $table->integer('general_rating')->default(0);
+            $table->string('address', 100);
+            $table->bigInteger('phone_number');
+            $table->string('iban', 34);
+            $table->string('hash_salt', 50);
+            $table->foreignId('user_type_id')->constrained()->onDelete('cascade');
+            $table->foreignId('language_id')->constrained()->onDelete('cascade');
+            $table->foreignId('subscription_id')->constrained()->onDelete('cascade');
+            $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('Users');
+        Schema::dropIfExists('users');
     }
 
 };
