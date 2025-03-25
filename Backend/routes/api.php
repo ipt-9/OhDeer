@@ -13,6 +13,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::prefix('user')->controller(UserController::class)->group(function () {
     Route::get('{id}', 'GetUserInfo')->whereNumber('id');
     Route::delete('delete', 'delete')->middleware('auth:sanctum');
+    Route::put('update', 'update')->middleware('auth:sanctum');
 });
 
 Route::prefix('posts')->controller(PostController::class)->group(function () {

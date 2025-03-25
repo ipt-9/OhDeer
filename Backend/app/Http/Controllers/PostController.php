@@ -33,7 +33,7 @@ class PostController extends Controller
         $post->is_repair = $request->is_repair;
         $post->is_complete = false;
         //$post->category_id = $request->category()->id;
-        //$post->customer_id = $request->customer()->id;
+        //$post->customer_id = $request->user()->id;
 
         //$post->save();
 
