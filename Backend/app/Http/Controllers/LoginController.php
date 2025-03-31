@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginUserRequest;
+use http\Client\Curl\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
@@ -14,7 +16,14 @@ class LoginController extends Controller
             return response()->json(['token' => $request->user()->createToken('auth_token')->plainTextToken]);
         }
         else {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['error' => 'Unauthorized', 'mail' => $request->input('email'), 'pass' => $request->input('password'), \App\Models\User::all()->first()->getAuthPassword()], 401);
         }
+    }
+
+    public function hashsample(Request $request){
+        return Hash::make($request->input('password'));
+    }
+    public function testauth(){
+        return 'success';
     }
 }

@@ -17,9 +17,9 @@ return new class extends Migration
             $table->integer('repair_rating');
             $table->integer('general_rating');
             $table->text('rating_comment')->nullable();
-            $table->foreignId('post_id')->constrained()->onDelete('cascade');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('fee_id')->constrained()->onDelete('cascade');
+            $table->foreignId('post_id')->constrained('posts')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('fee_id')->constrained('fees')->onDelete('cascade');
             $table->timestamps();
         });
     }
