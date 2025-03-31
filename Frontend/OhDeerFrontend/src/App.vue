@@ -1,6 +1,6 @@
 <script setup>
 import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import BackendShowcase from './components/BackendShowcase.vue';
 </script>
 
 <template>
@@ -13,7 +13,7 @@ import TheWelcome from './components/TheWelcome.vue'
   </header>
 
   <main>
-    <TheWelcome />
+    <BackendShowcase></BackendShowcase>
   </main>
 </template>
 

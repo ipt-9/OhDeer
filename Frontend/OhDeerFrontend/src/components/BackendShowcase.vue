@@ -6,7 +6,7 @@
     <input v-model="post_id" placeholder="Input post ID">
     <button @click="fetchPost(post_id)">Fetch Specified Post</button>
 
-    <pre v-if="data">{{ data }}</pre>
+    <pre v-if="data" style="background-color: #141414; color: white;">{{ data }}</pre>
     <p v-if="error" class="error">Error: {{ error }}</p>
   </div>
 </template>
@@ -23,7 +23,7 @@ export default {
     const fetchPosts = async () => {
       try {
         error.value = null;
-        const response = await fetch('http://127.0.0.1/api');
+        const response = await fetch('http://127.0.0.1:8000/api/posts/all');
         if (!response.ok) {
           throw new Error('Failed to fetch data');
         }
@@ -40,7 +40,7 @@ export default {
       }
       try {
         error.value = null;
-        const response = await fetch(`http://127.0.0.1/api/${id}`); //When backend address is implemented, swap for the correct address
+        const response = await fetch(`http://127.0.0.1:8000/api/posts/${id}`); //When backend address is implemented, swap for the correct address
         if (!response.ok) {
           throw new Error('Failed to fetch data');
         }
@@ -68,7 +68,7 @@ input {
 }
 
 pre {
-  background-color: #f4f4f4;
+  background-color: #ffffff;
   padding: 10px;
   border-radius: 5px;
   text-align: left;
