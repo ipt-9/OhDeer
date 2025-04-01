@@ -1,5 +1,7 @@
 <template>
     <div class="container">
+        <!--These cards are basically 1 to 1 copies of W3 schools version, at least so far.
+         We will probably change them a bit later, so their not 1 to 1 copies -->
         <div class="card">
         <img src="../assets/test.png" alt="song">
         <h1 class="cardTi">Tailored Jeans</h1>
@@ -53,6 +55,9 @@
         gap: 40px ;
     }
 
+    /* These cards are basically 1 to 1 copies of W3 schools version, at least so far.
+         We will probably change them a bit later, so their not 1 to 1 copies, looks wise,
+          but most of this also has new features and design additions.*/
     .card {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     width: 100%;
