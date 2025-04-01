@@ -23,7 +23,7 @@ export default {
     const fetchPosts = async () => {
       try {
         error.value = null;
-        const response = await fetch('http://127.0.0.1:8000/api/posts/all');
+        const response = await fetch('https://api.ohdeer-bmsd22a.bbzwinf.ch/api/posts/all');
         if (!response.ok) {
           throw new Error('Failed to fetch data');
         }
@@ -40,7 +40,7 @@ export default {
       }
       try {
         error.value = null;
-        const response = await fetch(`http://127.0.0.1:8000/api/posts/${id}`); //When backend address is implemented, swap for the correct address
+        const response = await fetch(`https://api.ohdeer-bmsd22a.bbzwinf.ch/api/posts/${id}`); //When backend address is implemented, swap for the correct address
         if (!response.ok) {
           throw new Error('Failed to fetch data');
         }
