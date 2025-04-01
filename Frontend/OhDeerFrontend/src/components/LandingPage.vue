@@ -29,6 +29,7 @@
                 :style="{ backgroundImage: `url(${category.image})` }"
               >
                 <h3>{{ category.name }}</h3>
+
               </router-link>
             </div>
 
@@ -64,7 +65,9 @@
         <h3>Repair Shops Near You</h3>
         <div class="shopGrid">
           <div v-for="item in repairItems" :key="item.id" class="shopCard">
-            <img :src="item.image" alt="Repair Image" class="productImage" />
+            <div class="cardImage">
+              <img :src="item.image" alt="Repair Image" class="productImage" />
+            </div>
             <div class="cardContent">
               <h4>{{ item.title }}</h4>
               <p>{{ item.description }}</p>
@@ -98,6 +101,7 @@
 
   <script setup>
   import { ref } from "vue";
+  import { computed } from "vue";
 
   const shopItems = ref([
     { id: 1, title: "Wooden Table", description: "Handcrafted table", price: 120, is_repair: 0, image: "https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg" },
@@ -118,9 +122,7 @@
 
   const nonRepairItems = computed(() => shopItems.value.filter(item => item.is_repair === 0));
   const repairItems = computed(() => shopItems.value.filter(item => item.is_repair === 1));
-  const discountedItems = computed(() => nonRepairItems.value.slice(0, 2));
   const newArrivals = computed(() => shopItems.value.slice(-2));
-  const trendingItems = computed(() => shopItems.value.slice(1, 3));
 
 
   const images = ref([
@@ -144,8 +146,8 @@
   </script>
 
   <style scoped>.container {
-    max-width: 1200px;
-    margin: auto;
+
+    margin: 0px;
     padding: 20px;
     font-family: 'Poppins', sans-serif;
   }
@@ -184,13 +186,18 @@
 
   .slideshow {
     position: relative;
-    width: 100%;
-    max-width: 900px;
-    height: 400px;
+    display: block;
+    min-width: 100%;
+    background-position: center;
+    height: 65vh;
+    max-height: 70%;
     margin: auto;
     overflow: hidden;
-    border-radius: 15px;
+    border-radius: 0px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    object-fit: cover;
+    object-position: center;
   }
 
   .slide {
@@ -226,6 +233,7 @@
     background: rgba(0, 0, 0, 0.8);
   }
 
+  .filterButton
 
   .shop {
     display: flex;
