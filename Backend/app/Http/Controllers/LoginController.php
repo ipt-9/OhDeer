@@ -13,7 +13,9 @@ class LoginController extends Controller
     public function authenticate(LoginUserRequest $request)
     {
         if (Auth::attempt($request->only('email', 'password'))) {
-            return response()->json(['token' => $request->user()->createToken('auth_token')->plainTextToken]);
+            return response()->json(['token' => $request->user()
+                ->createToken('auth_token', ['*'], now()->addMinute()
+                )->plainTextToken]);
         }
         else {
             return response()->json(['error' => 'Unauthorized', 'mail' => $request->input('email'), 'pass' => $request->input('password'), \App\Models\User::all()->first()->getAuthPassword()], 401);
