@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RegisterUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -27,6 +28,17 @@ class UserController extends Controller
         $user->save();
 
         return response()->json(['message' => 'User has been updated', 'user' => $user ]);
+    }
+
+    public function register(RegisterUserRequest $request)
+    {
+        $user = new User();
+
+        $user->fill($request->validated());
+        $user->password = bcrypt($request->password);
+        $user->save();
+
+        return response()->json(['message' => 'User has been registered', 'user' => $user ]);
     }
 
 }

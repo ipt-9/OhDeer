@@ -16,15 +16,15 @@ class User extends Authenticatable
         'username',
         'password',
         'email',
-        'repair_rating',
-        'general_rating',
+        'hash_salt',
         'address',
         'phone_number',
         'iban',
-        'user_type_id',
         'language_id',
+        'user_type_id',
         'subscription_id',
-        'hash_salt'
+        'repair_rating',
+        'general_rating',
     ];
 
     protected $hidden = [

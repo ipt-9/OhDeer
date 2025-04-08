@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreatePurchaseRequest;
 use App\Models\Purchase;
 use Illuminate\Http\Request;
 
@@ -26,8 +27,8 @@ class PurchaseController extends Controller
             'purchase' => $purchase
         ]);    }
 
-    //public function store(CreatePurchaseRequest $request)
-    //{
-    //
-    //}
+    public function store(CreatePurchaseRequest $request)
+    {
+
+    }
 }

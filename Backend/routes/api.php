@@ -16,6 +16,7 @@ Route::prefix('user')->controller(UserController::class)->group(function () {
     Route::get('{id}', 'GetUserInfo')->whereNumber('id');
     Route::delete('delete', 'delete')->middleware('auth:sanctum');
     Route::put('update', 'update')->middleware('auth:sanctum');
+    Route::post('register', 'register');
 });
 
 Route::prefix('posts')->controller(PostController::class)->group(function () {
