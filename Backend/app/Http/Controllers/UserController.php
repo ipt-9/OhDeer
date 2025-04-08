@@ -32,9 +32,12 @@ class UserController extends Controller
 
     public function register(RegisterUserRequest $request)
     {
+        $request->validated();
         $user = new User();
 
         $user->fill($request->validated());
+        $user->username = $request->username;
+        $user->email = $request->email;
         $user->password = bcrypt($request->password);
         $user->save();
 

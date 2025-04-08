@@ -36,4 +36,5 @@ Route::prefix('auth')->controller(LoginController::class)->group(function () {
 Route::prefix('purchases')->controller(PurchaseController::class)->group(function () {
     Route::get('all', 'index')->middleware('auth:sanctum');
     Route::get('{id}', 'show')->whereNumber('id')->middleware('auth:sanctum');
+    Route::post('saveTransactions', 'store')->middleware('auth:sanctum');
 });
