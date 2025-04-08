@@ -39,6 +39,8 @@ class UserController extends Controller
         $user->username = $request->username;
         $user->email = $request->email;
         $user->password = bcrypt($request->password);
+        $user->repair_rating = 0.0;
+        $user->general_rating = 0.0;
         $user->user_type_id = 1;
         $user->language_id = 1;
         $user->subscription_id = 1;

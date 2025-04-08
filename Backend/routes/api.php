@@ -37,4 +37,5 @@ Route::prefix('purchases')->controller(PurchaseController::class)->group(functio
     Route::get('all', 'index')->middleware('auth:sanctum');
     Route::get('{id}', 'show')->whereNumber('id')->middleware('auth:sanctum');
     Route::post('saveTransactions', 'store')->middleware('auth:sanctum');
+    Route::get('totals', 'GetTotal')->middleware('auth:sanctum');
 });
