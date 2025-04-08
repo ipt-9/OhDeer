@@ -12,7 +12,7 @@ const route = useRoute();
 const formattedCategory = route.params.slug.replace("-", " ");
 </script>
 
-<style>
+<style scoped>
 .categoryPage {
   padding: 20px;
   text-align: center;

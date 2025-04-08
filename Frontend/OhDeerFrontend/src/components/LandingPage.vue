@@ -143,7 +143,8 @@ const nextSlide = () => currentIndex.value = (currentIndex.value + 1) % filtered
 
 </script>
 
-<style>.container {
+<style scoped>
+.container {
   max-width: 1200px;
   margin: auto;
   padding: 20px;
