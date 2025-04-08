@@ -22,7 +22,7 @@ class RegisterUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'username' => 'required|string|min:3|unique:users,username',
+            'username' => 'required|string|min:3',
             'password' => 'required|min:6',
             'email' => 'required|string|email',
             'repair_rating' => 'sometimes|integer|between:1,5',
@@ -32,7 +32,7 @@ class RegisterUserRequest extends FormRequest
             'iban' => 'sometimes|string',
             'user_type_id' => 'sometimes|integer|exists:user_type,id',
             'language_id' => 'sometimes|integer|exists:language,id',
-            'subscription_id' => 'sometimes|integer|exists:subscription,id',
+            'subscription_id' => 'sometimes|integer|exists:subscription,id'
         ];
     }
 }

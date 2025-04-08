@@ -39,6 +39,9 @@ class UserController extends Controller
         $user->username = $request->username;
         $user->email = $request->email;
         $user->password = bcrypt($request->password);
+        $user->user_type_id = 1;
+        $user->language_id = 1;
+        $user->subscription_id = 1;
         $user->save();
 
         return response()->json(['message' => 'User has been registered', 'user' => $user ]);

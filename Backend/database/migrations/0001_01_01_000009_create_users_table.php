@@ -14,16 +14,16 @@ return new class extends Migration
             $table->string('username', 50);
             $table->string('password');
             $table->string('email')->unique();
-            $table->integer('repair_rating')->default(0);
-            $table->integer('general_rating')->default(0);
-            $table->string('address', 100);
-            $table->bigInteger('phone_number');
-            $table->string('iban', 34);
-            $table->string('hash_salt', 50);
+            $table->integer('repair_rating')->default(0)->nullable();
+            $table->integer('general_rating')->default(0)->nullable();
+            $table->string('address', 100)->nullable();
+            $table->bigInteger('phone_number')->nullable();
+            $table->string('iban', 34)->nullable();
+            $table->string('hash_salt', 50)->nullable();
             $table->foreignId('user_type_id')->constrained('usertypes')->onDelete('cascade');
             $table->foreignId('language_id')->constrained()->onDelete('cascade');
             $table->foreignId('subscription_id')->constrained()->onDelete('cascade');
-            $table->timestamp('email_verified_at')->nullable();
+            $table->timestamp('email_verified_at')->nullable()->nullable();
             $table->timestamps();
         });
     }
