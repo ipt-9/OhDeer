@@ -26,8 +26,8 @@ class CreatePurchaseRequest extends FormRequest
             'repair_rating' => 'required|numeric|between:1,5',
             'general_rating' => 'required|numeric|between:1,5',
             'rating_comment' => 'nullable|string',
-            'post_id' => 'required|integer|exists:posts,id',
-            'fee_id '=> 'required|integer|exists:fees,id'
+            'post_id' => 'required|integer',
+            'fee_id '=> 'required|integer'
         ];
     }
 }
