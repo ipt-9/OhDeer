@@ -1,11 +1,11 @@
 <template>
   <nav class="navbar">
   <div class="nav-left">
-    <a href="/" class="logo">OhDeer</a>
+    <router-link to="/" class="logo">OhDeer</router-link>
     <div class="nav-links">
-      <a href="/" class="active">Home</a>
-      <a href="/shop">Shop</a>
-      <a href="/repairs">Repair Shops</a>
+        <router-link to="/" exact-active-class="active">Home</router-link>
+        <router-link to="/shop" exact-active-class="active">Shop</router-link>
+        <router-link to="/repairs" exact-active-class="active">Repair Shops</router-link>
     </div>
   </div>
 
@@ -22,33 +22,64 @@
 
 
     <div class="user-dropdown">
-      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaVNmjsv3kTlDf_0RS0xRjuR4QSqJfrppOUQ&s" class="profile-img" alt="Profile" />
-      <span>DeerUser</span>
+      <img src="https://i.redd.it/87kxdlhrk3z71.jpg" class="profile-img" alt="Profile" />
+      <span>{{ user.name }}</span>
       <div class="dropdown-menu">
-        <a href="/settings">Settings</a>
+        <router-link to="/settings">Settings</router-link>
         <a href="#" onclick="logout()">Logout</a>
       </div>
     </div>
   </div>
 
 
-  <div class="mobile-toggle" onclick="toggleMobileMenu()">☰</div>
+  <div class="mobile-toggle" @click="toggleMobileMenu()">☰</div>
 
 
-  <div class="mobile-menu">
-    <a href="/">Home</a>
-    <a href="/shop">Shop</a>
-    <a href="/repairs">Repair Shops</a>
-    <a href="/settings">Settings</a>
-    <a href="/login">Login</a>
-    <a href="/register">Register</a>
-    <a href="#" onclick="logout()">Logout</a>
-  </div>
+  <div class="mobile-menu" v-show="mobileMenuOpen">
+      <router-link @click="mobileMenuOpen = false" to="/">Home</router-link>
+      <router-link @click="mobileMenuOpen = false" to="/shop">Shop</router-link>
+      <router-link @click="mobileMenuOpen = false" to="/repairs">Repair Shops</router-link>
+      <router-link @click="mobileMenuOpen = false" to="/settings" v-if="isLoggedIn">Settings</router-link>
+      <router-link @click="mobileMenuOpen = false" to="/login" v-if="!isLoggedIn">Login</router-link>
+      <router-link @click="mobileMenuOpen = false" to="/register" v-if="!isLoggedIn">Register</router-link>
+      <a href="#" v-if="isLoggedIn" @click.prevent="logout">Logout</a>
+    </div>
 </nav>
 
 </template>
 
-<style>
+<script>
+export default {
+  name: 'Nav-bar',
+  data() {
+    return {
+      mobileMenuOpen: false,
+      dropdownOpen: false,
+      isLoggedIn: true, // CHANGE, USED ONLY FOR TESTING PURPOSES
+      user: {
+        name: 'Polish Chicken',
+        profileImage: 'https://i.redd.it/87kxdlhrk3z71.jpg'
+      }
+    };
+  },
+  methods: {
+    toggleMobileMenu() {
+      this.mobileMenuOpen = !this.mobileMenuOpen;
+    },
+    toggleDropdown() {
+      this.dropdownOpen = !this.dropdownOpen;
+    },
+    logout() {
+      localStorage.removeItem('token');
+      this.isLoggedIn = false;
+      this.$router.push('/login');
+    }
+  }
+};
+</script>
+
+
+<style scoped>
 * {
   margin: 0;
   padding: 0;
@@ -148,6 +179,10 @@
 .dropdown-menu a:hover {
   background-color: #f0f0f0;
 }
+.dropdown-menu.open {
+  display: flex;
+  flex-direction: column;
+}
 
 
 .mobile-toggle {
@@ -167,6 +202,9 @@
   left: 0;
   width: 100%;
   z-index: 999;
+}
+.mobile-menu.open {
+  display: flex;
 }
 .mobile-menu a {
   padding: 0.5rem;
