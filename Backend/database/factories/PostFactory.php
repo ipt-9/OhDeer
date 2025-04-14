@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,13 @@ class PostFactory extends Factory
     public function definition(): array
     {
         return [
-            //
-        ];
-    }
+            'title' => $this->faker->realTextBetween(5, 160),
+            'description' => $this->faker->realTextBetween(5, 300),
+            'price' => $this->faker->randomFloat(2, 10, 100),
+            'is_repair' => $this->faker->boolean(),
+            'is_complete' => false,
+            'category_id' => $this->faker->numberBetween(1, 4),
+            'user_id' => User::factory(),
+        ];}
 }
+

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->bigInteger('phone_number')->nullable();
             $table->string('iban', 34)->nullable();
             $table->string('hash_salt', 50)->nullable();
-            $table->foreignId('user_type_id')->constrained('usertypes')->onDelete('cascade');
+            $table->foreignId('user_type_id')->constrained('user_types')->onDelete('cascade');
             $table->foreignId('language_id')->constrained()->onDelete('cascade');
             $table->foreignId('subscription_id')->constrained()->onDelete('cascade');
             $table->timestamp('email_verified_at')->nullable()->nullable();

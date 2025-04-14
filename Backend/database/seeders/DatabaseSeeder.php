@@ -2,7 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
+use App\Models\Fee;
 use App\Models\Language;
+use App\Models\Post;
+use App\Models\Purchase;
 use App\Models\Subscription;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -32,13 +36,47 @@ class DatabaseSeeder extends Seeder
             ['subscription_name' => 'Regular']
         );
 
-        User::factory()->create([
-            'name' => 'Test User',
+        Category::factory()->create(
+            ['category_name' => 'Electronics']
+        );
+        Category::factory()->create(
+            ['category_name' => 'Furniture']
+        );
+        Category::factory()->create(
+            ['category_name' => 'Clothing']
+        );
+        Category::factory()->create(
+            ['category_name' => 'Housework']
+        );
+
+        Fee::factory()->create([
+            'is_paid' => false,
+            'due_date' => now(),
+            'amount' => 12
+        ]);
+
+        User::factory()
+            ->has(Post::factory()->count(5))
+            ->create([
+            'username' => 'Test User',
             'email' => 'test@example.com',
             'password' => Hash::make('password'),
             'user_type_id' => 1,
             'language_id' => 1,
             'subscription_id' => 1,
+        ]);
+
+        Purchase::factory()->create([
+            'amount' => 1,
+            'timestamp' => now(),
+            'date' => now(),
+            'is_outstanding'=> false,
+            'repair_rating'=> 2,
+            'general_rating'=> 3,
+            'rating_comment'=> 'Test User',
+            'post_id'=> 1,
+            'user_id'=> 1,
+            'fee_id'=> 1
         ]);
     }
 }
