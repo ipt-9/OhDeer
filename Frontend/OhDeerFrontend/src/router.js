@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Login from './components/Login.vue'
 import Register from './components/Register.vue'
+import navBar from './components/nav-bar.vue'
 
 const routes = [
   {
@@ -16,6 +17,10 @@ const routes = [
     path: '/register',
     component: Register,
     meta: { layout: 'auth' }
+  },
+  {
+    path: '/nav-bar',
+    component: navBar,
   }
 ]
 
