@@ -2,12 +2,12 @@
 import { ref, computed } from "vue";
 import testImage from '@/assets/test.png';
 
-const shopItems = ref([
-  { id: 1, title: "Wooden Table", description: "Handcrafted table", price: 120, image: "https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg" },
-  { id: 2, title: "Vintage Chair", description: "Classic chair", price: 80, image: "https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg" },
-  { id: 3, title: "chingchenghanji", description: "Some text about the nverui78  43h79f h78 3478  78z 8 438ohgc348 fzew zewbvf euerhufheberuigjeans..qefrgvergregreger wefewewf ew rgiegier ierg hi hhhhhh pppppp 2222 w r e q 7gregh9ehgehugherhge reui jihnuu ewz", price: 500, image: testImage },
-  { id: 4, title: "chingchenghanji", description: "Some text about the nverui78  43h79f h78 3478  78z 8 438ohgc348 fzew zewbvf euerhufheberuigjeans..qefrgvergregreger wefewewf ew rgiegier ierg hi hhhhhh pppppp 2222 w r e q 7gregh9ehgehugherhge reui jihnuu ewz", price: 500, image: testImage },
-  { id: 5, title: "chingchenghanji", description: "Some text about the nverui78  43h79f h78 3478  78z 8 438ohgc348 fzew zewbvf euerhufheberuigjeans..qefrgvergregreger wefewewf ew rgiegier ierg hi hhhhhh pppppp 2222 w r e q 7gregh9ehgehugherhge reui jihnuu ewz", price: 500, image: testImage },
+const repairshopItems = ref([
+  { id: 1, title: "Furniture Repair", description: "Fix broken furniture", address: "Fifi Street 21", postalCode: "7649 Gabgob", phone: "043 748 384 213 64", email: "berhbf@gmail.com", image: "https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg" },
+  { id: 2, title: "Sofa Repair", description: "Fix broken sofas", address: "huhu Street 2", postalCode: "2765 Sigma City", phone: "043 748 384 213 64", email: "berhbf@gmail.com", image: "https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg" },
+  { id: 3, title: "chingchenghanji", description: "Some text about the nverui78  43h79f h78 3478  78z 8 438ohgc348 fzew zewbvf euerhufheberuigjeans..qefrgvergregreger wefewewf ew rgiegier ierg hi hhhhhh pppppp 2222 w r e q 7gregh9ehgehugherhge reui jihnuu ewz", address: "buien vreievniu veri 893", postalCode: "1003 Delta County", phone: "043 748 384 213 64", email: "uoerh@gmail.com", image: testImage },
+  { id: 4, title: "chingchenghanji", description: "Some text about the nverui78  43h79f h78 3478  78z 8 438ohgc348 fzew zewbvf euerhufheberuigjeans..qefrgvergregreger wefewewf ew rgiegier ierg hi hhhhhh pppppp 2222 w r e q 7gregh9ehgehugherhge reui jihnuu ewz", address: "buien vreievniu veri 893", postalCode: "1003 Delta County", phone: "043 748 384 213 64", email: "beriw@gmail.com", image: testImage },
+  { id: 5, title: "chingchenghanji", description: "Some text about the nverui78  43h79f h78 3478  78z 8 438ohgc348 fzew zewbvf euerhufheberuigjeans..qefrgvergregreger wefewewf ew rgiegier ierg hi hhhhhh pppppp 2222 w r e q 7gregh9ehgehugherhge reui jihnuu ewz", address: "buien vreievniu veri 893", postalCode: "1003 Delta County", phone: "043 748 384 213 64", email: "novfe@gmail.com", image: testImage },
 
 ]);
 
@@ -36,15 +36,23 @@ const nextSlide = () => currentIndex.value = (currentIndex.value + 1) % filtered
         <div class="container">
         <div class="shop">
             <div class="shopComponent">
-                <h3>Items</h3>
+                <h3>Repair Shops</h3>
                 <div class="shopGrid">
-                    <div v-for="item in shopItems" :key="item.id" class="shopCard">
-                        <img :src="item.image" alt="Product Image" class="productImage" />
+                    <div v-for="shop in repairshopItems" :key="shop.id" class="shopCard">
+                        <img :src="shop.image" alt="Product Image" class="productImage" />
                         <div class="cardContent">
-                            <h4>{{ item.title }}</h4>
-                            <p>{{ item.description }}</p>
-                            <p class="price">${{ item.price }}</p>
-                            <button class="buyButton">Buy Now</button>
+                            <h4>{{ shop.title }}</h4>
+                            <div class="infoGrid">  
+                                <p class="left">Email: </p> 
+                                <p class="info">{{ shop.email }}</p>
+                                <p class="left">Phone: </p>
+                                <p class="info">{{ shop.phone }}</p>
+                                <p class="left">Address: </p>
+                                <p class="info">{{ shop.address + ", " + shop.postalCode }}</p>
+                            </div>
+                            
+                            <p>{{ shop.description }}</p>
+                            <button class="repairButton">more information</button>
                         </div>
                     </div>
                 </div>
@@ -77,7 +85,7 @@ const nextSlide = () => currentIndex.value = (currentIndex.value + 1) % filtered
 
     .shopGrid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
     padding: 10px;
     }
@@ -98,7 +106,7 @@ const nextSlide = () => currentIndex.value = (currentIndex.value + 1) % filtered
 
     .productImage {
     width: 100%;
-    height: 200px;
+    height: 220px;
     object-fit: contain;
     border-radius: 12px;
     }
@@ -124,7 +132,7 @@ const nextSlide = () => currentIndex.value = (currentIndex.value + 1) % filtered
     }
 
     .buyButton, .repairButton {
-    background: #388659;
+    background: linear-gradient(135deg, #388659, #409e67);
     color: white;
     border: none;
     padding: 10px 16px;
@@ -172,6 +180,25 @@ const nextSlide = () => currentIndex.value = (currentIndex.value + 1) % filtered
     p {
     font-size: 14px;
     color: black;
-    margin: 5px 0;
+    margin: 2px 0;
     }
+    
+    .infoGrid {
+        display: grid;
+        grid-template-columns: 1fr 3fr;
+        gap: 6px 12px;
+        margin-left: 10%;
+        margin-right: 10%;
+        color: black;
+    }
+
+    .left {
+        text-align: left;
+        font-weight: bold;
+    }
+
+    .info {
+        text-align: left;
+    }
+
 </style>
