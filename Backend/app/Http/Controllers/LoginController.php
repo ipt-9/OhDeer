@@ -14,7 +14,7 @@ class LoginController extends Controller
     {
         if (Auth::attempt($request->only('email', 'password'))) {
             return response()->json(['token' => $request->user()
-                ->createToken('auth_token', ['*'], now()->addMinute()
+                ->createToken('auth_token', ['*'], now()->addHours(2)
                 )->plainTextToken]);
         }
         else {

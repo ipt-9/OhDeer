@@ -33,8 +33,8 @@ class PurchaseController extends Controller
         $request->validated();
 
         $user = $request->user();
-        $post = $request->post();
-        $fee = $request->fee();
+
+
 
         $purchase = new Purchase();
 
@@ -44,14 +44,13 @@ class PurchaseController extends Controller
         $purchase->repair_rating = $request->repair_rating;
         $purchase->general_rating = $request->general_rating;
         $purchase->rating_comment = $request->rating_comment;
-        $purchase->post_id = $post->id;
+        $purchase->post_id = $request->post_id;
         $purchase->user_id = $user->id;
-        $purchase->fee_id = $fee->id;
+        $purchase->fee_id = $request->fee_id;
 
         // calculate the actual price of the transaction
 
-        $purchase->amount = $request->amount * $fee->amount;
-
+        // $purchase->amount = $request->amount * $fee->amount;
         $purchase->save();
 
         // recalculate the avg of the ratings
