@@ -16,8 +16,9 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->integer('repair_rating')->default(0)->nullable();
             $table->integer('general_rating')->default(0)->nullable();
+            $table->integer('postal_code')->nullable();
             $table->string('address', 100)->nullable();
-            $table->bigInteger('phone_number')->nullable();
+            $table->string('phone_number')->nullable();
             $table->string('iban', 34)->nullable();
             $table->string('hash_salt', 50)->nullable();
             $table->foreignId('user_type_id')->constrained('user_types')->onDelete('cascade');

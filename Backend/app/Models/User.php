@@ -25,6 +25,7 @@ class User extends Authenticatable
         'subscription_id',
         'repair_rating',
         'general_rating',
+        'postal_code',
     ];
 
     protected $hidden = [

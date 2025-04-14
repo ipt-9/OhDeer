@@ -26,8 +26,9 @@ class RegisterUserRequest extends FormRequest
             'password' => 'required|min:8',
             'email' => 'required|string|email',
             'address' => 'required|string',
-            'phone_number' => 'required|integer',
-            'iban' => 'required|integer|exists:language,id',
+            'phone_number' => 'required|string',
+            'iban' => 'required|string',
+            'postal_code' => 'required|integer',
         ];
     }
 }

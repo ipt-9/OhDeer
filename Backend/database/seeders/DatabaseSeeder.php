@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
         UserType::factory()->create(
             ['user_type_name' => 'Business']
         );
+
         Language::factory()->create(
             ['language_name' => 'English']
         );
@@ -57,14 +58,8 @@ class DatabaseSeeder extends Seeder
 
         User::factory()
             ->has(Post::factory()->count(5))
-            ->create([
-            'username' => 'Test User',
-            'email' => 'test@example.com',
-            'password' => Hash::make('password'),
-            'user_type_id' => 1,
-            'language_id' => 1,
-            'subscription_id' => 1,
-        ]);
+            ->count(2)
+            ->create();
 
         Purchase::factory()->create([
             'amount' => 1,

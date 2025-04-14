@@ -24,7 +24,7 @@ class PostFactory extends Factory
             'is_repair' => $this->faker->boolean(),
             'is_complete' => false,
             'category_id' => $this->faker->numberBetween(1, 4),
-            'user_id' => User::factory(),
+            'user_id' => 1,
         ];}
 }
 
