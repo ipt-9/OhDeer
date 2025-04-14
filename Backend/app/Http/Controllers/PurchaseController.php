@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreatePurchaseRequest;
+use App\Models\Fee;
+use App\Models\Post;
 use App\Models\Purchase;
 use Illuminate\Http\Request;
 
@@ -33,7 +35,8 @@ class PurchaseController extends Controller
         $request->validated();
 
         $user = $request->user();
-
+        $fee = Fee::findOrFail($request->fee_id);
+        $post = Post::findOrFail($request->post_id);
 
 
         $purchase = new Purchase();
@@ -44,13 +47,13 @@ class PurchaseController extends Controller
         $purchase->repair_rating = $request->repair_rating;
         $purchase->general_rating = $request->general_rating;
         $purchase->rating_comment = $request->rating_comment;
-        $purchase->post_id = $request->post_id;
+        $purchase->post_id = $post->id;
         $purchase->user_id = $user->id;
-        $purchase->fee_id = $request->fee_id;
+        $purchase->fee_id = $fee->id;
 
         // calculate the actual price of the transaction
 
-        // $purchase->amount = $request->amount * $fee->amount;
+        $purchase->amount = $request->amount * $fee->amount;
         $purchase->save();
 
         // recalculate the avg of the ratings
