@@ -38,7 +38,6 @@ class PurchaseController extends Controller
 
         $purchase = new Purchase();
 
-        $purchase->amount = $request->amount;
         $purchase->timestamp = date('h:i:s');
         $purchase->date = date('d.m.Y');
         $purchase->is_outstanding = true;
@@ -48,6 +47,10 @@ class PurchaseController extends Controller
         $purchase->post_id = $post->id;
         $purchase->user_id = $user->id;
         $purchase->fee_id = $fee->id;
+
+        // calculate the actual price of the transaction
+
+        $purchase->amount = $request->amount * $fee->amount;
 
         $purchase->save();
 
@@ -63,7 +66,8 @@ class PurchaseController extends Controller
 
         return response()->json([
             'message' => 'The transaction has been created',
-            'purchase' => $purchase
+            'purchase' => $purchase,
+            'user' => $user
         ]);
     }
 
