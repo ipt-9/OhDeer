@@ -57,5 +57,20 @@
     font-size: 0.85rem;
     color: #777;
   }
+
+  button {
+  width: 100%;
+  padding: 0.5rem;
+  background-color: #6b8e23;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #556b2f;
+}
   </style>
   
