@@ -52,7 +52,7 @@ export default {
     return {
       mobileMenuOpen: false,
       dropdownOpen: false,
-      isLoggedIn: true, // Simulated
+      isLoggedIn: true, //Change later
       user: {
         name: 'Polish Chicken',
         profileImage: 'https://i.redd.it/87kxdlhrk3z71.jpg'
@@ -116,7 +116,7 @@ export default {
   font-weight: 500;
   padding: 0.2rem 0.3rem;
   transition: color 0.3s;
-  min-width: 60px; /* prevents layout shift on bold */
+  min-width: 60px;
   text-align: center;
 }
 .nav-links a:hover,
@@ -126,10 +126,13 @@ export default {
 }
 
 .nav-center {
+  position: relative;
+  overflow: visible;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 
 .nav-right {
   display: flex;
@@ -163,17 +166,14 @@ export default {
 }
 .dropdown-menu {
   position: absolute;
-  top: 110%;
-  right: 0;
+  top: 100%;
+  left: 0;
   background-color: white;
-  border: 1px solid #ccc;
   border-radius: 6px;
-  padding: 0.5rem;
+  padding: 1rem;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  display: none;
-  flex-direction: column;
-  min-width: 120px;
 }
+
 .user-dropdown:hover .dropdown-menu {
   display: flex;
 }
