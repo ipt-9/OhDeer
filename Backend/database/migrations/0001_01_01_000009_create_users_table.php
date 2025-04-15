@@ -13,18 +13,17 @@ return new class extends Migration
             $table->id();
             $table->string('username', 50);
             $table->string('password');
-            $table->string('email')->unique();
-            $table->integer('repair_rating')->default(0)->nullable();
-            $table->integer('general_rating')->default(0)->nullable();
-            $table->integer('postal_code')->nullable();
-            $table->string('address', 100)->nullable();
-            $table->string('phone_number')->nullable();
-            $table->string('iban', 34)->nullable();
-            $table->string('hash_salt', 50)->nullable();
-            $table->foreignId('user_type_id')->constrained('user_types')->onDelete('cascade');
+            $table->string('email', 75)->unique();
+            $table->integer('repair_rating')->default(3);
+            $table->integer('general_rating')->default(3);
+            $table->integer('postal_code');
+            $table->string('address', 100);
+            $table->string('phone_number', 50)->nullable();
+            $table->string('iban', 40)->nullable();
+            $table->foreignId('user_type_id')->constrained()->onDelete('cascade');
             $table->foreignId('language_id')->constrained()->onDelete('cascade');
             $table->foreignId('subscription_id')->constrained()->onDelete('cascade');
-            $table->timestamp('email_verified_at')->nullable()->nullable();
+            $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
         });
     }

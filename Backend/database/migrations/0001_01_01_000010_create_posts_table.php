@@ -11,10 +11,10 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->string('title', 100);
-            $table->string('description', 500);
+            $table->string('title', 128);
+            $table->string('description');
             $table->integer('price');
-            $table->boolean('is_repair')->default(false);
+            $table->boolean('is_repair')->default(true);
             $table->boolean('is_complete')->default(false);
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
