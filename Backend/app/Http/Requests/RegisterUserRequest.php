@@ -22,13 +22,13 @@ class RegisterUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'username' => 'required|string|min:3',
-            'password' => 'required|min:8',
-            'email' => 'required|string|email',
-            'address' => 'required|string',
-            'phone_number' => 'required|string',
-            'iban' => 'required|string',
-            'postal_code' => 'required|integer',
+            'username' => 'required',
+            'password' => 'required',
+            'email' => 'required',
+            'address' => 'required',
+            'phone_number' => 'required',
+            'iban' => 'required',
+            'postal_code' => 'required',
         ];
     }
 }

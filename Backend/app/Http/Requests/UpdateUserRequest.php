@@ -23,16 +23,17 @@ class UpdateUserRequest extends FormRequest
     {
         return [
             'username' => 'sometimes|string|min:3',
-            'password' => 'sometimes|min:6',
+            'password' => 'sometimes|min:8',
             'email' => 'sometimes|string|email',
-            'repair_rating' => 'sometimes|integer|between:1,5',
-            'general_rating' => 'sometimes|integer|between:1,5',
+            'repair_rating' => 'sometimes|integer',
+            'general_rating' => 'sometimes|integer',
             'address' => 'sometimes|string',
-            'phone_number' => 'sometimes|integer',
+            'postal_code' => 'sometimes|integer',
+            'phone_number' => 'sometimes|string',
             'iban' => 'sometimes|string',
-            'user_type_id' => 'sometimes|integer|exists:user_type,id',
-            'language_id' => 'sometimes|integer|exists:language,id',
-            'subscription_id' => 'sometimes|integer|exists:subscription,id',
+            'user_type_id' => 'sometimes|integer',
+            'language_id' => 'sometimes|integer',
+            'subscription_id' => 'sometimes|integer',
         ];
     }
 }

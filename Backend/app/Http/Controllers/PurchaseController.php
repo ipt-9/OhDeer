@@ -20,9 +20,14 @@ class PurchaseController extends Controller
         return Purchase::findOrFail($id);
     }
 
-    public function delete($id)
+    public function delete($id, Request $request)
     {
         $purchase = Purchase::findOrFail($id);
+
+        if ($request->user()->id !== $purchase->user_id) {
+            abort(403);
+        }
+
         $purchase->delete();
         return response()->json([
             'message' => 'The transaction has been deleted',

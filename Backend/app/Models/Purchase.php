@@ -19,7 +19,7 @@ class Purchase extends Model
         'rating_comment',
         'post_id',
         'user_id',
-        'fee_id'
+        'fee_id',
     ];
 
     protected $casts = [

@@ -12,7 +12,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::prefix('user')->controller(UserController::class)->group(function () {
+Route::prefix('users')->controller(UserController::class)->group(function () {
     Route::get('{id}', 'GetUserInfo')->whereNumber('id');
     Route::delete('delete', 'delete')->middleware('auth:sanctum');
     Route::put('update', 'update')->middleware('auth:sanctum');
@@ -22,11 +22,12 @@ Route::prefix('user')->controller(UserController::class)->group(function () {
 Route::prefix('posts')->controller(PostController::class)->group(function () {
     Route::get('all', 'index');
     Route::get('{id}', 'GetOnePost')->whereNumber('id');
-    Route::put('update/{id}', 'update')->whereNumber('id'); //->middleware('auth:sanctum');
+    Route::put('update/{id}', 'update')->whereNumber('id')->middleware('auth:sanctum');
     Route::post('create', 'store')->middleware('auth:sanctum');
     Route::delete('delete/{id}', 'delete')->whereNumber('id')->middleware('auth:sanctum');
     Route::get('category/{id}', 'getCategoryPosts')->whereNumber('id');
 });
+
 Route::prefix('auth')->controller(LoginController::class)->group(function () {
    Route::post('login', 'authenticate');
    Route::post('hashsample', 'hashsample');

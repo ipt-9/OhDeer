@@ -13,7 +13,7 @@ class PostController extends Controller
 {
     public function index()
     {
-        return Post::all();
+        return Post::all()->orderBy('created_at', 'desc')->get();
     }
 
     public function getOnePost($id)
@@ -23,8 +23,10 @@ class PostController extends Controller
 
     public function store(CreatePostRequest $request)
     {
-        //$user = $request->user();
-        //$category = $request->category();
+        $request->validated();
+
+        $user = $request->user();
+        $category = Category::findOrFail($request->category_id);
 
         $post = new Post;
         $post->title = $request->title;
@@ -32,25 +34,38 @@ class PostController extends Controller
         $post->price = $request->price;
         $post->is_repair = $request->is_repair;
         $post->is_complete = false;
-        $post->category_id = $request->category()->id;
-        $post->user_id = $request->user()->id;
+        $post->category_id = $category->id;
+        $post->user_id = $user->id;
 
         $post->save();
 
-        return response()->json($post, 200);
+        return response()->json(['message' => 'Post has been added to the database.',
+            'post' => $post
+        ]);
     }
 
     public function update($id, UpdatePostRequest $request)
     {
         $post = Post::findOrFail($id);
+
+        if ($request->user()->id !== $post->user_id) {
+            abort(403);
+        }
         $post->fill($request->validated());
         $post->save();
-        return response()->json($post, 200);
+        return response()->json(['message' => 'Post has been edited successfully',
+            'post' => $post
+        ]);
     }
 
-    public function delete($id)
+    public function delete($id, Request $request)
     {
         $post = Post::findOrFail($id);
+
+        if ($request->user()->id !== $post->user_id) {
+            abort(403);
+        }
+
         $post->delete();
         return response()->json(['message' => 'Post has been deleted / removed from the database successfully',
                 'post' => $post

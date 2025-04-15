@@ -26,8 +26,7 @@ class CreatePostRequest extends FormRequest
             'description' => 'required|string',
             'price' => 'required|numeric|min:0',
             'is_repair' => 'required|boolean',
-            'category_id' => 'required|numeric|exists:categories,id',
-            'customer_id' => 'required|numeric|exists:customers,id',
+            'category_id' => 'required|integer',
         ];
     }
 }

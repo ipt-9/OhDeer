@@ -26,7 +26,7 @@ class UpdatePostRequest extends FormRequest
             'description' => 'sometimes|string',
             'price' => 'sometimes|numeric',
             'is_repair' => 'sometimes|boolean',
-            'category_id' => 'sometimes|numeric|exists:categories,id',
+            'category_id' => 'sometimes|integer',
         ];
     }
 }

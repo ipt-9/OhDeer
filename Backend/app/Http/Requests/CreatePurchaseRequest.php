@@ -22,12 +22,13 @@ class CreatePurchaseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'amount' => 'required|integer',
-            'repair_rating' => 'required|integer',
-            'general_rating' => 'required|integer',
-            'rating_comment' => 'string',
-            'post_id' => 'required|integer',
-            'fee_id' => 'required|integer'
+            'amount' => 'required',
+            'repair_rating' => 'required',
+            'general_rating' => 'required',
+            'rating_comment' => '',
+            'post_id' => 'required',
+            'fee_id' => 'required'
+
        ];
     }
 }
