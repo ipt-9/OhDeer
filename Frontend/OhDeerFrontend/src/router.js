@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Login from './components/Login.vue'
 import Register from './components/Register.vue'
 import ComingSoon from './components/ComingSoon.vue'
+import Payment from './components/PaymentScreen.vue'
 
 const routes = [
   {
@@ -21,7 +22,11 @@ const routes = [
   {
     path: '/comingsoon',
     component: ComingSoon
+  },
+  { path: '/payment/:id',
+    component: Payment 
   }
+
 ]
 
 const router = createRouter({

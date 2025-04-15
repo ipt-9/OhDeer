@@ -18,7 +18,7 @@ class PostController extends Controller
 
     public function getOnePost($id)
     {
-        return Post::findOrFail($id);
+        return Post::findOrFail($id)->with('category', 'user');
     }
 
     public function store(CreatePostRequest $request)
