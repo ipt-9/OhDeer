@@ -46,12 +46,12 @@ class PurchaseController extends Controller
 
         $purchase = new Purchase();
 
-        $purchase->timestamp = date('h:i:s');
-        $purchase->date = date('d.m.Y');
+        //$purchase->timestamp = date('h:i:s');
+        //$purchase->date = date('d.m.Y');
         $purchase->is_outstanding = true;
-        $purchase->repair_rating = $request->repair_rating;
-        $purchase->general_rating = $request->general_rating;
-        $purchase->rating_comment = $request->rating_comment;
+        //$purchase->repair_rating = $request->repair_rating;
+        //$purchase->general_rating = $request->general_rating;
+        //$purchase->rating_comment = $request->rating_comment;
         $purchase->post_id = $post->id;
         $purchase->user_id = $user->id;
         $purchase->fee_id = $fee->id;
@@ -63,11 +63,11 @@ class PurchaseController extends Controller
 
         // recalculate the avg of the ratings
 
-        $avgrepair = Purchase::where('user_id', $user->id)->avg('repair_rating');
-        $avggeneral = Purchase::where('user_id', $user->id)->avg('general_rating');
+        //$avgrepair = Purchase::where('user_id', $user->id)->avg('repair_rating');
+        //$avggeneral = Purchase::where('user_id', $user->id)->avg('general_rating');
 
-        $user->repair_rating = $avgrepair;
-        $user->general_rating = $avggeneral;
+        //$user->repair_rating = $avgrepair;
+        //$user->general_rating = $avggeneral;
 
         $user->save();
 

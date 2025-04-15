@@ -63,8 +63,6 @@ class DatabaseSeeder extends Seeder
 
         Purchase::factory()->create([
             'amount' => 1,
-            'timestamp' => now(),
-            'date' => now(),
             'is_outstanding'=> false,
             'repair_rating'=> 2,
             'general_rating'=> 3,

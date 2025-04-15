@@ -11,6 +11,7 @@ return new class extends Migration
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->id();
             $table->string('subscription_name', 50);
+            $table->timestamps();
         });
     }
 
