@@ -1,15 +1,11 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import ItemListings from './components/ItemListings.vue';
-import RepairShopListings from './components/RepairShopListings.vue';
-import TheWelcome from './components/TheWelcome.vue'
 </script>
 
 <template>
   
 
   <main>
-    <RepairShopListings />
+    <RouterView />
   </main>
 </template>
 
