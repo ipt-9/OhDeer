@@ -1,42 +1,37 @@
 <template>
   <nav class="navbar">
-  <div class="nav-left">
-    <router-link to="/" class="logo">OhDeer</router-link>
-    <div class="nav-links">
+    <div class="nav-left">
+      <router-link to="/" class="logo">OhDeer</router-link>
+      <div class="nav-links">
         <router-link to="/" exact-active-class="active">Home</router-link>
         <router-link to="/shop" exact-active-class="active">Shop</router-link>
         <router-link to="/repairs" exact-active-class="active">Repair Shops</router-link>
-    </div>
-  </div>
-
-  <div class="nav-center">
-    <SearchBar />
-  </div>
-
-
-  <div class="nav-right">
-
-    <div class="auth-buttons">
-      <a href="/login" class="auth-button">Login</a>
-      <a href="/register" class="auth-button">Register</a>
-    </div>
-
-
-    <div class="user-dropdown">
-      <img src="https://i.redd.it/87kxdlhrk3z71.jpg" class="profile-img" alt="Profile" />
-      <span>{{ user.name }}</span>
-      <div class="dropdown-menu">
-        <router-link to="/settings">Settings</router-link>
-        <a href="#" onclick="logout()">Logout</a>
       </div>
     </div>
-  </div>
 
+    <div class="nav-center">
+      <SearchBar />
+    </div>
 
-  <div class="mobile-toggle" @click="toggleMobileMenu()">☰</div>
+    <div class="nav-right">
+      <div class="auth-buttons" v-if="!isLoggedIn">
+        <a href="/login" class="auth-button">Login</a>
+        <a href="/register" class="auth-button">Register</a>
+      </div>
 
+      <div class="user-dropdown" v-if="isLoggedIn">
+        <img :src="user.profileImage" class="profile-img" alt="Profile" />
+        <span>{{ user.name }}</span>
+        <div class="dropdown-menu">
+          <router-link to="/settings">Settings</router-link>
+          <a href="#" @click.prevent="logout">Logout</a>
+        </div>
+      </div>
+    </div>
 
-  <div class="mobile-menu" v-show="mobileMenuOpen">
+    <div class="mobile-toggle" @click="toggleMobileMenu()">☰</div>
+
+    <div class="mobile-menu" v-show="mobileMenuOpen">
       <router-link @click="mobileMenuOpen = false" to="/">Home</router-link>
       <router-link @click="mobileMenuOpen = false" to="/shop">Shop</router-link>
       <router-link @click="mobileMenuOpen = false" to="/repairs">Repair Shops</router-link>
@@ -45,56 +40,45 @@
       <router-link @click="mobileMenuOpen = false" to="/register" v-if="!isLoggedIn">Register</router-link>
       <a href="#" v-if="isLoggedIn" @click.prevent="logout">Logout</a>
     </div>
-</nav>
-
+  </nav>
 </template>
-
 <script>
 import SearchBar from './search-bar.vue'
 
 export default {
   name: 'Nav-bar',
-  components: {
-    SearchBar
-  },
+  components: { SearchBar },
   data() {
     return {
       mobileMenuOpen: false,
       dropdownOpen: false,
-      isLoggedIn: true, // CHANGE, USED ONLY FOR TESTING PURPOSES
+      isLoggedIn: true, // Simulated
       user: {
         name: 'Polish Chicken',
         profileImage: 'https://i.redd.it/87kxdlhrk3z71.jpg'
       }
-    };
+    }
   },
   methods: {
     toggleMobileMenu() {
-      this.mobileMenuOpen = !this.mobileMenuOpen;
-    },
-    toggleDropdown() {
-      this.dropdownOpen = !this.dropdownOpen;
+      this.mobileMenuOpen = !this.mobileMenuOpen
     },
     logout() {
-      localStorage.removeItem('token');
-      this.isLoggedIn = false;
-      this.$router.push('/login');
+      localStorage.removeItem('token')
+      this.isLoggedIn = false
+      this.$router.push('/login')
     }
   }
-};
-</script>
-
-
-<style scoped>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
 }
+</script>
+<style>
+
+
 
 .navbar {
-  display: flex;
-  justify-content: space-between;
+  overflow: visible;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
   background-color: #f4f9f4;
   padding: 1rem 2rem;
@@ -102,6 +86,13 @@ export default {
   position: sticky;
   top: 0;
   z-index: 1000;
+  gap: 1rem;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
 }
 
 .logo {
@@ -109,18 +100,24 @@ export default {
   font-weight: bold;
   color: #6b8e23;
   text-decoration: none;
-  transition: color 0.3s;
+  white-space: nowrap;
 }
 .logo:hover {
   color: #556b2f;
 }
 
+.nav-links {
+  display: flex;
+  gap: 1rem;
+}
 .nav-links a {
-  margin: 0 1rem;
   text-decoration: none;
   color: #333;
   font-weight: 500;
+  padding: 0.2rem 0.3rem;
   transition: color 0.3s;
+  min-width: 60px; /* prevents layout shift on bold */
+  text-align: center;
 }
 .nav-links a:hover,
 .nav-links a.active {
@@ -128,16 +125,20 @@ export default {
   font-weight: bold;
 }
 
-.search-bar {
-  padding: 0.4rem 0.8rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 1rem;
-  width: 200px;
+.nav-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nav-right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
 }
 
 .auth-button {
-  margin-left: 1rem;
   color: #6b8e23;
   text-decoration: none;
   font-weight: 600;
@@ -185,11 +186,6 @@ export default {
 .dropdown-menu a:hover {
   background-color: #f0f0f0;
 }
-.dropdown-menu.open {
-  display: flex;
-  flex-direction: column;
-}
-
 
 .mobile-toggle {
   display: none;
@@ -221,7 +217,7 @@ export default {
 .mobile-menu a:hover {
   background-color: #f4f4f4;
 }
-/*Responsiveness*/
+
 @media (max-width: 768px) {
   .nav-links,
   .nav-center,

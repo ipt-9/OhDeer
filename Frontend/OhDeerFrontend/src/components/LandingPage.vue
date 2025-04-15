@@ -49,7 +49,7 @@
           </div>
         </div>
       </div>
-      <h3>Suggested Items</h3>
+
         <div class="shopGrid">
           <div v-for="item in items" :key="item.id" class="shopCard">
             <img :src="item.image" alt="Product Image" class="productImage" />
