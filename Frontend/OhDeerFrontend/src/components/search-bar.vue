@@ -40,7 +40,7 @@ const searchQuery = ref('');
 const selectedCategories = ref([]);
 const dropdownOpen = ref(false);
 
-// ✅ Hardcoded categories here
+
 const categories = [
   { id: 1, name: "Furniture & Home Items", slug: "furniture-home" },
   { id: 2, name: "Electronics", slug: "electronics" },
