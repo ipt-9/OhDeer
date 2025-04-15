@@ -27,11 +27,7 @@
       </div>
     </div>
 
-    <div class="selected-filters" v-if="selectedCategories.length">
-      <span v-for="cat in selectedCategories" :key="cat" class="filter-chip">
-        {{ categoryLabel(cat) }}
-      </span>
-    </div>
+
 
     <button @click="submitSearch">Search</button>
 
@@ -81,22 +77,21 @@ function categoryLabel(slug) {
 <style scoped>
 .search-bar-wrapper {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  flex-direction: row;
+  align-items: center;
   gap: 1rem;
-  padding: 1rem;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  width: 100%;
-  max-width: 500px;
+  background-color: transparent;
+  padding: 0;
+  max-width: 100%;
 }
 
+
 .search-input input {
-  width: 100%;
-  padding: 0.6rem;
-  font-size: 1rem;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.95rem;
   border: 1px solid #ccc;
   border-radius: 6px;
+  width: 200px;
 }
 
 .filter-dropdown {

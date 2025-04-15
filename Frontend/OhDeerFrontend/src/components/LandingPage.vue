@@ -1,6 +1,7 @@
 <template>
   <div class="container">
       <div class="head">
+        <navBar />
         <div class="slideshow">
           <a :href="images[currentIndex].url" target="_blank">
             <img :src="images[currentIndex].src" class="slide" alt="Slideshow Image" />
@@ -100,6 +101,7 @@
   </template>
 
   <script setup>
+  import navBar from "./nav-bar.vue";
   import { ref } from "vue";
   import { computed } from "vue";
 
@@ -148,7 +150,7 @@
   <style scoped>.container {
 
     margin: 0px;
-    padding: 20px;
+    padding: 0px;
     font-family: 'Poppins', sans-serif;
   }
 

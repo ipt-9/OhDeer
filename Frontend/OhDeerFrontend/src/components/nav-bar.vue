@@ -10,8 +10,9 @@
   </div>
 
   <div class="nav-center">
-    <input type="text" placeholder="Search..." class="search-bar" />
+    <SearchBar />
   </div>
+
 
   <div class="nav-right">
 
@@ -49,8 +50,13 @@
 </template>
 
 <script>
+import SearchBar from './search-bar.vue'
+
 export default {
   name: 'Nav-bar',
+  components: {
+    SearchBar
+  },
   data() {
     return {
       mobileMenuOpen: false,

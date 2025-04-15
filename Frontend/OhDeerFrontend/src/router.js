@@ -3,6 +3,7 @@ import Login from './components/Login.vue'
 import Register from './components/Register.vue'
 import navBar from './components/nav-bar.vue'
 import searchBar from './components/search-bar.vue'
+import LandingPage from './components/LandingPage.vue'
 
 const routes = [
   {
@@ -13,6 +14,10 @@ const routes = [
     path: '/login',
     component: Login,
     meta: { layout: 'auth' }
+  },
+  {
+    path: '/home',
+    component: LandingPage,
   },
   {
     path: '/register',
