@@ -22,11 +22,34 @@ class CreatePostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string|min:3',
+            'title' => 'required|string|min:3|max:128',
             'description' => 'required|string',
-            'price' => 'required|numeric|min:0',
+            'price' => 'required|decimal|min:0',
             'is_repair' => 'required|boolean',
             'category_id' => 'required|integer',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'title.required' => 'The title is required.',
+            'title.string' => 'The title must be a string.',
+            'title.min' => 'The title must be at least 3 characters long.',
+            'title.max' => 'The title may not be greater than 128 characters.',
+
+            'description.required' => 'The description is required.',
+            'description.string' => 'The description must be a string.',
+
+            'price.required' => 'The price is required.',
+            'price.decimal' => 'The price must be a valid decimal number (e.g., 19.99).',
+            'price.min' => 'The price must be at least 0.',
+
+            'is_repair.required' => 'The repair flag is required.',
+            'is_repair.boolean' => 'The repair flag must be true or false.',
+
+            'category_id.required' => 'The category is required.',
+            'category_id.integer' => 'The category ID must be an integer.',
         ];
     }
 }

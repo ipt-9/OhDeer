@@ -22,8 +22,20 @@ class LoginUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255',
             'password' => 'required|string'
+        ];
+    }
+    public function messages(): array
+    {
+        return [
+            'email.required' => 'Please enter your email address.',
+            'email.string' => 'The email must be a valid string.',
+            'email.email' => 'Please enter a valid email address.',
+            'email.max' => 'The email may not be greater than 255 characters.',
+
+            'password.required' => 'Please enter your password.',
+            'password.string' => 'The password must be a valid string.',
         ];
     }
 }

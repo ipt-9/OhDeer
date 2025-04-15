@@ -22,13 +22,30 @@ class CreatePurchaseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'amount' => 'required',
-            'repair_rating' => 'required',
-            'general_rating' => 'required',
-            'rating_comment' => '',
-            'post_id' => 'required',
-            'fee_id' => 'required'
-
-       ];
+            'amount' => 'required|integer|min:0',
+            'post_id' => 'required|integer|exists:posts,id',
+            'is_outstanding' => 'required|boolean',
+        ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'amount.required' => 'The amount is required.',
+            'amount.integer' => 'The amount must be an integer.',
+            'amount.min' => 'The amount cannot be negative.',
+
+            'post_id.required' => 'The post ID is required.',
+            'post_id.integer' => 'The post ID must be an integer.',
+            'post_id.exists' => 'The post ID must refer to an existing post.',
+
+            'fee_id.required' => 'The fee ID is required.',
+            'fee_id.integer' => 'The fee ID must be an integer.',
+            'fee_id.exists' => 'The fee ID must refer to an existing fee.',
+
+            'is_outstanding.required' => 'You must specify if the purchase is outstanding.',
+            'is_outstanding.boolean' => 'The outstanding status must be true or false.',
+        ];
+    }
+
 }
