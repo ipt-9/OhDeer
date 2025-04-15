@@ -13,7 +13,7 @@ class PostController extends Controller
 {
     public function index()
     {
-        return Post::all()->orderBy('created_at', 'desc')->get();
+        return Post::orderBy('created_at', 'desc')->get();
     }
 
     public function getOnePost($id)
