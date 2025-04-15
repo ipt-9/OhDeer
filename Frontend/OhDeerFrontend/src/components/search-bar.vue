@@ -1,3 +1,4 @@
+Turns out it isnt navbar but search bar, strangely it wont show the drop down despite me doing nothing to it as far as i am aware. I viewed it seperatly from everything and it still has the issue:
 <template>
   <div class="search-bar-wrapper">
     <div class="search-input">
@@ -31,9 +32,7 @@
 
     <button @click="submitSearch">Search</button>
 
-    <div v-if="noResults" class="no-results">
-      No items found.
-    </div>
+
   </div>
 </template>
 
@@ -59,12 +58,13 @@ function toggleDropdown() {
 
 function submitSearch() {
   router.push({
-    name: 'SearchResults',
-    query: {
-      q: searchQuery.value.trim(),
-      categories: selectedCategories.value.join(',')
-    }
-  })
+  path: '/search-results',
+  query: {
+    q: searchQuery.value.trim(),
+    categories: selectedCategories.value.join(',')
+  }
+})
+
 }
 
 function categoryLabel(slug) {
@@ -121,10 +121,5 @@ function categoryLabel(slug) {
   font-size: 0.95rem;
 }
 
-.no-results {
-  color: #a94442;
-  font-style: italic;
-  font-size: 0.9rem;
-  margin-top: 0.5rem;
-}
+
 </style>
