@@ -18,17 +18,9 @@ class LoginController extends Controller
                 )->plainTextToken]);
         }
         else {
-            return response()->json(['error' => 'Unauthorized', 'mail' => $request->input('email'), 'pass' => $request->input('password'), \App\Models\User::all()->first()->getAuthPassword()], 401);
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
     }
-
-    public function hashsample(Request $request){
-        return Hash::make($request->input('password'));
-    }
-    public function testauth(){
-        return 'success';
-    }
-
     public function logout(Request $request)
     {
         $request->user()->tokens()->delete();

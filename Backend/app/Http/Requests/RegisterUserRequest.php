@@ -23,7 +23,7 @@ class RegisterUserRequest extends FormRequest
     {
         return [
             'username' => 'required|string|max:50',
-            'password' => 'required|string',
+            'password' => 'required|string|min:8',
             'postal_code' => 'required|integer|min:0',
             'email' => 'required|string|email|max:75',
             'address' => 'required|string|max:100',

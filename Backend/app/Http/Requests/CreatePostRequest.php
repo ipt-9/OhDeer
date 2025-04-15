@@ -24,7 +24,7 @@ class CreatePostRequest extends FormRequest
         return [
             'title' => 'required|string|min:3|max:128',
             'description' => 'required|string',
-            'price' => 'required|decimal|min:0',
+            'price' => 'required|numeric|min:0',
             'is_repair' => 'required|boolean',
             'category_id' => 'required|integer',
         ];
