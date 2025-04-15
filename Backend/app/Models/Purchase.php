@@ -11,8 +11,6 @@ class Purchase extends Model
 
     protected $fillable = [
         'amount',
-        'timestamp',
-        'date',
         'is_outstanding',
         'repair_rating',
         'general_rating',
@@ -23,8 +21,6 @@ class Purchase extends Model
     ];
 
     protected $casts = [
-        'timestamp' => 'datetime:H:i:s',
-        'date' => 'datetime',
         'is_outstanding' => 'boolean',
     ];
 

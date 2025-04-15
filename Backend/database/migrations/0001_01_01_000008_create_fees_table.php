@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->boolean('is_paid')->default(false);
             $table->date('due_date');
-            $table->integer('amount');
+            $table->decimal('amount');
             $table->timestamps();
         });
     }

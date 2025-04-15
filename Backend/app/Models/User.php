@@ -16,23 +16,21 @@ class User extends Authenticatable
         'username',
         'password',
         'email',
-        'hash_salt',
         'address',
+        'postal_code',
+        'repair_rating',
+        'general_rating',
         'phone_number',
         'iban',
         'language_id',
         'user_type_id',
         'subscription_id',
-        'repair_rating',
-        'general_rating',
-        'postal_code',
     ];
 
     protected $hidden = [
         'password',
         'remember_token',
-        'hash_salt',
-    ];
+        ];
 
     protected $casts = [
         'email_verified_at' => 'datetime',
