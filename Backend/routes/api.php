@@ -31,8 +31,6 @@ Route::prefix('posts')->controller(PostController::class)->group(function () {
 
 Route::prefix('auth')->controller(LoginController::class)->group(function () {
    Route::post('login', 'authenticate');
-   Route::post('hashsample', 'hashsample');
-   Route::get('testauth', 'testauth')->middleware('auth:sanctum');
 });
 
 Route::prefix('purchases')->controller(PurchaseController::class)->group(function () {
