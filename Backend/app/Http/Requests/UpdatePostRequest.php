@@ -25,6 +25,11 @@ class UpdatePostRequest extends FormRequest
             'title' => 'sometimes|string|min:3|max:128',
             'description' => 'sometimes|string',
             'price' => 'sometimes|numeric|min:0',
+            'image_1' => 'sometimes|string',
+            'image_2' => 'sometimes|string',
+            'image_3' => 'sometimes|string',
+            'image_4' => 'sometimes|string',
+            'image_5' => 'sometimes|string',
             'is_repair' => 'sometimes|boolean',
             'category_id' => 'sometimes|integer|min:1',
         ];
@@ -41,6 +46,12 @@ class UpdatePostRequest extends FormRequest
 
             'price.numeric' => 'The price must be a number.',
             'price.min' => 'The price must be a positive value.',
+
+            'image_1.string' => 'The link must be a string.',
+            'image_2.string' => 'The link must be a string.',
+            'image_3.string' => 'The link must be a string.',
+            'image_4.string' => 'The link must be a string.',
+            'image_5.string' => 'The link must be a string.',
 
             'is_repair.boolean' => 'The repair status must be true or false.',
             'is_complete.boolean' => 'The completion status must be true or false.',

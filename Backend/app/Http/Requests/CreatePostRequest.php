@@ -25,6 +25,11 @@ class CreatePostRequest extends FormRequest
             'title' => 'required|string|min:3|max:128',
             'description' => 'required|string',
             'price' => 'required|numeric|min:0',
+            'image_1' => 'required|string',
+            'image_2' => 'sometimes|string',
+            'image_3' => 'sometimes|string',
+            'image_4' => 'sometimes|string',
+            'image_5' => 'sometimes|string',
             'is_repair' => 'required|boolean',
             'category_id' => 'required|integer',
         ];
@@ -44,6 +49,14 @@ class CreatePostRequest extends FormRequest
             'price.required' => 'The price is required.',
             'price.decimal' => 'The price must be a valid decimal number (e.g., 19.99).',
             'price.min' => 'The price must be at least 0.',
+
+            'image_1.required' => 'At least one image is required.',
+            'image_1.string' => 'The link must be a string.',
+
+            'image_2.string' => 'The link must be a string.',
+            'image_3.string' => 'The link must be a string.',
+            'image_4.string' => 'The link must be a string.',
+            'image_5.string' => 'The link must be a string.',
 
             'is_repair.required' => 'The repair flag is required.',
             'is_repair.boolean' => 'The repair flag must be true or false.',
