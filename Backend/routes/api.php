@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FeeController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Http\Request;
@@ -42,4 +43,4 @@ Route::prefix('purchases')->controller(PurchaseController::class)->group(functio
     Route::put('update/{id}', 'update')->middleware('auth:sanctum')->whereNumber('id');
 });
 
-Route::get('getFee', [\App\Http\Controllers\FeeController::class, 'getFee']);
+Route::get('getFee', [FeeController::class, 'getFee']);
