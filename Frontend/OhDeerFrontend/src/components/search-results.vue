@@ -15,6 +15,7 @@
         <div v-for="post in filteredPosts" :key="post.PostId" class="post-card">
           <h3>{{ post.Title }}</h3>
           <p>{{ post.Description }}</p>
+          <img :src="post.Image" alt="Post Image" class="post-img" />
           <p><strong>Category:</strong> {{ getCategoryName(post.fk_CategoryId) }}</p>
           <p><strong>Price:</strong> CHF {{ post.Price }}</p>
           <div class="tags">
@@ -28,7 +29,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import NavBar from './nav-bar.vue'
 import SearchBar from './search-bar.vue'
@@ -43,18 +44,21 @@ const posts = ref([
     Price: 80,
     IsRepair: true,
     IsComplete: false,
+    Image: 'https://thumbs.dreamstime.com/b/broken-washing-machine-dump-246342207.jpg',
   },
   {
     PostId: 2,
     fk_CategoryId: 2,
     fk_CustomerId: 102,
-    Title: 'Laptop',
+    Title: 'Sell Old Laptop',
     Description: 'Used laptop in good condition for sale.',
     Price: 300,
     IsRepair: false,
     IsComplete: true,
+    Image: 'https://source.unsplash.com/400x300/?laptop',
   },
 ])
+
 
 const categories = [
   { id: 1, slug: 'household-appliances', name: 'Household Appliances' },
@@ -62,17 +66,18 @@ const categories = [
 ]
 
 const route = useRoute()
-const searchQuery = route.query.q?.toLowerCase() || ''
+const searchQuery = ref(route.query.q?.toLowerCase() || '')
 
-const selectedCategories = (route.query.categories || '')
-  .split(',')
-  .filter(c => c.trim() !== '')
-
+const selectedCategories = ref(
+  (route.query.categories || '').split(',').filter(c => c.trim() !== '')
+)
 function getCategoryName(catId) {
   return categories.find(c => c.id === catId)?.name || 'Unknown'
 }
 
 function matchesSearch(post, query) {
+  if (!query) return true
+
   const words = query.trim().toLowerCase().split(/\s+/)
   const haystack = (post.Title + ' ' + post.Description).toLowerCase()
   return words.every(word => haystack.includes(word))
@@ -80,15 +85,26 @@ function matchesSearch(post, query) {
 
 const filteredPosts = computed(() => {
   return posts.value.filter(post => {
-    const matches = matchesSearch(post, searchQuery)
+    const matches = matchesSearch(post, searchQuery.value)
 
     const catSlug = categories.find(c => c.id === post.fk_CategoryId)?.slug?.toLowerCase()
     const matchesCategory =
-      selectedCategories.length === 0 || selectedCategories.includes(catSlug)
+      selectedCategories.value.length === 0 || selectedCategories.value.includes(catSlug)
 
     return matches && matchesCategory
   })
 })
+
+watch(
+  () => route.query,
+  (newQuery) => {
+    searchQuery.value = newQuery.q?.toLowerCase() || ''
+    selectedCategories.value = (newQuery.categories || '')
+      .split(',')
+      .filter(c => c.trim() !== '')
+  },
+  { immediate: true }
+)
 </script>
 
 <style scoped>
@@ -152,4 +168,12 @@ const filteredPosts = computed(() => {
 .tag.complete {
   background-color: #c8e6c9;
 }
+.post-img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 0.8rem;
+}
+
 </style>
