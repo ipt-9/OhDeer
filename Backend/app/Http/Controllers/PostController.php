@@ -32,6 +32,11 @@ class PostController extends Controller
         $post->title = $request->title;
         $post->description = $request->description;
         $post->price = $request->price;
+        $post->image_1 = $request->image_1;
+        $post->image_2 = $request->image_2;
+        $post->image_3 = $request->image_3;
+        $post->image_4 = $request->image_4;
+        $post->image_5 = $request->image_5;
         $post->is_repair = $request->is_repair;
         $post->is_complete = false;
         $post->category_id = $category->id;
