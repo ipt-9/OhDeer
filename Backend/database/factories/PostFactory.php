@@ -18,7 +18,7 @@ class PostFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => $this->faker->realTextBetween(5, 160),
+            'title' => $this->faker->realTextBetween(5, 128),
             'description' => $this->faker->realTextBetween(5, 300),
             'price' => $this->faker->randomFloat(2, 10, 100),
             'is_repair' => $this->faker->boolean(),
