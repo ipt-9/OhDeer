@@ -12,7 +12,7 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->string('title', 128);
-            $table->string('description');
+            $table->text('description');
             $table->integer('price');
             $table->boolean('is_repair')->default(true);
             $table->boolean('is_complete')->default(false);
