@@ -41,7 +41,7 @@ class PurchaseController extends Controller
         $request->validated();
 
         $user = $request->user();
-        $fee = Fee::findOrFail($request->fee_id);
+        $fee = Fee::findOrFail(1);
         $post = Post::findOrFail($request->post_id);
 
 
@@ -54,7 +54,7 @@ class PurchaseController extends Controller
 
         // calculate the actual price of the transaction
 
-        $purchase->amount = $request->amount * ($fee->amount / 10);
+        $purchase->amount = $request->amount * ($fee->amount / 100) + $request->amount;
         $purchase->save();
 
         return response()->json([

@@ -1,5 +1,5 @@
 <template>
-    <div v-if="post">
+    <div v-if="post&&fee">
         <div class="checkout-container">
             <div class="product-summary">
                 <h3 class="product-title">{{ post.title }}</h3>
@@ -13,8 +13,9 @@
 
             <div class="payment-form">
                 <h2>Complete Your Payment</h2>
+                <div class="price-label">Price of Item: CHF {{ post.price.toFixed(2)}}</div>
                 <div class="fee-box">
-                    <span>Commission: {{ fee.amount }}%</span>
+                    <span>Commission: {{ Math.round(fee.amount) }}%</span>
                     <div class="info-container">
                         <span v-if="!showInfo" class="info-icon" @click="showInfo = !showInfo">ℹ️</span>
                         <span v-else class="info-icon" @click="showInfo = !showInfo">✖</span>
@@ -24,11 +25,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="price-label">Total: CHF {{ post.price.toFixed(2) }}</div>
+                <div class="price-label">Commision: CHF {{ commission.toFixed(2)}}</div>
+                <div class="price-label">Total: CHF {{ totalprice.toFixed(2)}}</div>
                 <div class="button-group">
                     <button @click="goBack" class="go-back-button">Go Back</button>
                     <button @click="pay" class="pay-button">
-                        Pay CHF {{ post.price.toFixed(2) }}
+                        Pay CHF {{ totalprice.toFixed(2) }}
                     </button>
                 </div>
             </div>
@@ -49,13 +51,15 @@ const postId = route.params.id
 const post = ref(null)
 const fee = ref(null)
 const showInfo = ref(false)
+const totalprice = ref(null)
+const commission = ref(null)
 
 const goBack = () => {
     router.go(-1);
 }
 
 const fetchData = async () => {
-    /*
+        
         try {
             const response = await fetch(`https://api.ohdeer-bmsd22a.bbzwinf.ch/api/posts/${postId}`, {
                 method: 'GET',
@@ -96,13 +100,13 @@ const fetchData = async () => {
             }
         }
     
-    */
+    /*
 
     post.value = {
         id: 1,
         title: "Broken Motherboard",
         description: "A broken motherboard that doesn't work with my current system anymore.",
-        price: 120,
+        price: 100,
         is_repair: false,
         is_complete: false,
         category_id: 3,
@@ -121,6 +125,11 @@ const fetchData = async () => {
     fee.value = {
         amount: 12
     }
+    
+    */
+
+    commission.value = post.value.price * (fee.value.amount / 100.00);
+    totalprice.value = post.value.price * (fee.value.amount / 100.00) + post.value.price;
 }
 
 const pay = async () => {
@@ -146,7 +155,7 @@ const pay = async () => {
                 is_outstanding: true
             })
         });
-
+        console.log('henlo')
         const data = await response.json();
 
         if (!response.ok) {

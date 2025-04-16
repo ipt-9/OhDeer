@@ -23,7 +23,7 @@ class CreatePurchaseRequest extends FormRequest
     {
         return [
             'amount' => 'required|integer|min:0',
-            'post_id' => 'required|integer|exists:posts,id',
+            'post_id' => 'required|integer',
             'is_outstanding' => 'required|boolean',
         ];
     }
