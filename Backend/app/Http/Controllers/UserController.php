@@ -12,11 +12,11 @@ class UserController extends Controller
 
     public function index()
     {
-       return User::all()->with('user_type', 'language', 'subscription');
+       return User::with('userType', 'language', 'subscription')->get();
     }
     public function GetUserInfo($id)
     {
-        return User::with('user_type', 'language', 'subscription')->where('id', $id)->first();
+        return User::with('userType', 'language', 'subscription')->where('id', $id)->first();
     }
 
     public function delete(request $request)

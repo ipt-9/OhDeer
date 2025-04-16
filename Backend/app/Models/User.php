@@ -22,6 +22,7 @@ class User extends Authenticatable
         'general_rating',
         'phone_number',
         'iban',
+        'profile_image',
         'website',
         'language_id',
         'user_type_id',
