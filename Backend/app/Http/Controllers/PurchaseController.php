@@ -46,35 +46,19 @@ class PurchaseController extends Controller
 
         $purchase = new Purchase();
 
-        //$purchase->timestamp = date('h:i:s');
-        //$purchase->date = date('d.m.Y');
         $purchase->is_outstanding = true;
-        //$purchase->repair_rating = $request->repair_rating;
-        //$purchase->general_rating = $request->general_rating;
-        //$purchase->rating_comment = $request->rating_comment;
         $purchase->post_id = $post->id;
         $purchase->user_id = $user->id;
         $purchase->fee_id = $fee->id;
 
         // calculate the actual price of the transaction
 
-        $purchase->amount = $request->amount * $fee->amount;
+        $purchase->amount = $request->amount * ($fee->amount / 10);
         $purchase->save();
-
-        // recalculate the avg of the ratings
-
-        //$avgrepair = Purchase::where('user_id', $user->id)->avg('repair_rating');
-        //$avggeneral = Purchase::where('user_id', $user->id)->avg('general_rating');
-
-        //$user->repair_rating = $avgrepair;
-        //$user->general_rating = $avggeneral;
-
-        $user->save();
 
         return response()->json([
             'message' => 'The transaction has been created',
             'purchase' => $purchase,
-            'user' => $user
         ]);
     }
 
@@ -84,4 +68,38 @@ class PurchaseController extends Controller
         $purchasetotal = Purchase::where('user_id', $user->id)->sum('amount');
         return response(['data'=> $purchasetotal]);
     }
+
+    public function update(UpdatePurchaseRequest $request)
+    {
+        $request->validated();
+
+        $user = $request->user();
+
+        $purchase = Purchase::findOrFail($request->id);
+
+        if ($request->user()->id !== $purchase->user_id) {
+            abort(403);
+        }
+
+        $purchase->fill($request);
+        $purchase->save();
+
+        // recalculate the avg of the ratings
+
+        $avgrepair = Purchase::where('user_id', $user->id)->avg('repair_rating');
+        $avggeneral = Purchase::where('user_id', $user->id)->avg('general_rating');
+
+        $user->repair_rating = $avgrepair;
+        $user->general_rating = $avggeneral;
+
+        $user->save();
+
+        return response()->json([
+            'message' => 'The transaction has been edited',
+            'purchase' => $purchase,
+            'user' => $user
+        ]);
+
+    }
+
 }

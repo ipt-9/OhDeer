@@ -38,4 +38,7 @@ Route::prefix('purchases')->controller(PurchaseController::class)->group(functio
     Route::get('{id}', 'show')->whereNumber('id')->middleware('auth:sanctum');
     Route::post('saveTransactions', 'store')->middleware('auth:sanctum');
     Route::get('totals', 'GetTotal')->middleware('auth:sanctum');
+    Route::put('update', 'update')->middleware('auth:sanctum');
 });
+
+Route::get('getFee', [\App\Http\Controllers\FeeController::class, 'getFee']);

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('address', 100);
             $table->string('phone_number', 50)->nullable();
             $table->string('iban', 40)->nullable();
+            $table->string('website', 100)->nullable();
             $table->foreignId('user_type_id')->constrained()->onDelete('cascade');
             $table->foreignId('language_id')->constrained()->onDelete('cascade');
             $table->foreignId('subscription_id')->constrained()->onDelete('cascade');

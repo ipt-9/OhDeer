@@ -29,6 +29,7 @@ class UpdateUserRequest extends FormRequest
             'postal_code' => 'sometimes|integer|min:0',
             'phone_number' => 'sometimes|string|max:50',
             'iban' => 'sometimes|string|max:40',
+            'website' => 'sometimes|string|max:100',
             'user_type_id' => 'sometimes|integer|min:1',
             'language_id' => 'sometimes|integer|min:1',
             'subscription_id' => 'sometimes|integer|min:1',
@@ -60,6 +61,9 @@ class UpdateUserRequest extends FormRequest
 
             'iban.string' => 'IBAN must be a string.',
             'iban.max' => 'IBAN cannot be longer than 40 characters.',
+
+            'website.string' => 'Website must be a string.',
+            'website.max' => 'Website link cannot be longer than 100 characters.',
 
             'user_type_id.integer' => 'User type must be an integer.',
             'user_type_id.min' => 'User type ID must be at least 1.',
