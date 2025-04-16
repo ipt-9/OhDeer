@@ -25,7 +25,7 @@
         </div>
       </div>
     </div>
-
+/posts/create
 
 
     <div class="search-button" @click="submitSearch">

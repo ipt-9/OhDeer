@@ -5,6 +5,7 @@ import navBar from './components/nav-bar.vue'
 import searchBar from './components/search-bar.vue'
 import LandingPage from './components/LandingPage.vue'
 import SearchResults from './components/search-results.vue'
+import CreateListing from './components/create-listing.vue'
 
 const routes = [
   {
@@ -36,6 +37,10 @@ const routes = [
   {
     path: '/search-results',
     component: SearchResults
+  },
+  {
+    path: '/create-listing',
+    component: CreateListing,
   }
 ]
 
