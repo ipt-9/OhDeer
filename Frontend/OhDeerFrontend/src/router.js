@@ -4,6 +4,7 @@ import Register from './components/Register.vue'
 import navBar from './components/nav-bar.vue'
 import searchBar from './components/search-bar.vue'
 import LandingPage from './components/LandingPage.vue'
+import SearchResults from './components/search-results.vue'
 
 const routes = [
   {
@@ -31,6 +32,10 @@ const routes = [
   {
     path: '/search-bar',
     component: searchBar,
+  },
+  {
+    path: '/search-results',
+    component: SearchResults
   }
 ]
 
