@@ -22,7 +22,6 @@
       <div class="user-dropdown" v-if="isLoggedIn">
         <img :src="user.profileImage" class="profile-img" alt="Profile" />
         <span>{{ user.name }}</span>
-        <div class="dropdown-menu">
           <div class="dropdown-menu-profile">
           <router-link to="/settings">Settings</router-link>
           <a href="#" @click.prevent="logout">Logout</a>
@@ -31,8 +30,8 @@
       </div>
       <div class="user-dropdown" v-if="!isLoggedIn">
         <router-link to="/login">Login</router-link>
-        </div>
       </div>
+
 
 
     <div class="mobile-toggle" @click="toggleMobileMenu()">☰</div>
@@ -172,16 +171,16 @@ export default {
 }
 .dropdown-menu {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 4px);
   left: 0;
+  min-width: 250px;
   background-color: white;
+  border: 1px solid #ccc;
   border-radius: 6px;
   padding: 1rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}.user-dropdown {
-  position: relative;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 10;
 }
-
 .dropdown-menu-profile {
   display: none;
   position: absolute;
@@ -270,5 +269,14 @@ export default {
   .mobile-menu {
     display: flex;
   }
+}.dropdown-menu label {
+  cursor: pointer;
+  padding: 0.3rem 0.5rem;
+  border-radius: 4px;
+  transition: background-color 0.2s;
 }
+.dropdown-menu label:hover {
+  background-color: #f5f5f5;
+}
+
 </style>
