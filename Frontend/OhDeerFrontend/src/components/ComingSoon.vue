@@ -3,7 +3,7 @@
     <div class="message-container">
       <h1>Coming Soon</h1>
       <p>We're working hard to bring you something amazing. Stay tuned!</p>
-      <p class="small">Check back again later or contact us if you have questions.</p>
+      <p class="small">Check back again later!</p>
       <button @click="goBack">Go Back</button>
     </div>
   </div>
