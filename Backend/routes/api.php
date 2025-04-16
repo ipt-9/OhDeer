@@ -31,6 +31,7 @@ Route::prefix('posts')->controller(PostController::class)->group(function () {
 
 Route::prefix('auth')->controller(LoginController::class)->group(function () {
    Route::post('login', 'authenticate');
+   Route::post('logout', 'logout')->middleware('auth:sanctum');
 });
 
 Route::prefix('purchases')->controller(PurchaseController::class)->group(function () {
@@ -38,7 +39,7 @@ Route::prefix('purchases')->controller(PurchaseController::class)->group(functio
     Route::get('{id}', 'show')->whereNumber('id')->middleware('auth:sanctum');
     Route::post('saveTransactions', 'store')->middleware('auth:sanctum');
     Route::get('totals', 'GetTotal')->middleware('auth:sanctum');
-    Route::put('update', 'update')->middleware('auth:sanctum');
+    Route::put('update/{id}', 'update')->middleware('auth:sanctum')->whereNumber('id');
 });
 
 Route::get('getFee', [\App\Http\Controllers\FeeController::class, 'getFee']);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreatePurchaseRequest;
+use App\Http\Requests\UpdatePurchaseRequest;
 use App\Models\Fee;
 use App\Models\Post;
 use App\Models\Purchase;
@@ -69,19 +70,19 @@ class PurchaseController extends Controller
         return response(['data'=> $purchasetotal]);
     }
 
-    public function update(UpdatePurchaseRequest $request)
+    public function update(UpdatePurchaseRequest $request, $id)
     {
         $request->validated();
 
         $user = $request->user();
 
-        $purchase = Purchase::findOrFail($request->id);
+        $purchase = Purchase::findOrFail($id);
 
         if ($request->user()->id !== $purchase->user_id) {
             abort(403);
         }
 
-        $purchase->fill($request);
+        $purchase->fill($request->validated());
         $purchase->save();
 
         // recalculate the avg of the ratings

@@ -23,6 +23,11 @@ class PostFactory extends Factory
             'price' => $this->faker->randomFloat(2, 10, 100),
             'is_repair' => $this->faker->boolean(),
             'is_complete' => false,
+            'image_1' => asset('OhDeerPlaceholder.png'),
+            'image_2' => asset('OhDeerPlaceholder.png'),
+            'image_3' => asset('OhDeerPlaceholder.png'),
+            'image_4' => asset('OhDeerPlaceholder.png'),
+            'image_5' => asset('OhDeerPlaceholder.png'),
             'category_id' => $this->faker->numberBetween(1, 4),
             'user_id' => 1,
         ];}

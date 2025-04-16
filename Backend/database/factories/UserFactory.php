@@ -37,6 +37,8 @@ class UserFactory extends Factory
             'phone_number' => fake()->phoneNumber(),
             'repair_rating' => fake()->numberBetween(1, 5),
             'general_rating' => fake()->numberBetween(1, 5),
+            'website' => fake()->url(),
+            'profile_image' => asset('OhDeerPlaceholder.png')
         ];
     }
 

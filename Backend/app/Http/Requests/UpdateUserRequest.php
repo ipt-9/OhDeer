@@ -33,6 +33,7 @@ class UpdateUserRequest extends FormRequest
             'user_type_id' => 'sometimes|integer|min:1',
             'language_id' => 'sometimes|integer|min:1',
             'subscription_id' => 'sometimes|integer|min:1',
+            'profile_image' => 'sometimes|string'
         ];
     }
 
