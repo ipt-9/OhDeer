@@ -155,7 +155,6 @@ const pay = async () => {
                 is_outstanding: true
             })
         });
-        console.log('henlo')
         const data = await response.json();
 
         if (!response.ok) {
