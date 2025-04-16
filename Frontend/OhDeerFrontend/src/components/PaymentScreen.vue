@@ -48,8 +48,6 @@ const postId = route.params.id
 
 const post = ref(null)
 const fee = ref(null)
-const loading = ref(true)
-const error = ref(null)
 const showInfo = ref(false)
 
 const goBack = () => {
@@ -95,8 +93,6 @@ const fetchData = async () => {
             } catch (err) {
                 console.error(err)
                 error.value = 'Failed to load post.'
-            } finally {
-                loading.value = false
             }
         }
     
@@ -125,8 +121,6 @@ const fetchData = async () => {
     fee.value = {
         amount: 12
     }
-
-    loading.value = false
 }
 
 const pay = async () => {
