@@ -155,12 +155,18 @@ const pay = async () => {
                 is_outstanding: true
             })
         });
-        const data = await response.json();
 
         if (!response.ok) {
+            if(response.status === 401)
+            {
+                alert('You\'re not logged in. Redirecting to login');
+                router.push('/login')
+            } 
             this.error = data.message || 'Failed the upload of the transaction.';
             return;
         }
+        
+        const data = await response.json();
 
         alert('Uploaded to the server');
         router.push('/comingsoon');
