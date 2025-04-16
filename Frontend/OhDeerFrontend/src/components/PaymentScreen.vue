@@ -1,30 +1,41 @@
 <template>
-    <div class="page-container">
-
-        <div v-if="loading" class="loading-text">Loading...</div>
-        <div v-else-if="error" class="error-text">{{ error }}</div>
-        <div v-else class="card">
-            <img :src="post.image" alt="Post Image" class="post-image" />
-            <h1 class="title">{{ post.title }}</h1>
-            <p class="description">{{ post.description }}</p>
-            <div class="fee-box">Commission: {{ fee.amount }}%</div>
-            <div class="price">CHF {{ post.price.toFixed(2) }}</div>
-
-            <div v-if="post.user" class="user-box">
-                <div class="user-label">The user you're getting the item from:</div>
-                <div class="username">{{ post.user.username }}</div>
+    <div v-if="post">
+        <div class="checkout-container">
+            <div class="product-summary">
+                <h3 class="product-title">{{ post.title }}</h3>
+                <p class="product-description">{{ post.description }}</p>
+                <img :src="post.image_1" alt="Post Image" class="product-image" />
+                <div class="seller-info">
+                    <span>Sold by:</span> <br>
+                    <strong>{{ post.user.username }}</strong>
+                </div>
             </div>
 
-            <div class="button-group">
-                <button @click="goBack" class="go-back-button">Go Back</button>
-                <button @click="pay" class="pay-button">
-                    Pay CHF {{ post.price.toFixed(2) }}
-                </button>
+            <div class="payment-form">
+                <h2>Complete Your Payment</h2>
+                <div class="fee-box">
+                    <span>Commission: {{ fee.amount }}%</span>
+                    <div class="info-container">
+                        <span v-if="!showInfo" class="info-icon" @click="showInfo = !showInfo">ℹ️</span>
+                        <span v-else class="info-icon" @click="showInfo = !showInfo">✖</span>
+                        <div v-if="showInfo" class="info-popup">
+                            <p>If you're interested in where this commission goes and who it helps, we invite you to read our GTC.</p>
+                            <a href="https://projectsekai.fandom.com/wiki/Shinonome_Ena">Read our general terms and conditions here</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="price-label">Total: CHF {{ post.price.toFixed(2) }}</div>
+                <div class="button-group">
+                    <button @click="goBack" class="go-back-button">Go Back</button>
+                    <button @click="pay" class="pay-button">
+                        Pay CHF {{ post.price.toFixed(2) }}
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-
 </template>
+
 
 
 <script setup>
@@ -39,6 +50,7 @@ const post = ref(null)
 const fee = ref(null)
 const loading = ref(true)
 const error = ref(null)
+const showInfo = ref(false)
 
 const goBack = () => {
     router.go(-1);
@@ -99,7 +111,7 @@ const fetchData = async () => {
         is_complete: false,
         category_id: 3,
         user_id: 2,
-        image: "https://www.budgetpcupgraderepair.com/wp-content/uploads/2020/05/Old-Laptop-computer-motherboard-750x500.png",
+        image_1: "https://www.budgetpcupgraderepair.com/wp-content/uploads/2020/05/Old-Laptop-computer-motherboard-750x500.png",
         created_at: "2025-04-10T12:00:00Z",
         updated_at: "2025-04-12T15:30:00Z",
         user: {
@@ -161,74 +173,68 @@ onMounted(fetchData)
 </script>
 
 <style scoped>
-.page-container {
-    min-height: 100vh;
-    background-color: #e6e8e6;
+.checkout-container {
     display: flex;
-    align-items: center;
     justify-content: center;
-    padding: 1.5rem;
+    align-items: flex-start;
+    padding: 2rem;
+    background-color: #f6f9fc;
+    min-height: 100vh;
+    gap: 3rem;
+    flex-wrap: wrap;
 }
 
-.card {
-    position: relative;
-    width: 100%;
-    max-width: 900px;
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: 2.5rem;
+.product-summary {
+    background: #ffffff;
+    padding: 2rem;
     border-radius: 1rem;
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
-}
-
-.loading-text {
-    color: white;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    width: 320px;
     text-align: center;
-    font-size: 1.25rem;
 }
 
-.error-text {
-    color: #ffdddd;
-    text-align: center;
-    font-size: 1.25rem;
-}
-
-.title {
-    font-size: 2rem;
-    font-weight: 800;
-    color: #3b4c14;
+.brand-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
     margin-bottom: 1rem;
 }
 
-.description {
-    color: #333;
+.product-title {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    color: #111827;
+}
+
+.price-label {
+    font-size: 1.5rem;
+    color: #111;
+    margin-bottom: 1.5rem;
+}
+
+.product-image {
+    max-width: 100%;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.payment-form {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    width: 400px;
+}
+
+.payment-form h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
     margin-bottom: 1.25rem;
 }
 
-.price {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #3b4c14;
-    margin-bottom: 1rem;
-}
-
-.user-box {
-    background-color: #4c5c1f;
-    padding: 1rem;
-    border-radius: 0.5rem;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
-}
-
-.user-label {
-    font-size: 0.85rem;
-    color: #f0f0f0;
-    margin-bottom: 0.3rem;
-}
-
-.username {
-    font-family: monospace;
-    color: white;
-    font-size: 1rem;
+.card-details {
+    display: flex;
+    gap: 1rem;
 }
 
 .button-group {
@@ -250,51 +256,33 @@ onMounted(fetchData)
     transition: background-color 0.2s ease;
 }
 
-.go-back-button:hover {
-    background-color: #b38a10;
-}
-
 .pay-button {
     flex: 1;
-    padding: 0.75rem 1.5rem;
-    background-color: #556b1f;
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #1a202c;
     color: white;
     border: none;
     border-radius: 0.5rem;
-    font-weight: 600;
     font-size: 1rem;
+    font-weight: bold;
     cursor: pointer;
     transition: background-color 0.2s ease;
 }
 
+.go-back-button:hover {
+    background-color: #b38a10;
+}
+
 .pay-button:hover {
-    background-color: #3b4c14;
-}
-
-.post-image {
-    position: absolute;
-    top: -20px;
-    right: -20px;
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 0.75rem;
-    border: 4px solid #3b4c14;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-    background-color: white;
-}
-
-.card {
-    position: relative;
-    width: 100%;
-    max-width: 720px;
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: 2rem;
-    border-radius: 1rem;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    background-color: #2d3748;
 }
 
 .fee-box {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     font-size: 1rem;
     background-color: #eef3e0;
     color: #3b4c14;
@@ -303,5 +291,49 @@ onMounted(fetchData)
     margin-bottom: 1rem;
     font-weight: 500;
     border-left: 4px solid #6b8e23;
+}
+
+.product-description {
+    font-size: 0.95rem;
+    color: #4a5568;
+    margin-bottom: 1rem;
+}
+
+.seller-info {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: #718096;
+    background-color: #f7fafc;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    border: 1px solid #e2e8f0;
+}
+
+.info-popup {
+    position: absolute;
+    top: 125%;
+    right: 0;
+    background-color: white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-size: 0.85rem;
+    color: #2d3748;
+    width: 350px;
+    z-index: 100;
+    white-space: normal;
+}
+
+.info-container {
+    position: relative;
+    display: inline-block;
+}
+
+.info-icon {
+    cursor: pointer;
+    font-size: 1.1rem;
+    color: #4a5568;
+    margin-left: 0.5rem;
+    user-select: none;
 }
 </style>
