@@ -163,7 +163,8 @@ const pay = async () => {
         }
 
         alert('Uploaded to the server');
-        // this.$router.push('/login');
+        router.push('/comingsoon');
+
     } catch (err) {
         this.error = 'An error occurred. Please try again.';
         console.error(err);
