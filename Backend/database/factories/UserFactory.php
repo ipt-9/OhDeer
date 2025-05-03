@@ -38,7 +38,7 @@ class UserFactory extends Factory
             'repair_rating' => fake()->numberBetween(1, 5),
             'general_rating' => fake()->numberBetween(1, 5),
             'website' => fake()->url(),
-            'profile_image' => asset('OhDeerPlaceholder.png')
+            'profile_image' => 'http://localhost:8000/OhDeerPlaceholder.png'//url('OhDeerPlaceholder.png')
         ];
     }
 

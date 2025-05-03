@@ -19,6 +19,8 @@ Route::prefix('users')->controller(UserController::class)->group(function () {
     Route::delete('delete', 'delete')->middleware('auth:sanctum');
     Route::put('update', 'update')->middleware('auth:sanctum');
     Route::post('register', 'register');
+    Route::get('{id}/posts', 'getAllPosts')->whereNumber('id');
+    Route::get('{id}/ratings', 'getAllRatings')->whereNumber('id');
 });
 
 Route::prefix('posts')->controller(PostController::class)->group(function () {

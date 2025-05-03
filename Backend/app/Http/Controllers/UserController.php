@@ -54,4 +54,14 @@ class UserController extends Controller
         return response()->json(['message' => 'User has been registered', 'user' => $user ]);
     }
 
+    public function getAllPosts($id){
+        $user = User::with('posts')->find($id);
+        return $user->posts;
+    }
+    public function getAllRatings($id){
+        $user = User::with(['purchases' => function($query) {
+            $query->select('general_rating', 'repair_rating', 'rating_comment', 'user_id' ,'id');
+        }])->find($id);
+        return $user->purchases;
+    }
 }
