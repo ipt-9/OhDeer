@@ -9,7 +9,7 @@ import Profile from './components/Profile.vue'
 const routes = [
   {
     path: '/',
-    redirect: '/login'
+
   },
   {
     path: '/login',

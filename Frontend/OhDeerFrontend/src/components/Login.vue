@@ -34,7 +34,7 @@ export default {
     }
 
     try {
-      const response = await fetch('https://api.ohdeer-bmsd22a.bbzwinf.ch/api/auth/login', {
+      const response = await fetch('http://127.0.0.1:8000/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -55,7 +55,7 @@ export default {
 
       localStorage.setItem('token', data.token);
       this.$router.push('/');
-
+      console.log('success')
     } catch (err) {
       this.error = 'An error occurred. Please try again.';
       console.error(err);
