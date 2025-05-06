@@ -95,7 +95,12 @@
   import { ref } from "vue";
   import { computed } from "vue";
   import slugify from "slugify";
-
+  import { onMounted } from 'vue';
+  const isLoggedIn = ref(false);
+  onMounted(() => {
+    const token = localStorage.getItem('token');
+    isLoggedIn.value = !!token;
+  });
   const shopItems = ref([
     { id: 1, is_repair: 0, title: "Wooden Table", link: "WoodenTable", description: "Handcrafted table", price: 120, image: "https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg" },
     { id: 2, is_repair: 0, title: "Vintage Chair", link: "VintageChair", description: "Classic chair", price: 80, image: "https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg" },
@@ -140,35 +145,35 @@
 
   </script>
 
-  <style scoped>
-  .container {
-    margin: 0px;
-    padding: 0px;
-    font-family: 'Poppins', sans-serif;
-  }
+<style scoped>
+.container {
+  margin: 0px;
+  padding: 0px;
+  font-family: 'Poppins', sans-serif;
+}
 
-  .categoryGrid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 15px;
-    padding-top: 10px;
-  }
+.categoryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+  padding-top: 10px;
+}
 
-  .categoryCard {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    background-size: cover;
-    background-position: center;
-    color: white;
-    font-weight: bold;
-    text-decoration: none;
-    height: 150px;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s;
-  }
+.categoryCard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-size: cover;
+  background-position: center;
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+  height: 150px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
 
   .categoryCard:hover {
     transform: scale(1.05);
@@ -180,50 +185,50 @@
     margin-bottom: 20px;
   }
 
-  .slideshow {
-    position: relative;
-    display: block;
-    min-width: 100%;
-    background-position: center;
-    height: 65vh;
-    max-height: 70%;
-    margin: auto;
-    overflow: hidden;
-    border-radius: 0px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    object-fit: cover;
-    object-position: center;
-  }
+.slideshow {
+  position: relative;
+  display: block;
+  min-width: 100%;
+  background-position: center;
+  height: 65vh;
+  max-height: 70%;
+  margin: auto;
+  overflow: hidden;
+  border-radius: 0px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  object-fit: cover;
+  object-position: center;
+}
 
-  .slide {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 15px;
-  }
+.slide {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 15px;
+}
 
-  .arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(0, 0, 0, 0.5);
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
-    font-size: 20px;
-    transition: background 0.3s;
-    border-radius: 50%;
-  }
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 20px;
+  transition: background 0.3s;
+  border-radius: 50%;
+}
 
-  .arrow.left {
-    left: 15px;
-  }
+.arrow.left {
+  left: 15px;
+}
 
-  .arrow.right {
-    right: 15px;
-  }
+.arrow.right {
+  right: 15px;
+}
 
   .arrow:hover {
     background: rgba(0, 0, 0, 0.8);
@@ -243,33 +248,35 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
 
-  h3 {
-    text-align: center;
-    font-size: 22px;
-    margin-bottom: 15px;
-    color: #333;
-  }
+h3 {
+  text-align: center;
+  font-size: 22px;
+  margin-bottom: 15px;
+  color: #333;
+}
 
-  .shopGrid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    padding: 10px;
-  }
+.shopGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 10px;
+}
 
-  .shopCard {
-    background: white;
-    border-radius: 12px;
-    padding: 15px;
-    text-align: center;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s, box-shadow 0.3s;
-  }
+.shopCard {
+  background: white;
+  border-radius: 12px;
+  padding: 15px;
+  text-align: center;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
+}
 
-  .shopCard:hover {
-    transform: scale(1.05);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  }
+.shopCard:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
 
   .productImage {
     width: 100%;
@@ -278,15 +285,15 @@
     border-radius: 12px;
   }
 
-  .cardContent {
-    padding: 15px 0;
-  }
+.cardContent {
+  padding: 15px 0;
+}
 
-  h4 {
-    margin: 5px 0;
-    font-size: 18px;
-    font-weight: bold;
-  }
+h4 {
+  margin: 5px 0;
+  font-size: 18px;
+  font-weight: bold;
+}
 
   p {
     font-size: 14px;

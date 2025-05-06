@@ -22,17 +22,15 @@
       <div class="user-dropdown" v-if="isLoggedIn">
         <img :src="user.profileImage" class="profile-img" alt="Profile" />
         <span>{{ user.name }}</span>
-          <div class="dropdown-menu-profile">
+        <div class="dropdown-menu-profile">
           <router-link to="/settings">Settings</router-link>
           <a href="#" @click.prevent="logout">Logout</a>
-          </div>
         </div>
       </div>
-      <div class="user-dropdown" v-if="!isLoggedIn">
-        <router-link to="/login">Login</router-link>
-      </div>
-
-
+    </div>
+    <div class="user-dropdown" v-if="!isLoggedIn">
+      <router-link to="/login">Login</router-link>
+    </div>
 
     <div class="mobile-toggle" @click="toggleMobileMenu()">☰</div>
 
@@ -40,15 +38,30 @@
       <router-link @click="mobileMenuOpen = false" to="/">Home</router-link>
       <router-link @click="mobileMenuOpen = false" to="/marketplace">Marketplace</router-link>
       <router-link @click="mobileMenuOpen = false" to="/repairlistings">Repair Shops</router-link>
-      <router-link @click="mobileMenuOpen = false" to="/settings" v-if="isLoggedIn">Settings</router-link>
-      <router-link @click="mobileMenuOpen = false" to="/login" v-if="!isLoggedIn">Login</router-link>
-      <router-link @click="mobileMenuOpen = false" to="/register" v-if="!isLoggedIn">Register</router-link>
+      <router-link @click="mobileMenuOpen = false" to="/settings" v-if="isLoggedIn"
+        >Settings</router-link
+      >
+      <router-link @click="mobileMenuOpen = false" to="/login" v-if="!isLoggedIn"
+        >Login</router-link
+      >
+      <router-link @click="mobileMenuOpen = false" to="/register" v-if="!isLoggedIn"
+        >Register</router-link
+      >
       <a href="#" v-if="isLoggedIn" @click.prevent="logout">Logout</a>
     </div>
   </nav>
 </template>
 <script>
 import SearchBar from './search-bar.vue'
+import { ref, onMounted } from 'vue';
+
+const isLoggedIn = ref(false);
+
+onMounted(() => {
+  const token = localStorage.getItem('token');
+  isLoggedIn.value = !!token;
+
+});
 
 export default {
   name: 'Nav-bar',
@@ -57,11 +70,15 @@ export default {
     return {
       mobileMenuOpen: false,
       dropdownOpen: false,
-      isLoggedIn: true, //Change later
       user: {
         name: 'Polish Chicken',
-        profileImage: 'https://i.redd.it/87kxdlhrk3z71.jpg'
-      }
+        profileImage: 'https://i.redd.it/87kxdlhrk3z71.jpg',
+      },
+    }
+  },
+  computed: {
+    isLoggedIn() {
+      return !!localStorage.getItem('token');
     }
   },
   methods: {
@@ -70,16 +87,12 @@ export default {
     },
     logout() {
       localStorage.removeItem('token')
-      this.isLoggedIn = false
       this.$router.push('/login')
-    }
-  }
+    },
+  },
 }
 </script>
 <style>
-
-
-
 .navbar {
   overflow: visible;
   display: grid;
@@ -137,7 +150,6 @@ export default {
   justify-content: center;
   align-items: center;
 }
-
 
 .nav-right {
   display: flex;
@@ -269,7 +281,8 @@ export default {
   .mobile-menu {
     display: flex;
   }
-}.dropdown-menu label {
+}
+.dropdown-menu label {
   cursor: pointer;
   padding: 0.3rem 0.5rem;
   border-radius: 4px;
@@ -278,5 +291,4 @@ export default {
 .dropdown-menu label:hover {
   background-color: #f5f5f5;
 }
-
 </style>

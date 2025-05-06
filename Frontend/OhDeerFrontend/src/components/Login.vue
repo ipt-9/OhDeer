@@ -25,45 +25,50 @@ export default {
   },
 
   methods: {
-    async handleLogin() {
-  this.error = '';
+  async handleLogin() {
+    this.error = '';
 
-  if (!this.email || !this.password) {
-    this.error = 'Please fill in all fields.';
-    return;
-  }
+    if (!this.email || !this.password) {
+      this.error = 'Please fill in all fields.';
+      return;
+    }
 
-
-
-    try {
-      const response = await fetch('https://api.ohdeer-bmsd22a.bbzwinf.ch/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-          email: this.email,
-          password: this.password
+      try {
+        const response = await fetch('https://api.ohdeer-bmsd22a.bbzwinf.ch/api/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+          body: JSON.stringify({
+            email: this.email,
+            password: this.password,
+          }),
         })
-      });
 
       const data = await response.json();
+
 
       if (!response.ok) {
         this.error = data.message || 'Login failed.';
         return;
       }
+      const user = await fetch('https://api.ohdeer-bmsd22a.bbzwinf.ch/api/users/user', {
+        method: 'GET',
 
+      })
       localStorage.setItem('token', data.token);
-      this.$router.push('/');
-      console.log('success')
+      localStorage.setItem('user', JSON.stringify())
+      this.$router.push('/home');
+
     } catch (err) {
       this.error = 'An error occurred. Please try again.';
       console.error(err);
     }
   }
-}};
+}
+
+};
 </script>
 
 <style scoped>
