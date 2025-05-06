@@ -7,9 +7,7 @@
 
       <h2 class="page-title">Search Results</h2>
 
-      <div v-if="filteredPosts.length === 0" class="no-results">
-        No results found.
-      </div>
+      <div v-if="filteredPosts.length === 0" class="no-results">No results found.</div>
 
       <div v-else class="posts-grid">
         <div v-for="post in filteredPosts" :key="post.PostId" class="post-card">
@@ -59,7 +57,6 @@ const posts = ref([
   },
 ])
 
-
 const categories = [
   { id: 1, slug: 'household-appliances', name: 'Household Appliances' },
   { id: 2, slug: 'electronics', name: 'Electronics' },
@@ -69,10 +66,10 @@ const route = useRoute()
 const searchQuery = ref(route.query.q?.toLowerCase() || '')
 
 const selectedCategories = ref(
-  (route.query.categories || '').split(',').filter(c => c.trim() !== '')
+  (route.query.categories || '').split(',').filter((c) => c.trim() !== ''),
 )
 function getCategoryName(catId) {
-  return categories.find(c => c.id === catId)?.name || 'Unknown'
+  return categories.find((c) => c.id === catId)?.name || 'Unknown'
 }
 
 function matchesSearch(post, query) {
@@ -80,14 +77,14 @@ function matchesSearch(post, query) {
 
   const words = query.trim().toLowerCase().split(/\s+/)
   const haystack = (post.Title + ' ' + post.Description).toLowerCase()
-  return words.every(word => haystack.includes(word))
+  return words.every((word) => haystack.includes(word))
 }
 
 const filteredPosts = computed(() => {
-  return posts.value.filter(post => {
+  return posts.value.filter((post) => {
     const matches = matchesSearch(post, searchQuery.value)
 
-    const catSlug = categories.find(c => c.id === post.fk_CategoryId)?.slug?.toLowerCase()
+    const catSlug = categories.find((c) => c.id === post.fk_CategoryId)?.slug?.toLowerCase()
     const matchesCategory =
       selectedCategories.value.length === 0 || selectedCategories.value.includes(catSlug)
 
@@ -99,11 +96,9 @@ watch(
   () => route.query,
   (newQuery) => {
     searchQuery.value = newQuery.q?.toLowerCase() || ''
-    selectedCategories.value = (newQuery.categories || '')
-      .split(',')
-      .filter(c => c.trim() !== '')
+    selectedCategories.value = (newQuery.categories || '').split(',').filter((c) => c.trim() !== '')
   },
-  { immediate: true }
+  { immediate: true },
 )
 </script>
 
@@ -175,5 +170,4 @@ watch(
   border-radius: 8px;
   margin-bottom: 0.8rem;
 }
-
 </style>

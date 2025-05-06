@@ -6,10 +6,10 @@ import searchBar from './components/search-bar.vue'
 import LandingPage from './components/LandingPage.vue'
 import SearchResults from './components/search-results.vue'
 import CreateListing from './components/create-listing.vue'
-import RepairShopListings from '@/components/RepairShopListings.vue';
-import ItemListings from '@/components/ItemListings.vue';
-import InspectItem from  '@/components/InspectItem.vue';
-import InspectRepair from '@/components/InspectRepair.vue';
+import RepairShopListings from '@/components/RepairShopListings.vue'
+import ItemListings from '@/components/ItemListings.vue'
+import InspectItem from '@/components/InspectItem.vue'
+import InspectRepair from '@/components/InspectRepair.vue'
 
 import ComingSoon from './components/ComingSoon.vue'
 import Payment from './components/PaymentScreen.vue'
@@ -43,7 +43,7 @@ const routes = [
   },
   {
     path: '/search-results',
-    component: SearchResults
+    component: SearchResults,
   },
   {
     path: '/create-listing',
@@ -53,40 +53,39 @@ const routes = [
     path: '/comingsoon',
     component: ComingSoon,
   },
-  { 
+  {
     path: '/payment/:id',
-    component: Payment
+    component: Payment,
   },
-  { 
+  {
     path: '/profile/:id',
-    component: Profile
+    component: Profile,
   },
-  { 
+  {
     path: '/repairlistings',
     component: RepairShopListings,
-    name: 'RepairListings' 
+    name: 'RepairListings',
   },
-  { 
+  {
     path: '/marketplace',
     component: ItemListings,
-    name: 'Marketplace' 
+    name: 'Marketplace',
   },
-  { 
+  {
     path: '/inspectitem/:title-:id',
     component: InspectItem,
-    name: 'InspectItem' 
+    name: 'InspectItem',
   },
-  { 
+  {
     path: '/inspectrepair/:title-:id',
     component: InspectRepair,
-    name: 'InspectRepair' 
+    name: 'InspectRepair',
   },
-
-];
+]
 
 const router = createRouter({
   history: createWebHistory(),
-  routes
-});
+  routes,
+})
 
-export default router;
+export default router

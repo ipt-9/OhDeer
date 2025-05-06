@@ -2,7 +2,7 @@
   <div class="page-container">
     <div v-if="loading" class="loading-text">Loading...</div>
     <div v-else-if="error" class="error-text">{{ error }}</div>
-    <div v-else-if="user && user.length"> No User found!</div>
+    <div v-else-if="user && user.length">No User found!</div>
     <div v-else>
       <div class="card">
         <div class="profile-grid">

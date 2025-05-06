@@ -17,7 +17,8 @@
         <label>Title: <input v-model="title" type="text" /></label>
         <label>Description: <textarea v-model="description"></textarea></label>
         <label>Price: <input v-model.number="price" type="number" /></label>
-        <label>Category:
+        <label
+          >Category:
           <select v-model="categoryId">
             <option value="1">Household Appliances</option>
             <option value="2">Electronics</option>
@@ -52,11 +53,10 @@ const categoryId = ref(1)
 const errorMessage = ref('')
 const successMessage = ref('')
 
-
 async function fetchUser() {
   try {
     const res = await fetch('https://api.ohdeer-bmsd22a.bbzwinf.ch/api/user', {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` },
     })
     if (!res.ok) throw new Error('Unauthorized')
 
@@ -82,17 +82,17 @@ async function submitListing() {
     title: title.value,
     description: description.value,
     price: price.value,
-    is_repair: listingType.value === 'repair'
+    is_repair: listingType.value === 'repair',
   }
 
   try {
     const res = await fetch('https://api.ohdeer-bmsd22a.bbzwinf.ch/api/posts/create', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload),
     })
 
     if (!res.ok) throw new Error('Failed to create listing')

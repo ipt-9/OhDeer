@@ -9,27 +9,18 @@
       />
     </div>
     <div class="filter-dropdown">
-      <div @click="toggleDropdown" class="dropdown-toggle">
-        Filter by Category ▾
-      </div>
+      <div @click="toggleDropdown" class="dropdown-toggle">Filter by Category ▾</div>
       <div class="dropdown-menu" v-show="dropdownOpen" @click.stop>
         <div v-for="option in categoryOptions" :key="option.slug">
           <label class="checkbox-label">
-            <input
-              type="checkbox"
-              :value="option.slug"
-              v-model="selectedCategories"
-            />
+            <input type="checkbox" :value="option.slug" v-model="selectedCategories" />
             {{ option.label }}
           </label>
         </div>
       </div>
     </div>
 
-
-    <div class="search-button" @click="submitSearch">
-      Search
-    </div>
+    <div class="search-button" @click="submitSearch">Search</div>
   </div>
 </template>
 
@@ -44,9 +35,9 @@ const selectedCategories = ref([])
 const dropdownOpen = ref(false)
 
 const categoryOptions = [
-  { slug: "furniture-home", label: "Furniture & Home Items" },
-  { slug: "electronics", label: "Electronics" },
-  { slug: "household-appliances", label: "Household Appliances" }
+  { slug: 'furniture-home', label: 'Furniture & Home Items' },
+  { slug: 'electronics', label: 'Electronics' },
+  { slug: 'household-appliances', label: 'Household Appliances' },
 ]
 
 function toggleDropdown() {
@@ -55,17 +46,16 @@ function toggleDropdown() {
 
 function submitSearch() {
   router.push({
-  path: '/search-results',
-  query: {
-    q: searchQuery.value.trim(),
-    categories: selectedCategories.value.join(',')
-  }
-})
-
+    path: '/search-results',
+    query: {
+      q: searchQuery.value.trim(),
+      categories: selectedCategories.value.join(','),
+    },
+  })
 }
 
 function categoryLabel(slug) {
-  const found = categoryOptions.find(cat => cat.slug === slug)
+  const found = categoryOptions.find((cat) => cat.slug === slug)
   return found ? found.label : slug
 }
 </script>
@@ -136,7 +126,7 @@ function categoryLabel(slug) {
   background-color: #f0f0f0;
 }
 
-input[type="checkbox"] {
+input[type='checkbox'] {
   cursor: pointer;
 }
 
@@ -147,7 +137,9 @@ input[type="checkbox"] {
   font-size: 0.95rem;
   border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.2s, box-shadow 0.2s;
+  transition:
+    background-color 0.2s,
+    box-shadow 0.2s;
 }
 
 .search-button:hover {

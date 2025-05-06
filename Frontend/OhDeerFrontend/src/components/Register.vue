@@ -54,9 +54,16 @@ export default {
     async handleRegister() {
       this.error = ''
 
-      if (!this.username || !this.email || !this.password || !this.confirmPassword || !this.address || !this.postalCode) {
-        this.error = 'Please fill in all fields.';
-        return;
+      if (
+        !this.username ||
+        !this.email ||
+        !this.password ||
+        !this.confirmPassword ||
+        !this.address ||
+        !this.postalCode
+      ) {
+        this.error = 'Please fill in all fields.'
+        return
       }
 
       if (this.password !== this.confirmPassword) {
@@ -81,9 +88,9 @@ export default {
             email: this.email,
             password: this.password,
             address: this.address,
-            postal_code: this.postalCode
-          })
-        });
+            postal_code: this.postalCode,
+          }),
+        })
 
         const data = await response.json()
 
@@ -92,14 +99,14 @@ export default {
           return
         }
         if (data.token) {
-          localStorage.setItem('token', data.token);
+          localStorage.setItem('token', data.token)
         }
 
-        alert('Registration successful!');
-        this.$router.push('/login');
-    } catch (err) {
-      this.error = 'An error occurred. Please try again.';
-      console.error(err);
+        alert('Registration successful!')
+        this.$router.push('/login')
+      } catch (err) {
+        this.error = 'An error occurred. Please try again.'
+        console.error(err)
       }
     },
   },
