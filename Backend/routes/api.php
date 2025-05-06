@@ -21,6 +21,9 @@ Route::prefix('users')->controller(UserController::class)->group(function () {
     Route::post('register', 'register');
     Route::get('{id}/posts', 'getAllPosts')->whereNumber('id');
     Route::get('{id}/ratings', 'getAllRatings')->whereNumber('id');
+    Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+        return $request->user();
+    });
 });
 
 Route::prefix('posts')->controller(PostController::class)->group(function () {
@@ -30,6 +33,7 @@ Route::prefix('posts')->controller(PostController::class)->group(function () {
     Route::post('create', 'store')->middleware('auth:sanctum');
     Route::delete('delete/{id}', 'delete')->whereNumber('id')->middleware('auth:sanctum');
     Route::get('category/{id}', 'getCategoryPosts')->whereNumber('id');
+
 });
 
 Route::prefix('auth')->controller(LoginController::class)->group(function () {

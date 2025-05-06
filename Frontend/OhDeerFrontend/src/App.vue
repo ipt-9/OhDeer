@@ -6,9 +6,7 @@ const route = useRoute()
 
 <template>
   <div class="app-wrapper" :class="{ 'auth-layout': route.meta.layout === 'auth' }">
-    <header v-if="route.meta.layout !== 'auth'">
-
-    </header>
+    <header v-if="route.meta.layout !== 'auth'"></header>
 
     <router-view />
   </div>

@@ -20,57 +20,56 @@ export default {
     return {
       email: '',
       password: '',
-      error: ''
-    };
+      error: '',
+    }
   },
 
   methods: {
-  async handleLogin() {
-    this.error = '';
+    async handleLogin() {
+      this.error = ''
 
-    if (!this.email || !this.password) {
-      this.error = 'Please fill in all fields.';
-      return;
-    }
-
-    try {
-      const response = await fetch('http://127.0.0.1:8000/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-          email: this.email,
-          password: this.password
-        })
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        this.error = data.message || 'Login failed.';
-        return;
+      if (!this.email || !this.password) {
+        this.error = 'Please fill in all fields.'
+        return
       }
 
-      localStorage.setItem('token', data.token);
-      this.$router.push('/');
-      console.log('success')
-    } catch (err) {
-      this.error = 'An error occurred. Please try again.';
-      console.error(err);
-    }
-  }
-}
+      try {
+        const response = await fetch('https://api.ohdeer-bmsd22a.bbzwinf.ch/api/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+          body: JSON.stringify({
+            email: this.email,
+            password: this.password,
+          }),
+        })
 
-};
+        const data = await response.json()
+
+        if (!response.ok) {
+          this.error = data.message || 'Login failed.'
+          return
+        }
+
+        localStorage.setItem('token', data.token)
+        this.$router.push('/')
+        console.log('success')
+      } catch (err) {
+        this.error = 'An error occurred. Please try again.'
+        console.error(err)
+      }
+    },
+  },
+}
 </script>
 
 <style scoped>
 .login-wrapper {
   height: 100vh;
   width: 100%;
-  background-image: url("https://wallpaperaccess.com/full/3625325.jpg");
+  background-image: url('https://wallpaperaccess.com/full/3625325.jpg');
   background-size: cover;
   background-position: center;
   display: flex;
@@ -115,7 +114,4 @@ button:hover {
   color: red;
   font-size: 0.9em;
 }
-
 </style>
-
-
