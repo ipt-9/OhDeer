@@ -76,11 +76,11 @@
 
           <div v-if="posts">
             <div style="display: flex; justify-content: center">
+              <!-- Created alongside the help of ChatGPT. -->
               <div class="carousel-container">
                 <div style="justify-content: center; display: flex">
                   <div class="carousel-track" ref="carouselTrack">
                     <div class="carousel-spacer"></div>
-
                     <div class="carousel-slide" v-for="post in posts" :key="post.id">
                       <div class="carousel-image-wrapper">
                         <img :src="post.image_1" alt="Post Image" class="carousel-image" />
@@ -100,6 +100,7 @@
                   <button @click="scrollCarousel(1)" class="button">Next</button>
                 </div>
               </div>
+              <!-- End -->
             </div>
             <div>
               <button class="button" style="width: 100%; margin-top: 20px">All Posts</button>
@@ -219,6 +220,8 @@ onMounted(async () => {
   }
 })
 
+//Everything below created alongside the help of ChatGPT.
+
 const carouselTrack = ref(null)
 
 const scrollCarousel = (direction) => {
@@ -241,6 +244,8 @@ function truncateTitle(title) {
   const words = title.split(' ')
   return words.length > 4 ? words.slice(0, 4).join(' ') + '...' : title
 }
+
+// End
 </script>
 
 <style scoped>
@@ -353,6 +358,8 @@ function truncateTitle(title) {
   margin-top: 3rem;
 }
 
+/* Created alongside help of ChatGPT, particularly scroll-X types. */
+
 .carousel-container {
   width: 100%;
   overflow: hidden;
@@ -391,7 +398,6 @@ function truncateTitle(title) {
   overflow: hidden;
   border-radius: 12px;
   margin-bottom: 1rem;
-
   max-width: 400px;
 }
 
@@ -413,6 +419,8 @@ function truncateTitle(title) {
   flex: 0 0 15%;
   pointer-events: none;
 }
+
+/* End */
 
 @media (max-width: 830px) {
   .profile-grid {
