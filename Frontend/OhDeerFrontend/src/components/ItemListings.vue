@@ -1,8 +1,9 @@
 <script setup>
-import { ref, computed } from 'vue'
-import testImage from '@/assets/test.png'
-import { RouterLink } from 'vue-router'
-import slugify from 'slugify'
+import { ref, computed } from "vue";
+import testImage from '@/assets/test.png';
+import { RouterLink } from "vue-router";
+import slugify from "slugify";
+import navBar from "./nav-bar.vue";
 
 const shopItems = ref([
   {
@@ -77,39 +78,36 @@ const images = ref([
 ])
 </script>
 <template>
-  <main>
-    <div class="container">
-      <div class="shop">
-        <div class="shopComponent">
-          <h3>Items</h3>
-          <div class="shopGrid">
-            <div v-for="item in shopItems" :key="item.id" class="shopCard">
-              <img :src="item.image" alt="Product Image" class="productImage" />
-              <h4>{{ item.title }}</h4>
-              <div class="infoGrid">
-                <p class="desc">{{ item.description }}</p>
-                <p class="price">${{ item.price }}</p>
-                <router-link
-                  :to="`/inspectitem/${slugify(item.link)}-${item.id}`"
-                  custom
-                  v-slot="{ navigate }"
-                >
-                  <button class="but" @click="navigate">Buy Now</button>
-                </router-link>
-              </div>
+    <main>
+        <navBar />
+        <div class="container">
+            <div class="shop">
+                <div class="shopComponent">
+                    <h3>Items</h3>
+                    <div class="shopGrid">
+                        <div v-for="item in shopItems" :key="item.id" class="shopCard">
+                            <img :src="item.image" alt="Product Image" class="productImage" />
+                            <h4>{{ item.title }}</h4>
+                            <div class="infoGrid">
+                                <p class="desc">{{ item.description }}</p>
+                                <p class="price">${{ item.price }}</p>
+                                <router-link :to="`/inspectitem/${slugify(item.link)}-${item.id}`" custom v-slot="{navigate}">
+                                    <button class="but" @click="navigate">Buy Now</button>
+                                </router-link>
+                            </div>                           
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-    </div>
-  </main>
+    </main> 
 </template>
 <style scoped>
-.container {
-  margin: auto;
-  padding: 20px;
-  font-family: 'Poppins', sans-serif;
-}
+    .container {
+    margin: auto;
+    padding: 20px;
+    font-family: 'Poppins', sans-serif;
+    }
 
 .shop {
   display: flex;

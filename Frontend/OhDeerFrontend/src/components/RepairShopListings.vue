@@ -1,7 +1,8 @@
 <script setup>
-import { ref, computed } from 'vue'
-import testImage from '@/assets/test.png'
-import slugify from 'slugify'
+import { ref, computed } from "vue";
+import testImage from '@/assets/test.png';
+import slugify from "slugify";
+import navBar from "./nav-bar.vue";
 
 const repairshopItems = ref([
   {
@@ -77,33 +78,30 @@ const images = ref([
 ])
 </script>
 <template>
-  <main>
-    <div class="container">
-      <div class="shop">
-        <div class="shopComponent">
-          <h3>Repair Shops</h3>
-          <div class="shopGrid">
-            <div v-for="shop in repairshopItems" :key="shop.id" class="shopCard">
-              <img :src="shop.image" alt="Product Image" class="productImage" />
-              <h4>{{ shop.title }}</h4>
-              <div class="infoGrid">
-                <p class="lab1">Phone:</p>
-                <p class="inf1">{{ shop.phone }}</p>
-                <p class="lab2">Address:</p>
-                <p class="inf2">{{ shop.address + ', ' + shop.postalCode }}</p>
-                <p class="desc">{{ shop.description }}</p>
-                <router-link
-                  :to="`/inspectrepair/${slugify(shop.link)}-${shop.id}`"
-                  custom
-                  v-slot="{ navigate }"
-                >
-                  <button class="but" @click="navigate">more information</button>
-                </router-link>
-              </div>
+    <main>
+        <navBar />
+        <div class="container">
+        <div class="shop">
+            <div class="shopComponent">
+                <h3>Repair Shops</h3>
+                <div class="shopGrid">
+                    <div v-for="shop in repairshopItems" :key="shop.id" class="shopCard">
+                        <img :src="shop.image" alt="Product Image" class="productImage" />
+                        <h4>{{ shop.title }}</h4>
+                        <div class="infoGrid">  
+                            <p class="lab1">Phone: </p>
+                            <p class="inf1">{{ shop.phone }}</p>
+                            <p class="lab2">Address: </p>
+                            <p class="inf2">{{ shop.address + ", " + shop.postalCode }}</p>
+                            <p class="desc">{{ shop.description }}</p>
+                            <router-link :to="`/inspectrepair/${slugify(shop.link)}-${shop.id}`" custom v-slot="{navigate}">
+                                <button class="but" @click="navigate">more information</button>
+                            </router-link>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
   </main>
 </template>

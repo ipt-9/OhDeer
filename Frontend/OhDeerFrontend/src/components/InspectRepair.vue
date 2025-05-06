@@ -1,67 +1,52 @@
 <script setup>
-import { useRoute } from 'vue-router'
-import { RouterLink } from 'vue-router'
-import slugify from 'slugify'
-/*import { shopItems } from '@/components/ItemListings.vue'*/
+import { useRoute } from 'vue-router';
+import { RouterLink } from "vue-router";
+import slugify from "slugify";
+import navBar from './nav-bar.vue';
 
 const route = useRoute()
 const { title, id } = route.params
 
-/*id: 1, title: "Furniture Repair"
-, link: "FurnitureRepair"
-, description: "Fix broken furniture"
-, address: "Fifi Street 21"
-, postalCode: "7649 Gabgob"
-, phone: "043 748 384 213 64", 
-image: "https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg" }, */
 </script>
 <template>
-  <main>
-    <div class="container">
-      <div class="item">
-        <div class="grid">
-          <div class="card">
-            <img
-              class="image"
-              src="https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg"
-            />
-          </div>
-          <div class="card">
-            <div class="infoGrid">
-              <div class="title">
-                <h1>{{ title }}</h1>
-              </div>
-              <div class="info">
-                <h4 class="lab1">description:</h4>
-                <p class="desc">
-                  huewhu ezig ehg uirhhu uhih uihrh ui uih uirhui iu iug g ff ztf tzf tzfft tz ftz
-                  ztftf zu tzf zjfz ztt ftz fztu tzt tz ftzztfftjfhj ftzftz f e gzufvgzu guf gwz v g
-                  erg reg r 4geg fr
-                </p>
-
-                <h4 class="lab2">Link:</h4>
-                <p class="inf1">https://www.google.com/maps</p>
-
-                <h4 class="lab3">Address:</h4>
-                <p class="inf2">uebuwfwgbfuzrfberui</p>
-
-                <h4 class="lab4">Postal Code:</h4>
-                <p class="inf3">16383461384728438</p>
-
-                <h4 class="lab5">email:</h4>
-                <p class="inf4">
-                  12345678901234567890123456789012345@12345678901234567890123456789012345@12345678901234567890123456789012345@
-                </p>
-
-                <h4 class="lab6">Phone:</h4>
-                <p class="inf5">532784327r46343784283428</p>
-              </div>
+    <main>
+        <navBar />
+        <div class="container">
+            <div class="item">
+                <div class="grid">
+                    <div class="card">
+                        <img class="image" src="https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg">                        
+                    </div>
+                    <div class="card">
+                        <div class="infoGrid">
+                            <div class="title">
+                                <h1>{{ title }}</h1>
+                            </div>
+                            <div class="info">
+                                <h4 class="lab1">description:</h4>
+                                <p class="desc">huewhu  ezig ehg uirhhu uhih uihrh ui uih uirhui iu iug g ff  ztf tzf tzfft tz ftz ztftf zu tzf zjfz ztt ftz fztu tzt tz ftzztfftjfhj ftzftz f e gzufvgzu guf gwz  v  g erg reg r 4geg fr</p>
+                                
+                                <h4 class="lab2">Link:</h4>
+                                <p class="inf1">https://www.google.com/maps</p>
+                                
+                                <h4 class="lab3">Address:</h4>
+                                <p class="inf2">uebuwfwgbfuzrfberui</p>
+                                
+                                <h4 class="lab4">Postal Code:</h4> 
+                                <p class="inf3">16383461384728438</p>    
+                                
+                                <h4 class="lab5">email:</h4>
+                                <p class="inf4">12345678901234567890123456789012345@12345678901234567890123456789012345@12345678901234567890123456789012345@</p>
+                                
+                                <h4 class="lab6">Phone:</h4>
+                                <p class="inf5">532784327r46343784283428</p>
+                            </div>       
+                        </div>
+                    </div>                   
+                </div>                                     
             </div>
-          </div>
         </div>
-      </div>
-    </div>
-  </main>
+    </main>
 </template>
 <style scoped>
 .container {

@@ -17,15 +17,12 @@ import Profile from './components/Profile.vue'
 
 const routes = [
   {
-    path: '/',
-  },
-  {
     path: '/login',
     component: Login,
     meta: { layout: 'auth' },
   },
   {
-    path: '/home',
+    path: '/',
     component: LandingPage,
   },
   {
