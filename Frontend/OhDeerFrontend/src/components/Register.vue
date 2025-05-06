@@ -8,6 +8,8 @@
         <input type="password" v-model="password" placeholder="Password" @input="checkStrength" />
         <p class="strength">Password strength: {{ passwordStrength }}</p>
         <input type="password" v-model="confirmPassword" placeholder="Confirm Password" />
+        <input type="text" v-model="address" placeholder="Address" />
+        <input type="text" v-model="postalCode" placeholder="Postal Code" />
         <p v-if="error" class="error">{{ error }}</p>
         <button type="submit">Register</button>
       </form>
@@ -25,6 +27,8 @@ export default {
       email: '',
       password: '',
       confirmPassword: '',
+      address: '',
+      postalCode: '',
       error: '',
       passwordStrength: 'Weak',
     }
@@ -50,9 +54,9 @@ export default {
     async handleRegister() {
       this.error = ''
 
-      if (!this.username || !this.email || !this.password || !this.confirmPassword) {
-        this.error = 'Please fill in all fields.'
-        return
+      if (!this.username || !this.email || !this.password || !this.confirmPassword || !this.address || !this.postalCode) {
+        this.error = 'Please fill in all fields.';
+        return;
       }
 
       if (this.password !== this.confirmPassword) {
@@ -66,19 +70,20 @@ export default {
       }
 
       try {
-        const response = await fetch('https://api.ohdeer-bmsd22a.bbzwinf.ch/api/auth/register', {
+        const response = await fetch('https://api.ohdeer-bmsd22a.bbzwinf.ch/api/users/register', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             Accept: 'application/json',
           },
           body: JSON.stringify({
-            name: this.username,
+            username: this.username,
             email: this.email,
             password: this.password,
-            password_confirmation: this.confirmPassword,
-          }),
-        })
+            address: this.address,
+            postal_code: this.postalCode
+          })
+        });
 
         const data = await response.json()
 
@@ -86,12 +91,15 @@ export default {
           this.error = data.message || 'Registration failed.'
           return
         }
+        if (data.token) {
+          localStorage.setItem('token', data.token);
+        }
 
-        alert('Registration successful!')
-        this.$router.push('/login')
-      } catch (err) {
-        this.error = 'An error occurred. Please try again.'
-        console.error(err)
+        alert('Registration successful!');
+        this.$router.push('/login');
+    } catch (err) {
+      this.error = 'An error occurred. Please try again.';
+      console.error(err);
       }
     },
   },

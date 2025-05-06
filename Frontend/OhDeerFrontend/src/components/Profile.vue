@@ -2,8 +2,8 @@
   <div class="page-container">
     <div v-if="loading" class="loading-text">Loading...</div>
     <div v-else-if="error" class="error-text">{{ error }}</div>
-
-    <div v-else style="">
+    <div v-else-if="user && user.length"> No User found!</div>
+    <div v-else>
       <div class="card">
         <div class="profile-grid">
           <div class="avatar-container">
@@ -87,8 +87,8 @@
                       </div>
                       <div>
                         <h3>{{ truncateTitle(post.title) }}</h3>
-                        <p>Price: ${{ post.price.toFixed(2) }}</p>
-                        <p>Needs repair: {{ post.is_repair ? 'Yes' : 'No' }}</p>
+                        <p><b>Price:</b> ${{ post.price.toFixed(2) }}</p>
+                        <p><b>Needs repair:</b> {{ post.is_repair ? 'Yes' : 'No' }}</p>
                       </div>
                     </div>
                     <div class="carousel-spacer"></div>
@@ -114,7 +114,7 @@
           <div>Reviews</div>
           <hr />
 
-          <div v-if="ratings === null">
+          <div v-if="ratings && ratings.length">
             <div>
               <div
                 v-for="rating in ratings"
@@ -158,7 +158,7 @@ const error = ref(null)
 const user = ref(null)
 const ratings = ref(null)
 const posts = ref(null)
-const fetchUrl = 'https://api.ohdeer-bmsd22a.bbzwinf.ch'
+const fetchUrl = 'http://127.0.0.1:8000'
 
 function shortenComment(comment) {
   return comment.length > 100 ? comment.substring(0, 100) + '...' : comment
