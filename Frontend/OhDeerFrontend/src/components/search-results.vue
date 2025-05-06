@@ -3,7 +3,7 @@
     <NavBar />
 
     <div class="content-wrapper">
-      <SearchBar />
+
 
       <h2 class="page-title">Search Results</h2>
 
@@ -30,7 +30,6 @@
 import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import NavBar from './nav-bar.vue'
-import SearchBar from './search-bar.vue'
 
 const posts = ref([
   {
@@ -116,6 +115,7 @@ watch(
   font-size: 1.8rem;
   font-weight: bold;
   margin: 1rem 0;
+  text-align: center;
 }
 
 .no-results {
@@ -123,25 +123,41 @@ watch(
   font-style: italic;
   color: #555;
   margin-top: 1rem;
+  text-align: center;
 }
 
 .posts-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 1.5rem;
   margin-top: 1.5rem;
 }
 
 .post-card {
+  flex: 1 1 300px;
+  max-width: 360px;
   background: white;
   border-radius: 10px;
   padding: 1rem 1.2rem;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   border: 1px solid #ddd;
   transition: transform 0.2s;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
+
 .post-card:hover {
   transform: translateY(-3px);
+}
+
+.post-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 0.8rem;
 }
 
 .tags {
@@ -163,11 +179,22 @@ watch(
 .tag.complete {
   background-color: #c8e6c9;
 }
-.post-img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 0.8rem;
+
+@media (max-width: 768px) {
+  .content-wrapper {
+    padding: 1rem;
+  }
+
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .post-img {
+    height: 160px;
+  }
+
+  .post-card {
+    padding: 1rem;
+  }
 }
 </style>

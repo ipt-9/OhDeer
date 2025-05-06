@@ -2,7 +2,7 @@
   <div class="create-listing">
     <h2>Create New Listing</h2>
 
-    <div v-if="!isLoggedIn" class="warning">You must be logged in to create a listing.</div>
+    <div v-if="false" class="warning">You must be logged in to create a listing.</div>
 
     <div v-else>
       <label>
@@ -38,10 +38,9 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 
-const token = localStorage.getItem('token')
-const isLoggedIn = !!token
 
-const user = ref(null)
+const token = ref('')
+const isLoggedIn = ref(false)
 const canCreateRepairShop = ref(false)
 
 const listingType = ref('product')
@@ -53,27 +52,25 @@ const categoryId = ref(1)
 const errorMessage = ref('')
 const successMessage = ref('')
 
-async function fetchUser() {
-  try {
-    const res = await fetch('https://api.ohdeer-bmsd22a.bbzwinf.ch/api/user', {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-    if (!res.ok) throw new Error('Unauthorized')
-
-    const data = await res.json()
-    user.value = data.user
-    canCreateRepairShop.value = user.value.fk_SubscriptionId === 2
-  } catch (e) {
-    errorMessage.value = 'Failed to fetch user data'
+onMounted(() => {
+  token.value = localStorage.getItem('token')
+  console.log('Stored token: ', token.value)
+  if (!token.value) {
+    isLoggedIn.value = false
+    return
   }
-}
+
+  isLoggedIn.value = true
+})
+
+
 
 async function submitListing() {
   errorMessage.value = ''
   successMessage.value = ''
 
-  if (listingType.value === 'repair' && !canCreateRepairShop.value) {
-    errorMessage.value = 'You are not subscribed to create repair listings.'
+  if (!isLoggedIn.value) {
+    errorMessage.value = 'You must be logged in to create a listing.'
     return
   }
 
@@ -83,30 +80,32 @@ async function submitListing() {
     description: description.value,
     price: price.value,
     is_repair: listingType.value === 'repair',
+    image_1: 'https://en.m.wikipedia.org/wiki/File:Example_image.svg'
   }
 
   try {
     const res = await fetch('https://api.ohdeer-bmsd22a.bbzwinf.ch/api/posts/create', {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token.value}`,
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(payload),
     })
 
-    if (!res.ok) throw new Error('Failed to create listing')
-    const data = await res.json()
+    if (!res.ok) {
+      const errData = await res.json()
+      throw new Error(errData.message || 'Failed to create listing')
+    }
+
     successMessage.value = 'Listing created successfully!'
   } catch (err) {
     errorMessage.value = err.message
   }
 }
-
-onMounted(() => {
-  if (isLoggedIn) fetchUser()
-})
 </script>
+
 
 <style scoped>
 .create-listing {

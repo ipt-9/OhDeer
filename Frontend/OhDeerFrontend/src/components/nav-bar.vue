@@ -53,6 +53,15 @@
 </template>
 <script>
 import SearchBar from './search-bar.vue'
+import { ref, onMounted } from 'vue';
+
+const isLoggedIn = ref(false);
+
+onMounted(() => {
+  const token = localStorage.getItem('token');
+  isLoggedIn.value = !!token;
+
+});
 
 export default {
   name: 'Nav-bar',
@@ -61,11 +70,15 @@ export default {
     return {
       mobileMenuOpen: false,
       dropdownOpen: false,
-      isLoggedIn: true, //Change later
       user: {
         name: 'Polish Chicken',
         profileImage: 'https://i.redd.it/87kxdlhrk3z71.jpg',
       },
+    }
+  },
+  computed: {
+    isLoggedIn() {
+      return !!localStorage.getItem('token');
     }
   },
   methods: {
@@ -74,7 +87,6 @@ export default {
     },
     logout() {
       localStorage.removeItem('token')
-      this.isLoggedIn = false
       this.$router.push('/login')
     },
   },

@@ -97,11 +97,16 @@
     </div>
   </template>
 
-<script setup>
-import navBar from './nav-bar.vue'
-import { ref } from 'vue'
-import { computed } from 'vue'
-
+  <script setup>
+  import navBar from "./nav-bar.vue";
+  import { ref } from "vue";
+  import { computed } from "vue";
+  import { onMounted } from 'vue';
+  const isLoggedIn = ref(false);
+  onMounted(() => {
+    const token = localStorage.getItem('token');
+    isLoggedIn.value = !!token;
+  });
   const shopItems = ref([
     { id: 1, title: "Wooden Table", description: "Handcrafted table", price: 120, is_repair: 0, image: "https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg" },
     { id: 2, title: "Vintage Chair", description: "Classic chair", price: 80, is_repair: 0, image: "https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg" },
