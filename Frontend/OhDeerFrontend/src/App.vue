@@ -1,39 +1,31 @@
 <script setup>
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
 </script>
 
 <template>
-  
+  <div class="app-wrapper" :class="{ 'auth-layout': route.meta.layout === 'auth' }">
+    <header v-if="route.meta.layout !== 'auth'">
 
-  <main>
-    <RouterView />
-  </main>
+    </header>
+
+    <router-view />
+  </div>
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
+.app-wrapper.auth-layout {
+  background: url('/assets/forest-bg.jpg') no-repeat center center;
+  background-size: cover;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+.app-wrapper:not(.auth-layout) {
+  min-height: 100vh;
+  background: #fff;
 }
 </style>

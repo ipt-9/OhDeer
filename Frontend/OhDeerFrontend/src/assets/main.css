@@ -4,3 +4,11 @@ body {
   background-color: #e6e8e6;
   color: black;
 }
+
+html, body, #app {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  font-family: 'Segoe UI', sans-serif;
+}
