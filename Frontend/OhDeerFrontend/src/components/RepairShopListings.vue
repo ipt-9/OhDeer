@@ -18,19 +18,6 @@ const images = ref([
   { src: "https://www.gen-pack.com/wp-content/uploads/2021/04/Rework-_-Repair-Button-212287633-768x509.jpg", url: "https://example.com/3" },
 ]);
 
-const slideFilter = ref("all");
-const filteredSlides = computed(() => {
-  if (slideFilter.value === "items") return images.value.filter(img => img.type === "item");
-  if (slideFilter.value === "repairs") return images.value.filter(img => img.type === "repair");
-  return images.value;
-});
-
-const currentIndex = ref(0);
-const prevSlide = () => currentIndex.value = (currentIndex.value - 1 + filteredSlides.value.length) % filteredSlides.value.length;
-const nextSlide = () => currentIndex.value = (currentIndex.value + 1) % filteredSlides.value.length;
-
-
-
 </script>
 <template>
     <main>
@@ -48,7 +35,7 @@ const nextSlide = () => currentIndex.value = (currentIndex.value + 1) % filtered
                             <p class="lab2">Address: </p>
                             <p class="inf2">{{ shop.address + ", " + shop.postalCode }}</p>
                             <p class="desc">{{ shop.description }}</p>
-                            <router-link :to="`/InspectRepair/${slugify(shop.link)}-${shop.id}`" custom v-slot="{navigate}">
+                            <router-link :to="`/inspectrepair/${slugify(shop.link)}-${shop.id}`" custom v-slot="{navigate}">
                                 <button class="but" @click="navigate">more information</button>
                             </router-link>
                         </div>
@@ -61,7 +48,6 @@ const nextSlide = () => currentIndex.value = (currentIndex.value + 1) % filtered
 </template>
 <style scoped>
     .container {
-    max-width: 1300px;
     margin: auto;
     padding: 20px;
     font-family: 'Poppins', sans-serif;

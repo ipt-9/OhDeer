@@ -10,28 +10,14 @@ const shopItems = ref([
   { id: 3, title: "chingchenghanji", link: "chingchenghanji", description: "Some text about the nverui78  43h79f h78 3478  78z 8 438ohgc348 fzew zewbvf euerhufheberuigjeans..qefrgvergregreger wefewewf ew rgiegier ierg hi hhhhhh pppppp 2222 w r e q 7gregh9ehgehugherhge reui jihnuu ewz", price: 500, image: testImage },
   { id: 4, title: "chingchenghanji", link: "chingchenghanji", description: "Some text about the nverui78  43h79f h78 3478  78z 8 438ohgc348 fzew zewbvf euerhufheberuigjeans..qefrgvergregreger wefewewf ew rgiegier ierg hi hhhhhh pppppp 2222 w r e q 7gregh9ehgehugherhge reui jihnuu ewz", price: 500, image: testImage },
   { id: 5, title: "chingchenghanji", link: "chingchenghanji", description: "Some text about the nverui78  43h79f h78 3478  78z 8 438ohgc348 fzew zewbvf euerhufheberuigjeans..qefrgvergregreger wefewewf ew rgiegier ierg hi hhhhhh pppppp 2222 w r e q 7gregh9ehgehugherhge reui jihnuu ewz", price: 500, image: testImage },
+  { id: 6, title: "chingchenghanji", link: "chingchenghanji", description: "Some text about the nverui78  43h79f h78 3478  78z 8 438ohgc348 fzew zewbvf euerhufheberuigjeans..qefrgvergregreger wefewewf ew rgiegier ierg hi hhhhhh pppppp 2222 w r e q 7gregh9ehgehugherhge reui jihnuu ewz", price: 500, image: testImage },
 ]);
-
-
 
 const images = ref([
   { src: "https://cdn-images-1.medium.com/max/1600/1*bzScNScXnXNvjg-Ak70EHA.jpeg", url: "https://example.com/1" },
   { src: "https://dornob.com/wp-content/uploads/2009/04/plywood02_1000.jpg", url: "https://example.com/2" },
   { src: "https://www.gen-pack.com/wp-content/uploads/2021/04/Rework-_-Repair-Button-212287633-768x509.jpg", url: "https://example.com/3" },
 ]);
-
-const slideFilter = ref("all");
-const filteredSlides = computed(() => {
-  if (slideFilter.value === "items") return images.value.filter(img => img.type === "item");
-  if (slideFilter.value === "repairs") return images.value.filter(img => img.type === "repair");
-  return images.value;
-});
-
-const currentIndex = ref(0);
-const prevSlide = () => currentIndex.value = (currentIndex.value - 1 + filteredSlides.value.length) % filteredSlides.value.length;
-const nextSlide = () => currentIndex.value = (currentIndex.value + 1) % filteredSlides.value.length;
-
-
 
 </script>
 <template>
@@ -47,7 +33,7 @@ const nextSlide = () => currentIndex.value = (currentIndex.value + 1) % filtered
                             <div class="infoGrid">
                                 <p class="desc">{{ item.description }}</p>
                                 <p class="price">${{ item.price }}</p>
-                                <router-link :to="`/InspectItem/${slugify(item.link)}-${item.id}`" custom v-slot="{navigate}">
+                                <router-link :to="`/inspectitem/${slugify(item.link)}-${item.id}`" custom v-slot="{navigate}">
                                     <button class="but" @click="navigate">Buy Now</button>
                                 </router-link>
                             </div>                           
@@ -60,7 +46,7 @@ const nextSlide = () => currentIndex.value = (currentIndex.value + 1) % filtered
 </template>
 <style scoped>
     .container {
-    max-width: 1300px;
+    
     margin: auto;
     padding: 20px;
     font-family: 'Poppins', sans-serif;

@@ -62,22 +62,22 @@ const routes = [
     component: Profile
   },
   { 
-    path: '/RepairListings',
+    path: '/repairlistings',
     component: RepairShopListings,
     name: 'RepairListings' 
   },
   { 
-    path: '/ItemListings',
+    path: '/marketplace',
     component: ItemListings,
-    name: 'ItemListings' 
+    name: 'Marketplace' 
   },
   { 
-    path: '/InspectItem/:title-:id',
+    path: '/inspectitem/:title-:id',
     component: InspectItem,
     name: 'InspectItem' 
   },
   { 
-    path: '/InspectRepair/:title-:id',
+    path: '/inspectrepair/:title-:id',
     component: InspectRepair,
     name: 'InspectRepair' 
   },

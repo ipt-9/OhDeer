@@ -17,7 +17,6 @@
           <button :class="{ active: slideFilter === 'repairs' }" @click="slideFilter = 'repairs'">Only Repair Shops</button>
         </div>
       <div class="main">
-        <div class="introText"></div>
         <div class="shop">
           <div class="shopCategoriesComponent">
             <h3>Categories</h3>
@@ -30,37 +29,36 @@
                 :style="{ backgroundImage: `url(${category.image})` }"
               >
                 <h3>{{ category.name }}</h3>
-
               </router-link>
             </div>
 
           </div>
           <div class="shopComponent">
-        <h3>Items Near You</h3>
-        <div class="shopGrid">
-          <div v-for="item in nonRepairItems" :key="item.id" class="shopCard">
-            <img :src="item.image" alt="Product Image" class="productImage" />
-            <div class="cardContent">
-              <h4>{{ item.title }}</h4>
-              <p>{{ item.description }}</p>
-              <p class="price">${{ item.price }}</p>
-              <button class="buyButton">Buy Now</button>
+            <h3>Items Near You</h3>
+            <div class="shopGrid">
+              <div v-for="item in nonRepairItems" :key="item.id" class="shopCard">
+                <img :src="item.image" alt="Product Image" class="productImage" />
+                <div class="cardContent">
+                  <h4>{{ item.title }}</h4>
+                  <p>{{ item.description }}</p>
+                  <p class="price">${{ item.price }}</p>
+                  <button class="buyButton">Buy Now</button>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
 
-        <div class="shopGrid">
-          <div v-for="item in items" :key="item.id" class="shopCard">
-            <img :src="item.image" alt="Product Image" class="productImage" />
-            <div class="cardContent">
-              <h4>{{ item.title }}</h4>
-              <p>{{ item.description }}</p>
-              <p class="price">${{ item.price }}</p>
-              <button class="buyButton">Buy Now</button>
+          <div class="shopGrid">
+            <div v-for="item in items" :key="item.id" class="shopCard">
+              <img :src="item.image" alt="Product Image" class="productImage" />
+              <div class="cardContent">
+                <h4>{{ item.title }}</h4>
+                <p>{{ item.description }}</p>
+                <p class="price">${{ item.price }}</p>
+                <button class="buyButton">Buy Now</button>
+              </div>
             </div>
           </div>
-        </div>
 
       <div class="shopComponent">
         <h3>Repair Shops Near You</h3>
@@ -147,8 +145,8 @@
 
   </script>
 
-  <style scoped>.container {
-
+  <style scoped>
+  .container {
     margin: 0px;
     padding: 0px;
     font-family: 'Poppins', sans-serif;
@@ -305,11 +303,11 @@
   .price {
     font-weight: bold;
     font-size: 16px;
-    color: #ff5722;
+    color: #388659;
   }
 
   .buyButton, .repairButton {
-    background: linear-gradient(135deg, #ff6f61, #ff3d00);
+    background: #388659;
     color: white;
     border: none;
     padding: 10px 16px;
