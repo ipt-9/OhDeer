@@ -1,5 +1,5 @@
-<template>
-  <div class="container">
+  <template>
+    <div class="container">
       <div class="head">
         <navBar />
         <div class="slideshow">
@@ -12,12 +12,12 @@
       </div>
 
       <div class="filterButtons">
-          <button :class="{ active: slideFilter === 'all' }" @click="slideFilter = 'all'">All</button>
-          <button :class="{ active: slideFilter === 'items' }" @click="slideFilter = 'items'">Only Items</button>
-          <button :class="{ active: slideFilter === 'repairs' }" @click="slideFilter = 'repairs'">Only Repair Shops</button>
-        </div>
+        <button :class="{ active: slideFilter === 'all' }" @click="slideFilter = 'all'">All</button>
+        <button :class="{ active: slideFilter === 'items' }" @click="slideFilter = 'items'">Only Items</button>
+        <button :class="{ active: slideFilter === 'repairs' }" @click="slideFilter = 'repairs'">Only Repair Shops</button>
+      </div>
+      
       <div class="main">
-        <div class="introText"></div>
         <div class="shop">
           <div class="shopCategoriesComponent">
             <h3>Categories</h3>
@@ -30,58 +30,27 @@
                 :style="{ backgroundImage: `url(${category.image})` }"
               >
                 <h3>{{ category.name }}</h3>
-
               </router-link>
             </div>
-
           </div>
+
           <div class="shopComponent">
-        <h3>Items Near You</h3>
-        <div class="shopGrid">
-          <div v-for="item in nonRepairItems" :key="item.id" class="shopCard">
-            <img :src="item.image" alt="Product Image" class="productImage" />
-            <div class="cardContent">
-              <h4>{{ item.title }}</h4>
-              <p>{{ item.description }}</p>
-              <p class="price">${{ item.price }}</p>
-              <button class="buyButton">Buy Now</button>
+            <h3>Items Near You</h3>
+            <div class="shopGrid">
+              <div v-for="item in nonRepairItems" :key="item.id" class="shopCard">
+                <img :src="item.image" alt="Product Image" class="productImage" />
+                <div class="cardContent">
+                  <h4>{{ item.title }}</h4>
+                  <p>{{ item.description }}</p>
+                  <p class="price">${{ item.price }}</p>
+                  <button class="buyButton">Buy Now</button>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
 
-        <div class="shopGrid">
-          <div v-for="item in items" :key="item.id" class="shopCard">
-            <img :src="item.image" alt="Product Image" class="productImage" />
-            <div class="cardContent">
-              <h4>{{ item.title }}</h4>
-              <p>{{ item.description }}</p>
-              <p class="price">${{ item.price }}</p>
-              <button class="buyButton">Buy Now</button>
-            </div>
-          </div>
-        </div>
-
-      <div class="shopComponent">
-        <h3>Repair Shops Near You</h3>
-        <div class="shopGrid">
-          <div v-for="item in repairItems" :key="item.id" class="shopCard">
-            <div class="cardImage">
-              <img :src="item.image" alt="Repair Image" class="productImage" />
-            </div>
-            <div class="cardContent">
-              <h4>{{ item.title }}</h4>
-              <p>{{ item.description }}</p>
-              <p class="price">${{ item.price }}</p>
-              <button class="repairButton">Get Repair</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="shopComponent">
-          <h3>New Arrivals</h3>
           <div class="shopGrid">
-            <div v-for="item in newArrivals" :key="item.id" class="shopCard">
+            <div v-for="item in items" :key="item.id" class="shopCard">
               <img :src="item.image" alt="Product Image" class="productImage" />
               <div class="cardContent">
                 <h4>{{ item.title }}</h4>
@@ -91,13 +60,41 @@
               </div>
             </div>
           </div>
-        </div>
-      <div>
 
-      </div>
+          <div class="shopComponent">
+            <h3>Repair Shops Near You</h3>
+            <div class="shopGrid">
+              <div v-for="item in repairItems" :key="item.id" class="shopCard">
+                <div class="cardImage">
+                  <img :src="item.image" alt="Repair Image" class="productImage" />
+                </div>
+                <div class="cardContent">
+                  <h4>{{ item.title }}</h4>
+                  <p>{{ item.description }}</p>
+                  <p class="price">${{ item.price }}</p>
+                  <button class="repairButton">Get Repair</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="shopComponent">
+            <h3>New Arrivals</h3>
+            <div class="shopGrid">
+              <div v-for="item in newArrivals" :key="item.id" class="shopCard">
+                <img :src="item.image" alt="Product Image" class="productImage" />
+                <div class="cardContent">
+                  <h4>{{ item.title }}</h4>
+                  <p>{{ item.description }}</p>
+                  <p class="price">${{ item.price }}</p>
+                  <button class="buyButton">Buy Now</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
   </template>
 
   <script setup>
@@ -131,13 +128,14 @@
   const repairItems = computed(() => shopItems.value.filter(item => item.is_repair === 1));
   const newArrivals = computed(() => shopItems.value.slice(-2));
 
-
   const images = ref([
     { src: "https://cdn-images-1.medium.com/max/1600/1*bzScNScXnXNvjg-Ak70EHA.jpeg", url: "https://example.com/1" },
     { src: "https://dornob.com/wp-content/uploads/2009/04/plywood02_1000.jpg", url: "https://example.com/2" },
     { src: "https://www.gen-pack.com/wp-content/uploads/2021/04/Rework-_-Repair-Button-212287633-768x509.jpg", url: "https://example.com/3" },
   ]);
+
   const slideFilter = ref("all");
+
   const filteredSlides = computed(() => {
     if (slideFilter.value === "items") return images.value.filter(img => img.type === "item");
     if (slideFilter.value === "repairs") return images.value.filter(img => img.type === "repair");
@@ -148,12 +146,10 @@
   const prevSlide = () => currentIndex.value = (currentIndex.value - 1 + filteredSlides.value.length) % filteredSlides.value.length;
   const nextSlide = () => currentIndex.value = (currentIndex.value + 1) % filteredSlides.value.length;
 
-
-
   </script>
 
-  <style scoped>.container {
-
+  <style scoped>
+  .container {
     margin: 0px;
     padding: 0px;
     font-family: 'Poppins', sans-serif;
@@ -186,6 +182,7 @@
     transform: scale(1.05);
     opacity: 0.9;
   }
+
   .head {
     text-align: center;
     margin-bottom: 20px;
@@ -240,8 +237,6 @@
     background: rgba(0, 0, 0, 0.8);
   }
 
-  .filterButton
-
   .shop {
     display: flex;
     flex-direction: column;
@@ -250,7 +245,7 @@
   }
 
   .shopComponent {
-    background: #fff;
+    background: #f3f4f3;
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -310,11 +305,11 @@
   .price {
     font-weight: bold;
     font-size: 16px;
-    color: #ff5722;
+    color: #388659;
   }
 
   .buyButton, .repairButton {
-    background: linear-gradient(135deg, #ff6f61, #ff3d00);
+    background: #388659;
     color: white;
     border: none;
     padding: 10px 16px;

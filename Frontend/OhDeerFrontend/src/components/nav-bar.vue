@@ -4,8 +4,8 @@
       <router-link to="/" class="logo">OhDeer</router-link>
       <div class="nav-links">
         <router-link to="/" exact-active-class="active">Home</router-link>
-        <router-link to="/shop" exact-active-class="active">Shop</router-link>
-        <router-link to="/repairs" exact-active-class="active">Repair Shops</router-link>
+        <router-link to="/marketplace" exact-active-class="active">Marketplace</router-link>
+        <router-link to="/repairlistings" exact-active-class="active">Repair Shops</router-link>
       </div>
     </div>
 
@@ -38,8 +38,8 @@
 
     <div class="mobile-menu" v-show="mobileMenuOpen">
       <router-link @click="mobileMenuOpen = false" to="/">Home</router-link>
-      <router-link @click="mobileMenuOpen = false" to="/shop">Shop</router-link>
-      <router-link @click="mobileMenuOpen = false" to="/repairs">Repair Shops</router-link>
+      <router-link @click="mobileMenuOpen = false" to="/marketplace">Marketplace</router-link>
+      <router-link @click="mobileMenuOpen = false" to="/repairlistings">Repair Shops</router-link>
       <router-link @click="mobileMenuOpen = false" to="/settings" v-if="isLoggedIn">Settings</router-link>
       <router-link @click="mobileMenuOpen = false" to="/login" v-if="!isLoggedIn">Login</router-link>
       <router-link @click="mobileMenuOpen = false" to="/register" v-if="!isLoggedIn">Register</router-link>

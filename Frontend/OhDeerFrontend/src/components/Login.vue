@@ -20,8 +20,8 @@ export default {
     return {
       email: '',
       password: '',
-      error: ''
-    };
+      error: '',
+    }
   },
 
   methods: {
@@ -75,7 +75,7 @@ export default {
 .login-wrapper {
   height: 100vh;
   width: 100%;
-  background-image: url("https://wallpaperaccess.com/full/3625325.jpg");
+  background-image: url('https://wallpaperaccess.com/full/3625325.jpg');
   background-size: cover;
   background-position: center;
   display: flex;
@@ -120,7 +120,4 @@ button:hover {
   color: red;
   font-size: 0.9em;
 }
-
 </style>
-
-

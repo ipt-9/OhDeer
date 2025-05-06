@@ -5,12 +5,7 @@
       <form @submit.prevent="handleRegister">
         <input type="text" v-model="username" placeholder="Username" />
         <input type="email" v-model="email" placeholder="Email" />
-        <input
-          type="password"
-          v-model="password"
-          placeholder="Password"
-          @input="checkStrength"
-        />
+        <input type="password" v-model="password" placeholder="Password" @input="checkStrength" />
         <p class="strength">Password strength: {{ passwordStrength }}</p>
         <input type="password" v-model="confirmPassword" placeholder="Confirm Password" />
         <input type="text" v-model="address" placeholder="Address" />
@@ -35,42 +30,29 @@ export default {
       address: '',
       postalCode: '',
       error: '',
-      passwordStrength: 'Weak'
-    };
+      passwordStrength: 'Weak',
+    }
   },
   methods: {
     checkStrength() {
-      const length = this.password.length;
-      const hasUpper = /[A-Z]/.test(this.password);
-      const hasLower = /[a-z]/.test(this.password);
-      const hasNumber = /[0-9]/.test(this.password);
-      const hasSpecial = /[^A-Za-z0-9]/.test(this.password);
-      const commonPatterns = /(123|password|abc)/i.test(this.password);
+      const length = this.password.length
+      const hasUpper = /[A-Z]/.test(this.password)
+      const hasLower = /[a-z]/.test(this.password)
+      const hasNumber = /[0-9]/.test(this.password)
+      const hasSpecial = /[^A-Za-z0-9]/.test(this.password)
+      const commonPatterns = /(123|password|abc)/i.test(this.password)
 
-      if (
-        length >= 10 &&
-        hasUpper &&
-        hasLower &&
-        hasNumber &&
-        hasSpecial &&
-        !commonPatterns
-      ) {
-        this.passwordStrength = 'Strong';
-      } else if (
-        length >= 8 &&
-        hasUpper &&
-        hasLower &&
-        hasNumber &&
-        hasSpecial
-      ) {
-        this.passwordStrength = 'Medium';
+      if (length >= 10 && hasUpper && hasLower && hasNumber && hasSpecial && !commonPatterns) {
+        this.passwordStrength = 'Strong'
+      } else if (length >= 8 && hasUpper && hasLower && hasNumber && hasSpecial) {
+        this.passwordStrength = 'Medium'
       } else {
-        this.passwordStrength = 'Weak';
+        this.passwordStrength = 'Weak'
       }
     },
 
     async handleRegister() {
-      this.error = '';
+      this.error = ''
 
       if (!this.username || !this.email || !this.password || !this.confirmPassword || !this.address || !this.postalCode) {
         this.error = 'Please fill in all fields.';
@@ -78,13 +60,13 @@ export default {
       }
 
       if (this.password !== this.confirmPassword) {
-        this.error = 'Passwords do not match.';
-        return;
+        this.error = 'Passwords do not match.'
+        return
       }
 
       if (this.passwordStrength === 'Weak') {
-        this.error = 'Password is too weak, please input at least 8 characters.';
-        return;
+        this.error = 'Password is too weak, please input at least 8 characters.'
+        return
       }
 
       try {
@@ -92,7 +74,7 @@ export default {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Accept: 'application/json'
+            Accept: 'application/json',
           },
           body: JSON.stringify({
             username: this.username,
@@ -103,11 +85,11 @@ export default {
           })
         });
 
-        const data = await response.json();
+        const data = await response.json()
 
         if (!response.ok) {
-          this.error = data.message || 'Registration failed.';
-          return;
+          this.error = data.message || 'Registration failed.'
+          return
         }
         if (data.token) {
           localStorage.setItem('token', data.token);
@@ -119,16 +101,16 @@ export default {
       this.error = 'An error occurred. Please try again.';
       console.error(err);
       }
-    }
-  }
-};
+    },
+  },
+}
 </script>
 
 <style scoped>
 .register-wrapper {
   height: 100vh;
   width: 100%;
-  background-image: url("https://wallpaperaccess.com/full/3625325.jpg");
+  background-image: url('https://wallpaperaccess.com/full/3625325.jpg');
   background-size: cover;
   background-position: center;
   display: flex;
