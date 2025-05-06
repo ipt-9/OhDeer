@@ -2,28 +2,20 @@
 import { useRoute } from 'vue-router';
 import { RouterLink } from "vue-router";
 import slugify from "slugify";
-/*import { shopItems } from '@/components/ItemListings.vue'*/
+import navBar from './nav-bar.vue';
 
 const route = useRoute();
 const { title, id } = route.params
 
-/*id: 1, title: "Furniture Repair"
-, link: "FurnitureRepair"
-, description: "Fix broken furniture"
-, address: "Fifi Street 21"
-, postalCode: "7649 Gabgob"
-, phone: "043 748 384 213 64", 
-image: "https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg" }, */
 </script>
 <template>
     <main>
+        <navBar />
         <div class="container">
             <div class="item">
                 <div class="grid">
                     <div class="card">
-
-                        <img class="image" src="https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg">
-                        
+                        <img class="image" src="https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg">                        
                     </div>
                     <div class="card">
                         <div class="infoGrid">
@@ -50,10 +42,8 @@ image: "https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain
                                 <p class="inf5">532784327r46343784283428</p>
                             </div>       
                         </div>
-                    </div>
-                    
-                </div>          
-                            
+                    </div>                   
+                </div>                                     
             </div>
         </div>
     </main>

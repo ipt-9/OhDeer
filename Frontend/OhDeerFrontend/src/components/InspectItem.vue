@@ -2,24 +2,20 @@
 import { useRoute } from 'vue-router';
 import { RouterLink } from "vue-router";
 import slugify from "slugify";
-/*import { shopItems } from '@/components/ItemListings.vue'*/
+import navBar from './nav-bar.vue';
 
 const route = useRoute();
 const { title, id } = route.params
 
-/*{ id: 1, title: "Wooden Table", link: "WoodenTable", description: "Handcrafted table", price: 120, image: "https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg" }
-const item = shopItems.value.find(i => i.id === itemId);*/
 </script>
 <template>
     <main>
+        <navBar />
         <div class="container">
             <div class="item">
                 <div class="grid">
                     <div class="card">
-                        
-
-                        <img class="image" src="https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg">
-                        
+                        <img class="image" src="https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg">                       
                     </div>
                     <div class="card">
                         <div class="infoGrid">
@@ -47,10 +43,8 @@ const item = shopItems.value.find(i => i.id === itemId);*/
                                 </router-link>
                             </div>
                         </div>
-                    </div>
-                    
-                </div>          
-                            
+                    </div>                
+                </div>                                    
             </div>
         </div>
     </main>

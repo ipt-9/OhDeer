@@ -2,6 +2,7 @@
 import { ref, computed } from "vue";
 import testImage from '@/assets/test.png';
 import slugify from "slugify";
+import navBar from "./nav-bar.vue";
 
 const repairshopItems = ref([
   { id: 1, title: "Furniture Repair", link: "FurnitureRepair", description: "Fix broken furniture", address: "Fifi Street 21", postalCode: "7649 Gabgob", phone: "043 748 384 213 64", image: "https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg" },
@@ -21,6 +22,7 @@ const images = ref([
 </script>
 <template>
     <main>
+        <navBar />
         <div class="container">
         <div class="shop">
             <div class="shopComponent">

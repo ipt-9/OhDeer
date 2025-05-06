@@ -3,6 +3,7 @@ import { ref, computed } from "vue";
 import testImage from '@/assets/test.png';
 import { RouterLink } from "vue-router";
 import slugify from "slugify";
+import navBar from "./nav-bar.vue";
 
 const shopItems = ref([
   { id: 1, title: "Wooden Table", link: "WoodenTable", description: "Handcrafted table", price: 120, image: "https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg" },
@@ -22,6 +23,7 @@ const images = ref([
 </script>
 <template>
     <main>
+        <navBar />
         <div class="container">
             <div class="shop">
                 <div class="shopComponent">
@@ -46,7 +48,6 @@ const images = ref([
 </template>
 <style scoped>
     .container {
-    
     margin: auto;
     padding: 20px;
     font-family: 'Poppins', sans-serif;
