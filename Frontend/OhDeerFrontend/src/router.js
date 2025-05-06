@@ -7,6 +7,9 @@ import LandingPage from './components/LandingPage.vue'
 import SearchResults from './components/search-results.vue'
 import CreateListing from './components/create-listing.vue'
 
+import ComingSoon from './components/ComingSoon.vue'
+import Payment from './components/PaymentScreen.vue'
+
 const routes = [
   {
     path: '/',
@@ -41,7 +44,14 @@ const routes = [
   {
     path: '/create-listing',
     component: CreateListing,
+
+    path: '/comingsoon',
+    component: ComingSoon
+  },
+  { path: '/payment/:id',
+    component: Payment 
   }
+
 ]
 
 const router = createRouter({
