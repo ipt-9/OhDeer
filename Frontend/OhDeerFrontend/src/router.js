@@ -1,6 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Login from './components/Login.vue'
 import Register from './components/Register.vue'
+import navBar from './components/nav-bar.vue'
+import searchBar from './components/search-bar.vue'
+import LandingPage from './components/LandingPage.vue'
+import SearchResults from './components/search-results.vue'
+import CreateListing from './components/create-listing.vue'
+
 import ComingSoon from './components/ComingSoon.vue'
 import Payment from './components/PaymentScreen.vue'
 import Profile from './components/Profile.vue'
@@ -17,11 +23,30 @@ const routes = [
     meta: { layout: 'auth' }
   },
   {
+    path: '/home',
+    component: LandingPage,
+  },
+  {
     path: '/register',
     component: Register,
     meta: { layout: 'auth' }
   },
   {
+    path: '/nav-bar',
+    component: navBar,
+  },
+  {
+    path: '/search-bar',
+    component: searchBar,
+  },
+  {
+    path: '/search-results',
+    component: SearchResults
+  },
+  {
+    path: '/create-listing',
+    component: CreateListing,
+
     path: '/comingsoon',
     component: ComingSoon
   },
