@@ -46,15 +46,16 @@ const routes = [
   {
     path: '/create-listing',
     component: CreateListing,
-
+  },
+  {
     path: '/comingsoon',
     component: ComingSoon
   },
   { path: '/payment/:id',
-    component: Payment 
+    component: Payment
   },
   { path: '/profile/:id',
-    component: Profile 
+    component: Profile
   }
 
 ]
