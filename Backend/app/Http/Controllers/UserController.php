@@ -12,11 +12,11 @@ class UserController extends Controller
 
     public function index()
     {
-       return User::all();
+       return User::with('userType', 'language', 'subscription')->get();
     }
     public function GetUserInfo($id)
     {
-        return User::findOrFail($id);
+        return User::with('userType', 'language', 'subscription')->where('id', $id)->first();
     }
 
     public function delete(request $request)
@@ -54,4 +54,14 @@ class UserController extends Controller
         return response()->json(['message' => 'User has been registered', 'user' => $user ]);
     }
 
+    public function getAllPosts($id){
+        $user = User::with('posts')->find($id);
+        return $user->posts;
+    }
+    public function getAllRatings($id){
+        $user = User::with(['purchases' => function($query) {
+            $query->select('general_rating', 'repair_rating', 'rating_comment', 'user_id' ,'id');
+        }])->find($id);
+        return $user->purchases;
+    }
 }

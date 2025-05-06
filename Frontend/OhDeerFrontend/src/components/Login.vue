@@ -53,14 +53,34 @@ export default {
       return;
     }
 
-    localStorage.setItem('token', data.token);
-    localStorage.setItem('user', JSON.stringify(data.user));
 
-    this.$router.push('/');
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          email: this.email,
+          password: this.password
+        })
+      });
 
-  } catch (err) {
-    this.error = 'An error occurred. Please try again.';
-    console.error(err);
+      const data = await response.json();
+
+      if (!response.ok) {
+        this.error = data.message || 'Login failed.';
+        return;
+      }
+
+      localStorage.setItem('token', data.token);
+      this.$router.push('/');
+      console.log('success')
+    } catch (err) {
+      this.error = 'An error occurred. Please try again.';
+      console.error(err);
+    }
   }
 }
 

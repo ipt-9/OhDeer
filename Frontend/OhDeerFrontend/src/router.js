@@ -9,11 +9,13 @@ import CreateListing from './components/create-listing.vue'
 
 import ComingSoon from './components/ComingSoon.vue'
 import Payment from './components/PaymentScreen.vue'
+import Profile from './components/Profile.vue'
+
 
 const routes = [
   {
     path: '/',
-    redirect: '/login'
+
   },
   {
     path: '/login',
@@ -50,6 +52,9 @@ const routes = [
   },
   { path: '/payment/:id',
     component: Payment 
+  },
+  { path: '/profile/:id',
+    component: Profile 
   }
 
 ]

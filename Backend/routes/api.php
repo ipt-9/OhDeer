@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FeeController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Http\Request;
@@ -18,6 +19,8 @@ Route::prefix('users')->controller(UserController::class)->group(function () {
     Route::delete('delete', 'delete')->middleware('auth:sanctum');
     Route::put('update', 'update')->middleware('auth:sanctum');
     Route::post('register', 'register');
+    Route::get('{id}/posts', 'getAllPosts')->whereNumber('id');
+    Route::get('{id}/ratings', 'getAllRatings')->whereNumber('id');
 });
 
 Route::prefix('posts')->controller(PostController::class)->group(function () {
@@ -42,4 +45,4 @@ Route::prefix('purchases')->controller(PurchaseController::class)->group(functio
     Route::put('update/{id}', 'update')->middleware('auth:sanctum')->whereNumber('id');
 });
 
-Route::get('getFee', [\App\Http\Controllers\FeeController::class, 'getFee']);
+Route::get('getFee', [FeeController::class, 'getFee']);
