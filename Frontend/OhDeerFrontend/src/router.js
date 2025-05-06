@@ -6,6 +6,10 @@ import searchBar from './components/search-bar.vue'
 import LandingPage from './components/LandingPage.vue'
 import SearchResults from './components/search-results.vue'
 import CreateListing from './components/create-listing.vue'
+import RepairShopListings from '@/components/RepairShopListings.vue';
+import ItemListings from '@/components/ItemListings.vue';
+import InspectItem from  '@/components/InspectItem.vue';
+import InspectRepair from '@/components/InspectRepair.vue';
 
 import ComingSoon from './components/ComingSoon.vue'
 import Payment from './components/PaymentScreen.vue'
@@ -51,18 +55,40 @@ const routes = [
     path: '/comingsoon',
     component: ComingSoon
   },
-  { path: '/payment/:id',
+  { 
+    path: '/payment/:id',
     component: Payment
   },
-  { path: '/profile/:id',
+  { 
+    path: '/profile/:id',
     component: Profile
-  }
+  },
+  { 
+    path: '/RepairListings',
+    component: RepairShopListings,
+    name: 'RepairListings' 
+  },
+  { 
+    path: '/ItemListings',
+    component: ItemListings,
+    name: 'ItemListings' 
+  },
+  { 
+    path: '/InspectItem/:title-:id',
+    component: InspectItem,
+    name: 'InspectItem' 
+  },
+  { 
+    path: '/InspectRepair/:title-:id',
+    component: InspectRepair,
+    name: 'InspectRepair' 
+  },
 
-]
+];
 
 const router = createRouter({
   history: createWebHistory(),
   routes
-})
+});
 
-export default router
+export default router;
