@@ -14,17 +14,17 @@ export default {
   name: 'ComingSoonPage',
   methods: {
     goBack() {
-      this.$router.go(-1);
-    }
-  }
-};
+      this.$router.go(-1)
+    },
+  },
+}
 </script>
 
 <style scoped>
 .coming-soon-wrapper {
   height: 100vh;
   width: 100%;
-  background-image: url("https://www.wallart.com/media/catalog/product/cache/871f459736130e239a3f5e6472128962/w/o/wo3769-small.jpg");
+  background-image: url('https://www.wallart.com/media/catalog/product/cache/871f459736130e239a3f5e6472128962/w/o/wo3769-small.jpg');
   background-size: cover;
   background-position: center;
   display: flex;

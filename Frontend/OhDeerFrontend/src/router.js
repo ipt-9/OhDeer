@@ -15,16 +15,14 @@ import ComingSoon from './components/ComingSoon.vue'
 import Payment from './components/PaymentScreen.vue'
 import Profile from './components/Profile.vue'
 
-
 const routes = [
   {
     path: '/',
-
   },
   {
     path: '/login',
     component: Login,
-    meta: { layout: 'auth' }
+    meta: { layout: 'auth' },
   },
   {
     path: '/home',
@@ -33,7 +31,7 @@ const routes = [
   {
     path: '/register',
     component: Register,
-    meta: { layout: 'auth' }
+    meta: { layout: 'auth' },
   },
   {
     path: '/nav-bar',
@@ -53,7 +51,7 @@ const routes = [
   },
   {
     path: '/comingsoon',
-    component: ComingSoon
+    component: ComingSoon,
   },
   { 
     path: '/payment/:id',
