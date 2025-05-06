@@ -10,8 +10,9 @@ const shopItems = ref([
   { id: 3, title: "chingchenghanji", link: "chingchenghanji", description: "Some text about the nverui78  43h79f h78 3478  78z 8 438ohgc348 fzew zewbvf euerhufheberuigjeans..qefrgvergregreger wefewewf ew rgiegier ierg hi hhhhhh pppppp 2222 w r e q 7gregh9ehgehugherhge reui jihnuu ewz", price: 500, image: testImage },
   { id: 4, title: "chingchenghanji", link: "chingchenghanji", description: "Some text about the nverui78  43h79f h78 3478  78z 8 438ohgc348 fzew zewbvf euerhufheberuigjeans..qefrgvergregreger wefewewf ew rgiegier ierg hi hhhhhh pppppp 2222 w r e q 7gregh9ehgehugherhge reui jihnuu ewz", price: 500, image: testImage },
   { id: 5, title: "chingchenghanji", link: "chingchenghanji", description: "Some text about the nverui78  43h79f h78 3478  78z 8 438ohgc348 fzew zewbvf euerhufheberuigjeans..qefrgvergregreger wefewewf ew rgiegier ierg hi hhhhhh pppppp 2222 w r e q 7gregh9ehgehugherhge reui jihnuu ewz", price: 500, image: testImage },
-
 ]);
+
+
 
 const images = ref([
   { src: "https://cdn-images-1.medium.com/max/1600/1*bzScNScXnXNvjg-Ak70EHA.jpeg", url: "https://example.com/1" },
@@ -36,13 +37,12 @@ const nextSlide = () => currentIndex.value = (currentIndex.value + 1) % filtered
 <template>
     <main>
         <div class="container">
-        <div class="shop">
-            <div class="shopComponent">
-                <h3>Items</h3>
-                <div class="shopGrid">
-                    <div v-for="item in shopItems" :key="item.id" class="shopCard">
-                        <img :src="item.image" alt="Product Image" class="productImage" />
-                        <div class="cardContent">
+            <div class="shop">
+                <div class="shopComponent">
+                    <h3>Items</h3>
+                    <div class="shopGrid">
+                        <div v-for="item in shopItems" :key="item.id" class="shopCard">
+                            <img :src="item.image" alt="Product Image" class="productImage" />
                             <h4>{{ item.title }}</h4>
                             <div class="infoGrid">
                                 <p class="desc">{{ item.description }}</p>
@@ -50,13 +50,12 @@ const nextSlide = () => currentIndex.value = (currentIndex.value + 1) % filtered
                                 <router-link :to="`/InspectItem/${slugify(item.link)}-${item.id}`" custom v-slot="{navigate}">
                                     <button class="but" @click="navigate">Buy Now</button>
                                 </router-link>
-                            </div>
+                            </div>                           
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     </main> 
 </template>
 <style scoped>
@@ -107,20 +106,6 @@ const nextSlide = () => currentIndex.value = (currentIndex.value + 1) % filtered
     height: 200px;
     object-fit: contain;
     border-radius: 12px;
-    }
-
-    .cardContent {
-    padding: 15px 0;
-    }
-
-    .cardContent p {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: normal;
-    max-height: 4.5em;
     }
 
     @media (max-width: 768px) {

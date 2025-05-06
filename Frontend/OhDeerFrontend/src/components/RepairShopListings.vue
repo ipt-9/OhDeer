@@ -41,18 +41,16 @@ const nextSlide = () => currentIndex.value = (currentIndex.value + 1) % filtered
                 <div class="shopGrid">
                     <div v-for="shop in repairshopItems" :key="shop.id" class="shopCard">
                         <img :src="shop.image" alt="Product Image" class="productImage" />
-                        <div class="cardContent">
-                            <h4>{{ shop.title }}</h4>
-                            <div class="infoGrid">  
-                                <p class="lab1">Phone: </p>
-                                <p class="inf1">{{ shop.phone }}</p>
-                                <p class="lab2">Address: </p>
-                                <p class="inf2">{{ shop.address + ", " + shop.postalCode }}</p>
-                                <p class="desc">{{ shop.description }}</p>
-                                <router-link :to="`/InspectRepair/${slugify(shop.link)}-${shop.id}`" custom v-slot="{navigate}">
-                                    <button class="but" @click="navigate">more information</button>
-                                </router-link>
-                            </div>
+                        <h4>{{ shop.title }}</h4>
+                        <div class="infoGrid">  
+                            <p class="lab1">Phone: </p>
+                            <p class="inf1">{{ shop.phone }}</p>
+                            <p class="lab2">Address: </p>
+                            <p class="inf2">{{ shop.address + ", " + shop.postalCode }}</p>
+                            <p class="desc">{{ shop.description }}</p>
+                            <router-link :to="`/InspectRepair/${slugify(shop.link)}-${shop.id}`" custom v-slot="{navigate}">
+                                <button class="but" @click="navigate">more information</button>
+                            </router-link>
                         </div>
                     </div>
                 </div>
@@ -109,20 +107,6 @@ const nextSlide = () => currentIndex.value = (currentIndex.value + 1) % filtered
     height: 220px;
     object-fit: contain;
     border-radius: 12px;
-    }
-
-    .cardContent {
-    padding: 15px 0;
-    }
-
-    .cardContent p {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: normal;
-    max-height: 4.5em;
     }
 
     .price {
