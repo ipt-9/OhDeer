@@ -10,13 +10,14 @@
           <button class="arrow right" @click="nextSlide">&#9654;</button>
         </div>
       </div>
-
+<!--
       <div class="filterButtons">
         <button :class="{ active: slideFilter === 'all' }" @click="slideFilter = 'all'">All</button>
         <button :class="{ active: slideFilter === 'items' }" @click="slideFilter = 'items'">Only Items</button>
         <button :class="{ active: slideFilter === 'repairs' }" @click="slideFilter = 'repairs'">Only Repair Shops</button>
       </div>
-      
+      -->
+
       <div class="main">
         <div class="shop">
           <div class="shopCategoriesComponent">
@@ -39,6 +40,20 @@
             <div class="shopGrid">
               <div v-for="item in nonRepairItems" :key="item.id" class="shopCard">
                 <img :src="item.image" alt="Product Image" class="productImage" />
+                <div class="cardContent">
+                  <h4>{{ item.title }}</h4>
+                  <p>{{ item.description }}</p>
+                  <p class="price">${{ item.price }}</p>
+                  <button class="buyButton">Buy Now</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="shopComponent">
+            <h3>New Arrivals</h3>
+            <div class="shopGrid">
+              <div v-for="item in NewArrivals" :key="item.id" class="shopCard">
+                <img :src="item.image_1" alt="Product Image" class="productImage" />
                 <div class="cardContent">
                   <h4>{{ item.title }}</h4>
                   <p>{{ item.description }}</p>
@@ -114,15 +129,33 @@
     { id: 4, title: "Sofa Repair", description: "Fix broken sofas", price: 100, is_repair: 1, image: "https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg" },
   ]);
   const categories = ref([
-    { id: 1, name: "Furniture & Home Items", slug: "furniture-home", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaVNmjsv3kTlDf_0RS0xRjuR4QSqJfrppOUQ&s" },
-    { id: 2, name: "Electronics", slug: "electronics", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaVNmjsv3kTlDf_0RS0xRjuR4QSqJfrppOUQ&s" },
-    { id: 3, name: "Household Appliances", slug: "household-appliances", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaVNmjsv3kTlDf_0RS0xRjuR4QSqJfrppOUQ&s" },
-    { id: 4, name: "Clothing & Accessories", slug: "clothing-accessories", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaVNmjsv3kTlDf_0RS0xRjuR4QSqJfrppOUQ&s" },
-    { id: 5, name: "Vehicles & Mobility", slug: "vehicles-mobility", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaVNmjsv3kTlDf_0RS0xRjuR4QSqJfrppOUQ&s" },
-    { id: 6, name: "Luxury & Accessories", slug: "luxury-accessories", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaVNmjsv3kTlDf_0RS0xRjuR4QSqJfrppOUQ&s" },
-    { id: 7, name: "Toys & Hobby Items", slug: "toys-hobby", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaVNmjsv3kTlDf_0RS0xRjuR4QSqJfrppOUQ&s" },
-    { id: 8, name: "More Categories", slug: "more-categories", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaVNmjsv3kTlDf_0RS0xRjuR4QSqJfrppOUQ&s" }
+    { id: 1, name: "Furniture & Home Items", slug: "furniture-home" },
+    { id: 2, name: "Electronics", slug: "electronics" },
+    { id: 3, name: "Household Appliances", slug: "household-appliances" },
+    { id: 4, name: "Clothing & Accessories", slug: "clothing-accessories" },
+    { id: 5, name: "Vehicles & Mobility", slug: "vehicles-mobility" },
+    { id: 6, name: "Luxury & Accessories", slug: "luxury-accessories" },
+    { id: 7, name: "Toys & Hobby Items", slug: "toys-hobby" },
+    { id: 8, name: "More Categories", slug: "more-categories" }
   ]);
+  const listings = await fetch ('https://api.ohdeer-bmsd22a.bbzwinf.ch/api/posts/all')
+
+  const NewArrivals = computed(() => {
+    return listings.value
+      .filter(item => !item.is_complete && !item.is_repair)
+      .sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+  });
+
+  const Items = computed(() => {
+    return listings.value
+      .filter(item => !item.is_complete && !item.is_repair);
+  });
+
+  const RepairShops = computed(() => {
+    return listings.value
+      .filter(item => item.is_repair);
+  });
+
 
   const nonRepairItems = computed(() => shopItems.value.filter(item => item.is_repair === 0));
   const repairItems = computed(() => shopItems.value.filter(item => item.is_repair === 1));
@@ -208,7 +241,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 15px;
+  border-radius: 0px;
 }
 
 .arrow {
