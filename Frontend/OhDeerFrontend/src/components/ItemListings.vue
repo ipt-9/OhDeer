@@ -1,111 +1,47 @@
 <script setup>
-import { ref, computed } from 'vue'
-import testImage from '@/assets/test.png'
-import { RouterLink } from 'vue-router'
-import slugify from 'slugify'
-import navBar from './nav-bar.vue'
+import { ref, onMounted } from 'vue';
+import slugify from 'slugify';
+import navBar from './nav-bar.vue';
 
-const shopItems = ref([
-  {
-    id: 1,
-    title: 'Wooden Table',
-    link: 'WoodenTable',
-    description: 'Handcrafted table',
-    price: 120,
-    image:
-      'https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg',
-  },
-  {
-    id: 2,
-    title: 'Vintage Chair',
-    link: 'VintageChair',
-    description: 'Classic chair',
-    price: 80,
-    image:
-      'https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg',
-  },
-  {
-    id: 3,
-    title: 'chingchenghanji',
-    link: 'chingchenghanji',
-    description:
-      'Some text about the nverui78  43h79f h78 3478  78z 8 438ohgc348 fzew zewbvf euerhufheberuigjeans..qefrgvergregreger wefewewf ew rgiegier ierg hi hhhhhh pppppp 2222 w r e q 7gregh9ehgehugherhge reui jihnuu ewz',
-    price: 500,
-    image: testImage,
-  },
-  {
-    id: 4,
-    title: 'chingchenghanji',
-    link: 'chingchenghanji',
-    description:
-      'Some text about the nverui78  43h79f h78 3478  78z 8 438ohgc348 fzew zewbvf euerhufheberuigjeans..qefrgvergregreger wefewewf ew rgiegier ierg hi hhhhhh pppppp 2222 w r e q 7gregh9ehgehugherhge reui jihnuu ewz',
-    price: 500,
-    image: testImage,
-  },
-  {
-    id: 5,
-    title: 'chingchenghanji',
-    link: 'chingchenghanji',
-    description:
-      'Some text about the nverui78  43h79f h78 3478  78z 8 438ohgc348 fzew zewbvf euerhufheberuigjeans..qefrgvergregreger wefewewf ew rgiegier ierg hi hhhhhh pppppp 2222 w r e q 7gregh9ehgehugherhge reui jihnuu ewz',
-    price: 500,
-    image: testImage,
-  },
-  {
-    id: 6,
-    title: 'chingchenghanji',
-    link: 'chingchenghanji',
-    description:
-      'Some text about the nverui78  43h79f h78 3478  78z 8 438ohgc348 fzew zewbvf euerhufheberuigjeans..qefrgvergregreger wefewewf ew rgiegier ierg hi hhhhhh pppppp 2222 w r e q 7gregh9ehgehugherhge reui jihnuu ewz',
-    price: 500,
-    image: testImage,
-  },
-])
+const shopItems = ref([]);
+const errorMessage = ref('');
 
-const images = ref([
-  {
-    src: 'https://cdn-images-1.medium.com/max/1600/1*bzScNScXnXNvjg-Ak70EHA.jpeg',
-    url: 'https://example.com/1',
-  },
-  {
-    src: 'https://dornob.com/wp-content/uploads/2009/04/plywood02_1000.jpg',
-    url: 'https://example.com/2',
-  },
-  {
-    src: 'https://www.gen-pack.com/wp-content/uploads/2021/04/Rework-_-Repair-Button-212287633-768x509.jpg',
-    url: 'https://example.com/3',
-  },
-])
+async function fetchItems() {
+  try {
+    const response = await fetch('https://api.ohdeer-bmsd22a.bbzwinf.ch/api/posts/all', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) throw new Error('Failed to fetch items');
+
+    const data = await response.json();
+
+    
+    shopItems.value = data
+      .filter(item => !item.is_complete) 
+      .map(item => ({
+        id: item.id,
+        title: item.title,
+        link: slugify(item.title),
+        description: item.description,
+        price: item.price,
+        image: item.image_1 || 'https://api.ohdeer-bmsd22a.bbzwinf.ch/OhDeerPlaceholder.png',
+      }));
+
+  } catch (err) {
+    errorMessage.value = 'Error fetching items: ' + err.message;
+    console.error(err);
+  }
+}
+
+onMounted(() => {
+  fetchItems();
+});
 </script>
-<template>
-  <main>
-    <navBar />
-    <div class="container">
-      <div class="shop">
-        <div class="shopComponent">
-          <h3>Items</h3>
-          <div class="shopGrid">
-            <div v-for="item in shopItems" :key="item.id" class="shopCard">
-              <img :src="item.image" alt="Product Image" class="productImage" />
-              <h4>{{ item.title }}</h4>
-              <div class="infoGrid">
-                <p class="desc">{{ item.description }}</p>
-                <p class="price">${{ item.price }}</p>
-                <router-link
-                  :to="`/inspectitem/${slugify(item.link)}-${item.id}`"
-                  custom
-                  v-slot="{ navigate }"
-                >
-                  <button class="but" @click="navigate">Buy Now</button>
-                </router-link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </main>
-</template>
+
 <style scoped>
 .container {
   margin: auto;
@@ -152,10 +88,12 @@ const images = ref([
 
 .productImage {
   width: 100%;
-  height: 200px;
+  height: auto;
+  max-height: 300px;
   object-fit: contain;
   border-radius: 12px;
 }
+
 
 @media (max-width: 768px) {
   .shopGrid {
