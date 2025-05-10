@@ -124,93 +124,6 @@
         </div>
       </div>
 
-      <div class="grid-reviews">
-        <div>
-          <div>Reviews</div>
-          <hr />
-
-          <div v-if="ratings && ratings.length">
-            <div>
-              <div
-                v-for="rating in ratings"
-                :key="rating.id"
-                class="card"
-                style="margin-top: 20px; padding: 10px; width: 100%; text-align: start"
-                @click="toggleReviewExtention(rating.id)"
-              >
-                <div v-if="!isExpanded(rating.id)">
-                  <span style="font-size: 18px; font-weight: bold">
-                    <span v-for="i in 5" :key="i" style="font-size: 24px">
-                      <span v-if="i <= rating.repair_rating">★</span>
-                      <span v-else>☆</span>
-                    </span>
-                  </span>
-                  <span style="font-size: 20px; color: #555; margin-left: 1rem">
-                    <strong>Comment:</strong> {{ shortenComment(rating.rating_comment) }}
-                  </span>
-                </div>
-
-                <div v-else style="display: grid; grid-template-rows: 2; grid-template-columns: 2">
-                  <div
-                    style="
-                      font-size: 25px;
-                      color: #000;
-                      margin-left: 1rem;
-                      grid-row: 1;
-                      grid-column: 1;
-                      display: flex;
-                      flex-direction: row;
-                      align-items: end;
-                    "
-                  >
-                    <strong>Comment:</strong>
-                  </div>
-                  <div
-                    style="
-                      font-size: 18px;
-                      font-weight: bold;
-                      grid-row: 1;
-                      grid-column: 2;
-                      border-left: 2px solid #ccc;
-                      padding-left: 10px;
-                    "
-                  >
-                    <div style="display: grid; grid-template-rows: 2">
-                      <div style="grid-row: 1; font-size: 25px">
-                        <span>Repair:</span>
-                        <span v-for="i in 5" :key="i">
-                          <span v-if="i <= rating.repair_rating">★</span>
-                          <span v-else>☆</span>
-                        </span>
-                      </div>
-
-                      <div style="grid-row: 2">
-                        <span>General:</span>
-                        <span v-for="i in 5" :key="i">
-                          <span v-if="i <= rating.general_rating">★</span>
-                          <span v-else>☆</span>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div style="font-size: 20px; color: #555; margin-left: 1rem">
-                    {{ rating.rating_comment }}
-                  </div>
-                </div>
-              </div>
-            </div>
-            <router-link :to="`/comingsoon`" custom v-slot="{ navigate }">
-              <div>
-                <button class="button" style="width: 100%; margin-top: 20px" @click="navigate">
-                  All Ratings
-                </button>
-              </div>
-            </router-link>
-          </div>
-          <div v-else class="card">No ratings</div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -522,6 +435,56 @@ function truncateTitle(title, maxLength) {
 }
 
 /* End */
+
+.review-stars-summary {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.review-comment-short {
+  font-size: 20px;
+  color: #555;
+  margin-left: 1rem;
+}
+
+.review-expanded-grid {
+  display: grid;
+  grid-template-rows: 2;
+  grid-template-columns: 2;
+}
+
+.review-comment-label {
+  font-size: 25px;
+  color: #000;
+  margin-left: 1rem;
+  grid-row: 1;
+  grid-column: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: end;
+}
+
+.review-ratings {
+  font-size: 18px;
+  font-weight: bold;
+  grid-row: 1;
+  grid-column: 2;
+  border-left: 2px solid #ccc;
+  padding-left: 10px;
+  display: grid;
+  grid-template-rows: 2;
+}
+
+.review-rating-block {
+  font-size: 25px;
+}
+
+.review-comment-full {
+  font-size: 20px;
+  color: #555;
+  margin-left: 1rem;
+}
+
 
 @media (max-width: 830px) {
   .profile-grid {

@@ -15,8 +15,8 @@
 
     <div class="nav-right">
       <div class="auth-buttons" v-if="!isLoggedIn">
-        <a href="/login" class="auth-button">Login</a>
-        <a href="/register" class="auth-button">Register</a>
+        <router-link to="/login" exact-active-class="active">Login</router-link>
+        <router-link to="/register" exact-active-class="active">Register</router-link>
       </div>
 
       <div class="user-dropdown" v-if="isLoggedIn">
@@ -86,7 +86,7 @@ export default {
     },
     logout() {
       localStorage.removeItem('token')
-      this.$router.push('/login')
+
     },
   },
 }
