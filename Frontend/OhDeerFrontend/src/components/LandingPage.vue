@@ -39,40 +39,33 @@
             <div class="shopGrid">
               <div v-for="item in nonRepairItems" :key="item.id" class="shopCard">
                 <img :src="item.image" alt="Product Image" class="productImage" />
-                <div class="cardContent">
-                  <h4>{{ item.title }}</h4>
-                  <p>{{ item.description }}</p>
+                <h4>{{ item.title }}</h4>
+                <div class="infoGridItem">
+                  <p class="desc">{{ item.description }}</p>
                   <p class="price">${{ item.price }}</p>
-                  <button class="buyButton">Buy Now</button>
-                </div>
+                  <router-link :to="`/inspectitem/${slugify(item.link)}-${item.id}`" custom v-slot="{navigate}">
+                    <button class="but" @click="navigate">Buy Now</button>
+                  </router-link>
+                </div>                           
               </div>
             </div>
           </div>
 
-        <div class="shopGrid">
-          <div v-for="item in items" :key="item.id" class="shopCard">
-            <img :src="item.image" alt="Product Image" class="productImage" />
-            <div class="cardContent">
-              <h4>{{ item.title }}</h4>
-              <p>{{ item.description }}</p>
-              <p class="price">${{ item.price }}</p>
-              <button class="buyButton">Buy Now</button>
-            </div>
-          </div>
-        </div>
-
           <div class="shopComponent">
             <h3>Repair Shops Near You</h3>
             <div class="shopGrid">
-              <div v-for="item in repairItems" :key="item.id" class="shopCard">
-                <div class="cardImage">
-                  <img :src="item.image" alt="Repair Image" class="productImage" />
-                </div>
-                <div class="cardContent">
-                  <h4>{{ item.title }}</h4>
-                  <p>{{ item.description }}</p>
-                  <p class="price">${{ item.price }}</p>
-                  <button class="repairButton">Get Repair</button>
+              <div v-for="shop in repairItems" :key="shop.id" class="shopCard">
+                <img :src="shop.image" alt="Product Image" class="productImage" />
+                <h4>{{ shop.title }}</h4>
+                <div class="infoGridShop">  
+                  <p class="lab1">Phone: </p>
+                  <p class="inf1">{{ shop.phone }}</p>
+                  <p class="lab2">Address: </p>
+                  <p class="inf2">{{ shop.address + ", " + shop.postalCode }}</p>
+                  <p class="descShop">{{ shop.description }}</p>
+                  <router-link :to="`/inspectrepair/${slugify(shop.link)}-${shop.id}`" custom v-slot="{navigate}">
+                    <button class="butShop" @click="navigate">more information</button>
+                  </router-link>
                 </div>
               </div>
             </div>
@@ -101,6 +94,7 @@
   import navBar from "./nav-bar.vue";
   import { ref } from "vue";
   import { computed } from "vue";
+  import slugify from "slugify";
   import { onMounted } from 'vue';
   const isLoggedIn = ref(false);
   onMounted(() => {
@@ -108,11 +102,14 @@
     isLoggedIn.value = !!token;
   });
   const shopItems = ref([
-    { id: 1, title: "Wooden Table", description: "Handcrafted table", price: 120, is_repair: 0, image: "https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg" },
-    { id: 2, title: "Vintage Chair", description: "Classic chair", price: 80, is_repair: 0, image: "https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg" },
-    { id: 3, title: "Furniture Repair", description: "Fix broken furniture", price: 50, is_repair: 1, image: "https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg" },
-    { id: 4, title: "Sofa Repair", description: "Fix broken sofas", price: 100, is_repair: 1, image: "https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg" },
+    { id: 1, is_repair: 0, title: "Wooden Table", link: "WoodenTable", description: "Handcrafted table", price: 120, image: "https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg" },
+    { id: 2, is_repair: 0, title: "Vintage Chair", link: "VintageChair", description: "Classic chair", price: 80, image: "https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg" },
+    { id: 3, is_repair: 0, title: "Vintage Chair", link: "VintageChair", description: "Classic chair", price: 80, image: "https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg" },
+    { id: 1, is_repair: 1, title: "Furniture Repair", link: "FurnitureRepair", description: "Fix broken furniture", address: "Fifi Street 21", postalCode: "7649 Gabgob", phone: "043 748 384 213 64", image: "https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg" },
+    { id: 2, is_repair: 1, title: "Sofa Repair", link: "SofaRepair", description: "Fix broken sofas", address: "huhu Street 2", postalCode: "2765 Sigma City", phone: "043 748 384 213 64", image: "https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg" },
+    { id: 3, is_repair: 1, title: "Sofa Repair", link: "SofaRepair", description: "Fix broken sofas", address: "huhu Street 2", postalCode: "2765 Sigma City", phone: "043 748 384 213 64", image: "https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg" },
   ]);
+
   const categories = ref([
     { id: 1, name: "Furniture & Home Items", slug: "furniture-home", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaVNmjsv3kTlDf_0RS0xRjuR4QSqJfrppOUQ&s" },
     { id: 2, name: "Electronics", slug: "electronics", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaVNmjsv3kTlDf_0RS0xRjuR4QSqJfrppOUQ&s" },
@@ -281,12 +278,12 @@ h3 {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-.productImage {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 12px;
-}
+  .productImage {
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+    border-radius: 12px;
+  }
 
 .cardContent {
   padding: 15px 0;
@@ -298,47 +295,147 @@ h4 {
   font-weight: bold;
 }
 
-p {
-  font-size: 14px;
-  color: #666;
-  margin: 5px 0;
-}
+  p {
+    font-size: 14px;
+    color: black;
+    margin: 5px 0;
+  }
 
-.price {
-  font-weight: bold;
-  font-size: 16px;
-  color: #388659;
-}
+  button:hover {
+    opacity: 0.9;
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
 
-.buyButton,
-.repairButton {
-  background: #388659;
-  color: white;
-  border: none;
-  padding: 10px 16px;
-  margin-top: 10px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: 0.3s ease;
-}
+  @media (max-width: 768px) {
+    .shopGrid {
+      grid-template-columns: 1fr;
+    }
 
-.repairButton {
-  background: linear-gradient(135deg, #007bff, #0056b3);
-}
+    .slideshow {
+      height: 300px;
+    }
+  }
 
-.buyButton:hover,
-.repairButton:hover {
-  opacity: 0.9;
-}
-
-@media (max-width: 768px) {
-  .shopGrid {
+  .infoGridItem {
+    display: grid;
     grid-template-columns: 1fr;
+    gap: 6px 12px;
+    grid-template-areas:
+    "a"
+    "b"
+    "c";
+    align-items: center;
+    margin-left: 10%;
+    margin-right: 10%;
+    color: black;
   }
 
-  .slideshow {
-    height: 300px;
+  .desc {
+    grid-area: a;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    max-height: 4.5em;
+    height: 4.5em;
+    text-align: center;
   }
-}
-</style>
+
+  .price {
+    grid-area: b;
+    font-weight: bold;
+    font-size: 16px;
+    color: #388659;
+    text-align: center;
+  }
+
+  .but {
+    grid-area: c;
+    background: #388659;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    margin-top: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.3s ease;
+    align-items: center;
+  }
+
+  button:hover {
+    opacity: 0.9;
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .infoGridShop {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: 6px 12px;
+    grid-template-areas:
+    "a b"
+    "c d"
+    "e e"
+    "f f";
+    align-items: center;
+    margin-left: 10%;
+    margin-right: 10%;
+    color: black;
+  }
+
+  .lab1 {
+    grid-area: a;
+    font-weight: bold;
+    text-align: left;
+  }
+
+  .lab2 {
+    grid-area: c;
+    font-weight: bold;
+    text-align: left;
+    max-height: 3em;
+    height: 3em;
+  }
+
+  .inf1 {
+    grid-area: b;
+    text-align: left;
+  }
+
+  .inf2 {
+    grid-area: d;
+    text-align: left;
+    max-height: 3em;
+    height: 3em;
+  }
+
+  .descShop {
+    grid-area: e;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    max-height: 4.5em;
+    height: 4.5em;
+  }
+
+  .butShop {
+    grid-area: f;
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    margin-top: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.3s ease;
+    align-items: center;
+  }
+  </style>

@@ -107,30 +107,121 @@ async function submitListing() {
 </script>
 
 
+
 <style scoped>
 .create-listing {
-  max-width: 500px;
+  max-width: 600px;
   margin: 2rem auto;
-  padding: 1.5rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+  padding: 2rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  transition: all 0.3s ease;
 }
+
+.create-listing:hover {
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #333;
+  font-size: 1.8rem;
+}
+
 .form-section {
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
+  gap: 1rem;
   margin-top: 1rem;
 }
-.warning {
-  color: darkred;
+
+label {
   font-weight: bold;
+  color: #555;
 }
+
+input, textarea, select {
+  width: 100%;
+  padding: 0.8rem;
+  margin-top: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  transition: border-color 0.3s ease;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: #6b8e23;
+  background-color: #fff;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+button {
+  width: 100%;
+  padding: 0.8rem;
+  background-color: #6b8e23;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #556b2f;
+}
+
+button:active {
+  background-color: #4a5e21;
+}
+
+.warning, .error, .success {
+  text-align: center;
+  padding: 0.8rem;
+  margin-top: 1rem;
+  border-radius: 6px;
+}
+
+.warning {
+  background-color: #ffe5e5;
+  color: #b22222;
+}
+
 .error {
-  color: red;
-  margin-top: 1rem;
+  background-color: #ffe5e5;
+  color: #b22222;
 }
+
 .success {
-  color: green;
-  margin-top: 1rem;
+  background-color: #e5ffe5;
+  color: #228b22;
+}
+
+@media (max-width: 768px) {
+  .create-listing {
+    padding: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+  }
+
+  button {
+    font-size: 0.9rem;
+  }
+
+  input, textarea, select {
+    padding: 0.6rem;
+  }
 }
 </style>
