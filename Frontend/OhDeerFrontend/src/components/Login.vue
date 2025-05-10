@@ -29,7 +29,7 @@ export default {
       this.error = ''
 
       if (!this.email || !this.password) {
-        this.error = 'Please fill in all fields.'
+        this.error = "Please fill in all fields."
         return
       }
 
@@ -65,6 +65,7 @@ export default {
       console.error(err);
     }
   }
+}
 }
 </script>
 

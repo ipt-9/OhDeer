@@ -123,7 +123,74 @@
           <div v-else class="card">No Posts</div>
         </div>
       </div>
+      <div class="grid-reviews">
+        <div>
+          <div>Reviews</div>
+          <hr />
 
+          <div v-if="ratings && ratings.length">
+            <div>
+              <div
+                v-for="rating in ratings"
+                :key="rating.id"
+                class="card review-card"
+                style="margin-top: 20px; padding: 10px; width: 100%; text-align: start"
+                @click="toggleReviewExtention(rating.id)"
+              >
+                <div v-if="!isExpanded(rating.id)">
+                  <span class="review-stars-summary">
+                    <span v-for="i in 5" :key="i" style="font-size: 24px">
+                      <span v-if="i <= rating.repair_rating">★</span>
+                      <span v-else>☆</span>
+                    </span>
+                  </span>
+                  <span class="review-comment-short">
+                    <strong>Comment:</strong> {{ shortenComment(rating.rating_comment) }}
+                  </span>
+                </div>
+
+                <div v-else class="review-expanded-grid">
+                  <div class="review-comment-label">
+                    <strong>Comment:</strong>
+                  </div>
+
+                  <div class="review-ratings">
+                    <div class="review-rating-block">
+                      <span>Repair:</span>
+                      <span v-for="i in 5" :key="i">
+                        <span v-if="i <= rating.repair_rating">★</span>
+                        <span v-else>☆</span>
+                      </span>
+                    </div>
+
+                    <div class="review-rating-block" style="font-size: 20px">
+                      <span>General:</span>
+                      <span v-for="i in 5" :key="i">
+                        <span v-if="i <= rating.general_rating">★</span>
+                        <span v-else>☆</span>
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="review-comment-full">
+                    {{ rating.rating_comment }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <router-link :to="`/comingsoon`" custom v-slot="{ navigate }">
+              <div>
+                <button class="button" style="width: 100%; margin-top: 20px" @click="navigate">
+                  All Ratings
+                </button>
+              </div>
+            </router-link>
+          </div>
+
+          <div v-else class="card">No ratings</div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -484,7 +551,6 @@ function truncateTitle(title, maxLength) {
   color: #555;
   margin-left: 1rem;
 }
-
 
 @media (max-width: 830px) {
   .profile-grid {
