@@ -38,7 +38,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 
-
 const token = ref('')
 const isLoggedIn = ref(false)
 const canCreateRepairShop = ref(false)
@@ -63,8 +62,6 @@ onMounted(() => {
   isLoggedIn.value = true
 })
 
-
-
 async function submitListing() {
   errorMessage.value = ''
   successMessage.value = ''
@@ -80,16 +77,16 @@ async function submitListing() {
     description: description.value,
     price: price.value,
     is_repair: listingType.value === 'repair',
-    image_1: 'https://en.m.wikipedia.org/wiki/File:Example_image.svg'
+    image_1: 'https://en.m.wikipedia.org/wiki/File:Example_image.svg',
   }
 
   try {
     const res = await fetch('https://api.ohdeer-bmsd22a.bbzwinf.ch/api/posts/create', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${token.value}`,
+        Authorization: `Bearer ${token.value}`,
         Accept: 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(payload),
     })
@@ -105,8 +102,6 @@ async function submitListing() {
   }
 }
 </script>
-
-
 
 <style scoped>
 .create-listing {
@@ -143,7 +138,9 @@ label {
   color: #555;
 }
 
-input, textarea, select {
+input,
+textarea,
+select {
   width: 100%;
   padding: 0.8rem;
   margin-top: 0.5rem;
@@ -153,7 +150,9 @@ input, textarea, select {
   transition: border-color 0.3s ease;
 }
 
-input:focus, textarea:focus, select:focus {
+input:focus,
+textarea:focus,
+select:focus {
   outline: none;
   border-color: #6b8e23;
   background-color: #fff;
@@ -185,7 +184,9 @@ button:active {
   background-color: #4a5e21;
 }
 
-.warning, .error, .success {
+.warning,
+.error,
+.success {
   text-align: center;
   padding: 0.8rem;
   margin-top: 1rem;
@@ -220,7 +221,9 @@ button:active {
     font-size: 0.9rem;
   }
 
-  input, textarea, select {
+  input,
+  textarea,
+  select {
     padding: 0.6rem;
   }
 }

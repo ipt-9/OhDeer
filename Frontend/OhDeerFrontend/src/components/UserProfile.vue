@@ -21,7 +21,9 @@
 
           <div class="profile-info">
             <h1 class="username">{{ user.username }}</h1>
-            <a :href="user.website" target="_blank" class="button" style="text-decoration: none;">Go to Website</a>
+            <a :href="user.website" target="_blank" class="button" style="text-decoration: none"
+              >Go to Website</a
+            >
           </div>
 
           <div class="ratings">
@@ -82,14 +84,22 @@
                   <div class="carousel-track" ref="carouselTrack">
                     <div class="carousel-spacer"></div>
                     <div class="carousel-slide" v-for="post in posts" :key="post.id">
-                      <div class="carousel-image-wrapper">
-                        <img :src="post.image_1" alt="Post Image" class="carousel-image" />
-                      </div>
-                      <div>
-                        <h3>{{ truncateTitle(post.title, 4) }}</h3>
-                        <p><b>Price:</b> ${{ post.price.toFixed(2) }}</p>
-                        <p><b>Needs repair:</b> {{ post.is_repair ? 'Yes' : 'No' }}</p>
-                      </div>
+                      <router-link
+                        :to="`/inspectitem/${slugify(post.title)}-${post.id}`"
+                        custom
+                        v-slot="{ navigate }"
+                      >
+                        <div @click="navigate">
+                          <div class="carousel-image-wrapper">
+                            <img :src="post.image_1" alt="Post Image" class="carousel-image" />
+                          </div>
+                          <div>
+                            <h3>{{ truncateTitle(post.title, 4) }}</h3>
+                            <p><b>Price:</b> ${{ post.price.toFixed(2) }}</p>
+                            <p><b>Needs repair:</b> {{ post.is_repair ? 'Yes' : 'No' }}</p>
+                          </div>
+                        </div>
+                      </router-link>
                     </div>
                     <div class="carousel-spacer"></div>
                   </div>
@@ -103,7 +113,11 @@
               <!-- End -->
             </div>
             <div>
-              <button class="button" style="width: 100%; margin-top: 20px">All Posts</button>
+              <router-link :to="`/comingsoon`" custom v-slot="{ navigate }">
+                <button class="button" style="width: 100%; margin-top: 20px" @click="navigate">
+                  All Posts
+                </button>
+              </router-link>
             </div>
           </div>
           <div v-else class="card">No Posts</div>
@@ -122,21 +136,77 @@
                 :key="rating.id"
                 class="card"
                 style="margin-top: 20px; padding: 10px; width: 100%; text-align: start"
+                @click="toggleReviewExtention(rating.id)"
               >
-                <span style="font-size: 18px; font-weight: bold">
-                  <span v-for="i in 5" :key="i" style="font-size: 24px">
-                    <span v-if="i <= rating.repair_rating">★</span>
-                    <span v-else>☆</span>
+                <div v-if="!isExpanded(rating.id)">
+                  <span style="font-size: 18px; font-weight: bold">
+                    <span v-for="i in 5" :key="i" style="font-size: 24px">
+                      <span v-if="i <= rating.repair_rating">★</span>
+                      <span v-else>☆</span>
+                    </span>
                   </span>
-                </span>
-                <span style="font-size: 20px; color: #555; margin-left: 1rem">
-                  <strong>Comment:</strong> {{ shortenComment(rating.rating_comment) }}
-                </span>
+                  <span style="font-size: 20px; color: #555; margin-left: 1rem">
+                    <strong>Comment:</strong> {{ shortenComment(rating.rating_comment) }}
+                  </span>
+                </div>
+
+                <div v-else style="display: grid; grid-template-rows: 2; grid-template-columns: 2">
+                  <div
+                    style="
+                      font-size: 25px;
+                      color: #000;
+                      margin-left: 1rem;
+                      grid-row: 1;
+                      grid-column: 1;
+                      display: flex;
+                      flex-direction: row;
+                      align-items: end;
+                    "
+                  >
+                    <strong>Comment:</strong>
+                  </div>
+                  <div
+                    style="
+                      font-size: 18px;
+                      font-weight: bold;
+                      grid-row: 1;
+                      grid-column: 2;
+                      border-left: 2px solid #ccc;
+                      padding-left: 10px;
+                    "
+                  >
+                    <div style="display: grid; grid-template-rows: 2">
+                      <div style="grid-row: 1; font-size: 25px">
+                        <span>Repair:</span>
+                        <span v-for="i in 5" :key="i">
+                          <span v-if="i <= rating.repair_rating">★</span>
+                          <span v-else>☆</span>
+                        </span>
+                      </div>
+
+                      <div style="grid-row: 2">
+                        <span>General:</span>
+                        <span v-for="i in 5" :key="i">
+                          <span v-if="i <= rating.general_rating">★</span>
+                          <span v-else>☆</span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style="font-size: 20px; color: #555; margin-left: 1rem">
+                    {{ rating.rating_comment }}
+                  </div>
+                </div>
               </div>
             </div>
-            <div>
-              <button class="button" style="width: 100%; margin-top: 20px">All Ratings</button>
-            </div>
+            <router-link :to="`/comingsoon`" custom v-slot="{ navigate }">
+              <div>
+                <button class="button" style="width: 100%; margin-top: 20px" @click="navigate">
+                  All Ratings
+                </button>
+              </div>
+            </router-link>
           </div>
           <div v-else class="card">No ratings</div>
         </div>
@@ -146,10 +216,14 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { onMounted, ref, computed } from 'vue'
+import { useRoute } from 'vue-router'
+import slugify from 'slugify'
 
-const router = useRouter()
+const reviewExtendId = ref(0)
+function isExpanded(id) {
+  return reviewExtendId.value === id
+}
 const route = useRoute()
 const userId = route.params.id
 const isOwnProfile = ref(false)
@@ -165,8 +239,8 @@ function shortenComment(comment) {
   return comment.length > 100 ? comment.substring(0, 100) + '...' : comment
 }
 
-const goBack = () => {
-  router.go(-1)
+function toggleReviewExtention(id) {
+  reviewExtendId.value = reviewExtendId.value === id ? 0 : id
 }
 
 async function fetchFromApi(path = '') {
@@ -286,7 +360,7 @@ function truncateTitle(title, maxLength) {
   border-radius: 8px;
   font-size: 1rem;
   cursor: pointer;
-  box-shadow: .1rem 0.1rem 5px rgb(141, 141, 141);
+  box-shadow: 0.1rem 0.1rem 5px rgb(141, 141, 141);
 }
 
 .avatar {
@@ -370,12 +444,12 @@ function truncateTitle(title, maxLength) {
   overflow: hidden;
   margin-top: 1rem;
   max-width: 700px;
-  position: relative; 
+  position: relative;
 }
 
 .carousel-container::before,
 .carousel-container::after {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   width: 4rem;

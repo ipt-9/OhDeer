@@ -1,53 +1,62 @@
 <script setup>
-import { useRoute } from 'vue-router';
-import { RouterLink } from "vue-router";
-import slugify from "slugify";
-import navBar from './nav-bar.vue';
+import { useRoute } from 'vue-router'
+import { RouterLink } from 'vue-router'
+import slugify from 'slugify'
+import navBar from './nav-bar.vue'
 
 const route = useRoute()
 const { title, id } = route.params
-
 </script>
 <template>
-    <main>
-        <navBar />
-        <div class="container">
-            <div class="item">
-                <div class="grid">
-                    <div class="card">
-                        <img class="image" src="https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg">                       
-                    </div>
-                    <div class="card">
-                        <div class="infoGrid">
-                            <div class="title">
-                                <h1>{{ title }}</h1>
-                            </div>
-                            <div class="info">
-                                <h4 class="lab1">description:</h4>
-                                <p class="desc">huewhu  ezig ehg uirhhu uhih uihrh ui uih uirhui iu iug g ff  ztf tzf tzfft tz ftz ztftf zu tzf zjfz ztt ftz fztu tzt tz ftzztfftjfhj ftzftz f e gzufvgzu guf gwz  v  g erg reg r 4geg fr</p>
-                                
-                                <h4 class="lab2">delivery:</h4>
-                                <p class="deliv">uebuwfwgbfuzrfberui</p>
-                                
-                                <h4 class="lab3">phone:</h4> 
-                                <p class="inf1">041 273 718 23 76</p>    
-                                
-                                <h4 class="lab4">email:</h4>
-                                <p class="inf2">12345678901234567890123456789012345@12345678901234567890123456789012345@12345678901234567890123456789012345@</p>
-                            </div>
-                            <div class="space"></div>
-                            <div class="footer">
-                                <h4 class="price">850 CHF</h4>
-                                <router-link :to="`/InspectItem`" custom v-slot="{navigate}"> <!-- /${slugify(item.link)}-${item.id} -->
-                                    <button class="but" @click="navigate">Purchase</button>
-                                </router-link>
-                            </div>
-                        </div>
-                    </div>                
-                </div>                                    
+  <main>
+    <navBar />
+    <div class="container">
+      <div class="item">
+        <div class="grid">
+          <div class="card">
+            <img
+              class="image"
+              src="https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg"
+            />
+          </div>
+          <div class="card">
+            <div class="infoGrid">
+              <div class="title">
+                <h1>{{ title }}</h1>
+              </div>
+              <div class="info">
+                <h4 class="lab1">description:</h4>
+                <p class="desc">
+                  huewhu ezig ehg uirhhu uhih uihrh ui uih uirhui iu iug g ff ztf tzf tzfft tz ftz
+                  ztftf zu tzf zjfz ztt ftz fztu tzt tz ftzztfftjfhj ftzftz f e gzufvgzu guf gwz v g
+                  erg reg r 4geg fr
+                </p>
+
+                <h4 class="lab2">delivery:</h4>
+                <p class="deliv">uebuwfwgbfuzrfberui</p>
+
+                <h4 class="lab3">phone:</h4>
+                <p class="inf1">041 273 718 23 76</p>
+
+                <h4 class="lab4">email:</h4>
+                <p class="inf2">
+                  12345678901234567890123456789012345@12345678901234567890123456789012345@12345678901234567890123456789012345@
+                </p>
+              </div>
+              <div class="space"></div>
+              <div class="footer">
+                <h4 class="price">850 CHF</h4>
+                <router-link :to="`/InspectItem`" custom v-slot="{ navigate }">
+                  <!-- /${slugify(item.link)}-${item.id} -->
+                  <button class="but" @click="navigate">Purchase</button>
+                </router-link>
+              </div>
             </div>
+          </div>
         </div>
-    </main>
+      </div>
+    </div>
+  </main>
 </template>
 <style scoped>
 .container {

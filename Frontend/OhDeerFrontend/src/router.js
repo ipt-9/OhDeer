@@ -13,7 +13,7 @@ import InspectRepair from '@/components/InspectRepair.vue'
 
 import ComingSoon from './components/ComingSoon.vue'
 import Payment from './components/PaymentScreen.vue'
-import Profile from './components/Profile.vue'
+import Profile from './components/UserProfile.vue'
 
 const routes = [
   {

@@ -3,8 +3,6 @@
     <NavBar />
 
     <div class="content-wrapper">
-
-
       <h2 class="page-title">Search Results</h2>
 
       <div v-if="filteredPosts.length === 0" class="no-results">No results found.</div>
