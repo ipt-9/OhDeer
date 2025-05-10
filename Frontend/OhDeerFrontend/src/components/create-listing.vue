@@ -22,7 +22,6 @@
           <select v-model="categoryId">
             <option value="1">Household Appliances</option>
             <option value="2">Electronics</option>
-            <!-- Add more categories here -->
           </select>
         </label>
       </div>

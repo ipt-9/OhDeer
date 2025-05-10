@@ -1,54 +1,89 @@
 <script setup>
-import { useRoute } from 'vue-router';
-import { RouterLink } from "vue-router";
-import slugify from "slugify";
-import navBar from './nav-bar.vue';
+import { ref, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+import navBar from './nav-bar.vue'
 
 const route = useRoute()
-const { title, id } = route.params
+const item = ref(null)
+const errorMessage = ref('')
+const { id } = route.params
 
+async function fetchItem() {
+  try {
+    const response = await fetch(`https://api.ohdeer-bmsd22a.bbzwinf.ch/api/posts/${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch item')
+    }
+
+    const data = await response.json()
+    item.value = {
+      title: data.title,
+      description: data.description,
+      phone: data.phone_number || 'No phone info',
+      email: data.email || 'No email info',
+      price: data.price,
+      image: data.image_1 || 'https://api.ohdeer-bmsd22a.bbzwinf.ch/OhDeerPlaceholder.png',
+    }
+  } catch (err) {
+    errorMessage.value = err.message
+    console.error('Error fetching item:', err)
+  }
+}
+
+onMounted(() => {
+  fetchItem()
+})
 </script>
+
 <template>
-    <main>
-        <navBar />
-        <div class="container">
-            <div class="item">
-                <div class="grid">
-                    <div class="card">
-                        <img class="image" src="https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg">                       
-                    </div>
-                    <div class="card">
-                        <div class="infoGrid">
-                            <div class="title">
-                                <h1>{{ title }}</h1>
-                            </div>
-                            <div class="info">
-                                <h4 class="lab1">description:</h4>
-                                <p class="desc">huewhu  ezig ehg uirhhu uhih uihrh ui uih uirhui iu iug g ff  ztf tzf tzfft tz ftz ztftf zu tzf zjfz ztt ftz fztu tzt tz ftzztfftjfhj ftzftz f e gzufvgzu guf gwz  v  g erg reg r 4geg fr</p>
-                                
-                                <h4 class="lab2">delivery:</h4>
-                                <p class="deliv">uebuwfwgbfuzrfberui</p>
-                                
-                                <h4 class="lab3">phone:</h4> 
-                                <p class="inf1">041 273 718 23 76</p>    
-                                
-                                <h4 class="lab4">email:</h4>
-                                <p class="inf2">12345678901234567890123456789012345@12345678901234567890123456789012345@12345678901234567890123456789012345@</p>
-                            </div>
-                            <div class="space"></div>
-                            <div class="footer">
-                                <h4 class="price">850 CHF</h4>
-                                <router-link :to="`/InspectItem`" custom v-slot="{navigate}"> <!-- /${slugify(item.link)}-${item.id} -->
-                                    <button class="but" @click="navigate">Purchase</button>
-                                </router-link>
-                            </div>
-                        </div>
-                    </div>                
-                </div>                                    
+  <main>
+    <navBar />
+    <div class="container">
+      <div class="item">
+        <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
+        <div v-else-if="item" class="grid">
+          <div class="card">
+            <img :src="item.image" alt="Item Image" class="image" />
+          </div>
+          <div class="card">
+            <div class="infoGrid">
+              <div class="title">
+                <h1>{{ item.title }}</h1>
+              </div>
+              <div class="info">
+                <h4 class="lab1">Description:</h4>
+                <p class="desc">{{ item.description }}</p>
+                
+                <h4 class="lab2">Delivery:</h4>
+                <p class="deliv">{{ item.delivery }}</p>
+                
+                <h4 class="lab3">Phone:</h4> 
+                <p class="inf1">{{ item.phone }}</p>    
+                
+                <h4 class="lab4">Email:</h4>
+                <p class="inf2">{{ item.email }}</p>
+              </div>
+              <div class="space"></div>
+              <div class="footer">
+                <h4 class="price">{{ item.price }} CHF</h4>
+                <router-link to="/marketplace">
+                  <button class="but">Back to Marketplace</button>
+                </router-link>
+              </div>
             </div>
-        </div>
-    </main>
+          </div>                
+        </div>                                    
+      </div>
+    </div>
+  </main>
 </template>
+
 <style scoped>
 .container {
   max-width: 1400px;

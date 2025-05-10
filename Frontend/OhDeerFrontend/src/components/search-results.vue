@@ -1,105 +1,121 @@
 <template>
   <div class="search-page">
     <NavBar />
-
     <div class="content-wrapper">
-
-
       <h2 class="page-title">Search Results</h2>
-
       <div v-if="filteredPosts.length === 0" class="no-results">No results found.</div>
-
-      <div v-else class="posts-grid">
-        <div v-for="post in filteredPosts" :key="post.PostId" class="post-card">
-          <h3>{{ post.Title }}</h3>
-          <p>{{ post.Description }}</p>
-          <img :src="post.Image" alt="Post Image" class="post-img" />
-          <p><strong>Category:</strong> {{ getCategoryName(post.fk_CategoryId) }}</p>
-          <p><strong>Price:</strong> CHF {{ post.Price }}</p>
-          <div class="tags">
-            <span v-if="post.IsRepair" class="tag repair">Repair</span>
-            <span v-if="post.IsComplete" class="tag complete">Complete</span>
-          </div>
+      <div v-if="filteredPosts.length === 0" class="no-results">No results found.</div>
+    <div v-else class="posts-grid">
+      <div v-for="post in filteredPosts" :key="post.id" class="post-card">
+        <h3>{{ post.title }}</h3>
+        
+        <img :src="post.image" alt="Post Image" class="post-img" />
+        <p>{{ post.description }}</p>
+        <p><strong>Category:</strong> {{ post.categoryName }}</p>
+        <p><strong>Price:</strong> CHF {{ post.price }}</p>
+        <div class="tags">
+          <span v-if="post.isRepair" class="tag repair">Repair</span>
+          <span v-if="post.isComplete" class="tag complete">Complete</span>
         </div>
       </div>
+    </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { computed, ref, watch } from 'vue'
+import { computed, ref, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import NavBar from './nav-bar.vue'
 
-const posts = ref([
-  {
-    PostId: 1,
-    fk_CategoryId: 1,
-    fk_CustomerId: 101,
-    Title: 'Washing Machine',
-    Description: 'Need someone to fix a broken washer.',
-    Price: 80,
-    IsRepair: true,
-    IsComplete: false,
-    Image: 'https://thumbs.dreamstime.com/b/broken-washing-machine-dump-246342207.jpg',
-  },
-  {
-    PostId: 2,
-    fk_CategoryId: 2,
-    fk_CustomerId: 102,
-    Title: 'Sell Old Laptop',
-    Description: 'Used laptop in good condition for sale.',
-    Price: 300,
-    IsRepair: false,
-    IsComplete: true,
-    Image: 'https://source.unsplash.com/400x300/?laptop',
-  },
-])
-
+const posts = ref([]);
 const categories = [
-  { id: 1, slug: 'household-appliances', name: 'Household Appliances' },
-  { id: 2, slug: 'electronics', name: 'Electronics' },
-]
+  { id: 1, name: 'Household Appliances' },
+  { id: 2, name: 'Electronics' },
+  { id: 3, name: 'Furniture' },
+  { id: 4, name: 'Services' },
+  { id: 5, name: 'Automotive' }
+];
 
-const route = useRoute()
-const searchQuery = ref(route.query.q?.toLowerCase() || '')
+const route = useRoute();
+const searchQuery = ref(route.query.q?.toLowerCase() || '');
 
 const selectedCategories = ref(
   (route.query.categories || '').split(',').filter((c) => c.trim() !== ''),
-)
-function getCategoryName(catId) {
-  return categories.find((c) => c.id === catId)?.name || 'Unknown'
+);
+
+async function fetchPosts() {
+  try {
+    const response = await fetch('https://api.ohdeer-bmsd22a.bbzwinf.ch/api/posts/all', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch posts');
+    }
+
+    const data = await response.json();
+
+    posts.value = data
+      .filter(post => !post.is_complete) 
+      .map(post => {
+        const category = categories.find(c => c.id === post.category_id);
+        return {
+          id: post.id,
+          title: post.title,
+          description: post.description,
+          price: post.price,
+          image: post.image_1, 
+          isRepair: post.is_repair,
+          isComplete: post.is_complete,
+          categoryName: category ? category.name : 'Unknown'
+        };
+      });
+
+  } catch (err) {
+    console.error('Error fetching posts:', err);
+  }
 }
 
 function matchesSearch(post, query) {
-  if (!query) return true
+  if (!query) return true;
 
-  const words = query.trim().toLowerCase().split(/\s+/)
-  const haystack = (post.Title + ' ' + post.Description).toLowerCase()
-  return words.every((word) => haystack.includes(word))
+  const words = query.trim().toLowerCase().split(/\s+/);
+  const haystack = (post.title + ' ' + post.description).toLowerCase();
+  return words.every((word) => haystack.includes(word));
 }
 
 const filteredPosts = computed(() => {
   return posts.value.filter((post) => {
-    const matches = matchesSearch(post, searchQuery.value)
+    const matches = matchesSearch(post, searchQuery.value);
 
-    const catSlug = categories.find((c) => c.id === post.fk_CategoryId)?.slug?.toLowerCase()
+    const catName = post.categoryName.toLowerCase();
     const matchesCategory =
-      selectedCategories.value.length === 0 || selectedCategories.value.includes(catSlug)
+      selectedCategories.value.length === 0 || selectedCategories.value.includes(catName);
 
-    return matches && matchesCategory
-  })
-})
+    return matches && matchesCategory;
+  });
+});
 
 watch(
   () => route.query,
   (newQuery) => {
-    searchQuery.value = newQuery.q?.toLowerCase() || ''
-    selectedCategories.value = (newQuery.categories || '').split(',').filter((c) => c.trim() !== '')
+    searchQuery.value = newQuery.q?.toLowerCase() || '';
+    selectedCategories.value = (newQuery.categories || '').split(',').filter((c) => c.trim() !== '');
   },
   { immediate: true },
-)
+);
+
+onMounted(() => {
+  fetchPosts();
+});
 </script>
+
+
+
 
 <style scoped>
 .search-page {

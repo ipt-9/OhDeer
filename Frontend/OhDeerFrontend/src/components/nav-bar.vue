@@ -85,10 +85,29 @@ export default {
     toggleMobileMenu() {
       this.mobileMenuOpen = !this.mobileMenuOpen
     },
-    logout() {
-      localStorage.removeItem('token')
+    async logout() {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) return;
 
-    },
+      const response = await fetch('https://api.ohdeer-bmsd22a.bbzwinf.ch/api/auth/logout', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        console.error('Logout failed');
+        return;
+      }
+      localStorage.removeItem('token');
+      this.$router.push('/login');
+    } catch (err) {
+      console.error('Error during logout:', err);
+    }
+  },
   },
 }
 </script>

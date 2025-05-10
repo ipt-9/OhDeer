@@ -59,7 +59,7 @@ export default {
       })
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify())
-      this.$router.push('/home');
+      this.$router.push('/');
 
     } catch (err) {
       this.error = 'An error occurred. Please try again.';
