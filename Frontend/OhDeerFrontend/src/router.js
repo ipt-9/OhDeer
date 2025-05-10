@@ -31,10 +31,6 @@ const routes = [
     meta: { layout: 'auth' },
   },
   {
-    path: '/nav-bar',
-    component: navBar,
-  },
-  {
     path: '/search-bar',
     component: searchBar,
   },
