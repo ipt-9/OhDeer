@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Login from './components/Login.vue'
 import Register from './components/Register.vue'
-import navBar from './components/nav-bar.vue'
 import searchBar from './components/search-bar.vue'
 import LandingPage from './components/LandingPage.vue'
 import SearchResults from './components/search-results.vue'
@@ -14,6 +13,8 @@ import InspectRepair from '@/components/InspectRepair.vue'
 import ComingSoon from './components/ComingSoon.vue'
 import Payment from './components/PaymentScreen.vue'
 import Profile from './components/UserProfile.vue'
+
+import settings from './components/settings.vue'
 
 const routes = [
   {
@@ -33,6 +34,10 @@ const routes = [
   {
     path: '/search-bar',
     component: searchBar,
+  },
+  {
+    path: '/settings',
+    component: settings,
   },
   {
     path: '/search-results',

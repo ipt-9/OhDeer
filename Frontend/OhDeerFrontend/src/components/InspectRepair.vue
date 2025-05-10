@@ -1,61 +1,89 @@
 <script setup>
+import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { RouterLink } from 'vue-router'
-import slugify from 'slugify'
 import navBar from './nav-bar.vue'
 
 const route = useRoute()
-const { title, id } = route.params
+const repair = ref(null)
+const errorMessage = ref('')
+const { id } = route.params
+
+async function fetchRepair() {
+  try {
+    const response = await fetch(`https://api.ohdeer-bmsd22a.bbzwinf.ch/api/posts/${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch repair details')
+    }
+
+    const data = await response.json()
+    repair.value = {
+      title: data.title,
+      description: data.description,
+      link: data.website || 'No website info', 
+      address: data.address || 'No address info',
+      postalCode: data.postal_code || 'No postal code',
+      email: data.email || 'No email info',
+      phone: data.phone_number || 'No phone info',
+      image: data.image_1 || 'https://api.ohdeer-bmsd22a.bbzwinf.ch/OhDeerPlaceholder.png',
+    }
+  } catch (err) {
+    errorMessage.value = err.message
+    console.error('Error fetching repair:', err)
+  }
+}
+
+onMounted(() => {
+  fetchRepair()
+})
 </script>
 <template>
   <main>
     <navBar />
     <div class="container">
       <div class="item">
-        <div class="grid">
+        <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
+        <div v-else-if="repair" class="grid">
           <div class="card">
-            <img
-              class="image"
-              src="https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg"
-            />
+            <img :src="repair.image" alt="Repair Image" class="image" />
           </div>
           <div class="card">
             <div class="infoGrid">
               <div class="title">
-                <h1>{{ title }}</h1>
+                <h1>{{ repair.title }}</h1>
               </div>
               <div class="info">
-                <h4 class="lab1">description:</h4>
-                <p class="desc">
-                  huewhu ezig ehg uirhhu uhih uihrh ui uih uirhui iu iug g ff ztf tzf tzfft tz ftz
-                  ztftf zu tzf zjfz ztt ftz fztu tzt tz ftzztfftjfhj ftzftz f e gzufvgzu guf gwz v g
-                  erg reg r 4geg fr
-                </p>
-
+                <h4 class="lab1">Description:</h4>
+                <p class="desc">{{ repair.description }}</p>
+                
                 <h4 class="lab2">Link:</h4>
-                <p class="inf1">https://www.google.com/maps</p>
-
+                <p class="inf1"><a :href="repair.link" target="_blank">{{ repair.link }}</a></p>
+                
                 <h4 class="lab3">Address:</h4>
-                <p class="inf2">uebuwfwgbfuzrfberui</p>
-
-                <h4 class="lab4">Postal Code:</h4>
-                <p class="inf3">16383461384728438</p>
-
-                <h4 class="lab5">email:</h4>
-                <p class="inf4">
-                  12345678901234567890123456789012345@12345678901234567890123456789012345@12345678901234567890123456789012345@
-                </p>
-
+                <p class="inf2">{{ repair.address }}</p>
+                
+                <h4 class="lab4">Postal Code:</h4> 
+                <p class="inf3">{{ repair.postalCode }}</p>    
+                
+                <h4 class="lab5">Email:</h4>
+                <p class="inf4">{{ repair.email }}</p>
+                
                 <h4 class="lab6">Phone:</h4>
-                <p class="inf5">532784327r46343784283428</p>
-              </div>
+                <p class="inf5">{{ repair.phone }}</p>
+              </div>       
             </div>
-          </div>
-        </div>
+          </div>                   
+        </div>                                     
       </div>
     </div>
   </main>
 </template>
+
 <style scoped>
 .container {
   max-width: 1400px;
