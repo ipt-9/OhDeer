@@ -42,6 +42,36 @@ onMounted(() => {
 });
 </script>
 
+<template>
+  <main>
+    <navBar />
+    <div class="container">
+      <div class="shop">
+        <div class="shopComponent">
+          <h3>Items</h3>
+          <div class="shopGrid">
+            <div v-for="item in shopItems" :key="item.id" class="shopCard">
+              <img :src="item.image" alt="Product Image" class="productImage" />
+              <h4 class="title">{{ item.title }}</h4>
+              <div class="infoGrid">
+                <p class="desc">{{ item.description }}</p>
+                <p class="price">${{ item.price }}</p>
+                <router-link
+                  :to="`/inspectitem/${slugify(item.link)}-${item.id}`"
+                  custom
+                  v-slot="{ navigate }"
+                >
+                  <button class="but" @click="navigate">Buy Now</button>
+                </router-link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</template>
+
 <style scoped>
 .container {
   margin: auto;
@@ -178,5 +208,16 @@ button:hover {
   opacity: 0.9;
   transform: scale(1.05);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.title {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  max-height: 23px;
+  height: 23px;
 }
 </style>
