@@ -20,8 +20,8 @@
           </div>
 
           <div class="profile-info">
-            <h1 style="margin-top: 0">{{ user.username }}</h1>
-            <a :href="user.website" target="_blank" class="button">Go to Website</a>
+            <h1 class="username">{{ user.username }}</h1>
+            <a :href="user.website" target="_blank" class="button" style="text-decoration: none;">Go to Website</a>
           </div>
 
           <div class="ratings">
@@ -86,7 +86,7 @@
                         <img :src="post.image_1" alt="Post Image" class="carousel-image" />
                       </div>
                       <div>
-                        <h3>{{ truncateTitle(post.title) }}</h3>
+                        <h3>{{ truncateTitle(post.title, 4) }}</h3>
                         <p><b>Price:</b> ${{ post.price.toFixed(2) }}</p>
                         <p><b>Needs repair:</b> {{ post.is_repair ? 'Yes' : 'No' }}</p>
                       </div>
@@ -159,7 +159,7 @@ const error = ref(null)
 const user = ref(null)
 const ratings = ref(null)
 const posts = ref(null)
-const fetchUrl = 'http://127.0.0.1:8000'
+const fetchUrl = 'https://api.ohdeer-bmsd22a.bbzwinf.ch'
 
 function shortenComment(comment) {
   return comment.length > 100 ? comment.substring(0, 100) + '...' : comment
@@ -240,9 +240,9 @@ const scrollCarousel = (direction) => {
   })
 }
 
-function truncateTitle(title) {
+function truncateTitle(title, maxLength) {
   const words = title.split(' ')
-  return words.length > 4 ? words.slice(0, 4).join(' ') + '...' : title
+  return words.length > maxLength ? words.slice(0, maxLength).join(' ') + '...' : title
 }
 
 // End
@@ -286,6 +286,7 @@ function truncateTitle(title) {
   border-radius: 8px;
   font-size: 1rem;
   cursor: pointer;
+  box-shadow: .1rem 0.1rem 5px rgb(141, 141, 141);
 }
 
 .avatar {
@@ -358,13 +359,39 @@ function truncateTitle(title) {
   margin-top: 3rem;
 }
 
-/* Created alongside help of ChatGPT, particularly scroll-X types. */
+.username {
+  margin: 0 0 2rem 0;
+}
+
+/* Created alongside help of ChatGPT, particularly scroll-X types.*/
 
 .carousel-container {
   width: 100%;
   overflow: hidden;
   margin-top: 1rem;
   max-width: 700px;
+  position: relative; 
+}
+
+.carousel-container::before,
+.carousel-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 4rem;
+  height: 100%;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.carousel-container::before {
+  left: 0;
+  background: linear-gradient(to right, #f6f9fc, transparent);
+}
+
+.carousel-container::after {
+  right: 0;
+  background: linear-gradient(to left, #f6f9fc, transparent);
 }
 
 .carousel-track {
