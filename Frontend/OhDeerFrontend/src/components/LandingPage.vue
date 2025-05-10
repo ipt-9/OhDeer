@@ -166,13 +166,18 @@ const nextSlide = () => {
     <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
 
     <div class="shopComponent">
-      <h3>Categories</h3>
-      <div class="categoryGrid">
-        <div v-for="category in ['Electronics', 'Furniture', 'Appliances', 'Services']" :key="category" class="categoryCard">
-          {{ category }}
-        </div>
-      </div>
+    <h3>Categories</h3>
+    <div class="categoryGrid">
+      <router-link
+        v-for="category in ['Electronics', 'Furniture', 'Appliances', 'Services']"
+        :key="category"
+        :to="`/search-results?categories=${category.toLowerCase()}`"
+        class="categoryCard"
+      >
+        {{ category }}
+      </router-link>
     </div>
+  </div>
 
     <div class="shopComponent">
       <h3>Newest Items Near You</h3>
@@ -340,6 +345,23 @@ const nextSlide = () => {
   padding: 10px;
   text-align: center;
   border-radius: 8px;
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+  transition: transform 0.2s;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.categoryCard:hover {
+  transform: scale(1.05);
+  background: #c4c4c4;
+}
+
+.shopCard h4, .shopCard p {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .productImage {
   width: 100%;
