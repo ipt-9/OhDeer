@@ -20,8 +20,10 @@
           </div>
 
           <div class="profile-info">
-            <h1 style="margin-top: 0">{{ user.username }}</h1>
-            <a :href="user.website" target="_blank" class="button">Go to Website</a>
+            <h1 class="username">{{ user.username }}</h1>
+            <a :href="user.website" target="_blank" class="button" style="text-decoration: none"
+              >Go to Website</a
+            >
           </div>
 
           <div class="ratings">
@@ -82,14 +84,22 @@
                   <div class="carousel-track" ref="carouselTrack">
                     <div class="carousel-spacer"></div>
                     <div class="carousel-slide" v-for="post in posts" :key="post.id">
-                      <div class="carousel-image-wrapper">
-                        <img :src="post.image_1" alt="Post Image" class="carousel-image" />
-                      </div>
-                      <div>
-                        <h3>{{ truncateTitle(post.title) }}</h3>
-                        <p><b>Price:</b> ${{ post.price.toFixed(2) }}</p>
-                        <p><b>Needs repair:</b> {{ post.is_repair ? 'Yes' : 'No' }}</p>
-                      </div>
+                      <router-link
+                        :to="`/inspectitem/${slugify(post.title)}-${post.id}`"
+                        custom
+                        v-slot="{ navigate }"
+                      >
+                        <div @click="navigate">
+                          <div class="carousel-image-wrapper">
+                            <img :src="post.image_1" alt="Post Image" class="carousel-image" />
+                          </div>
+                          <div>
+                            <h3>{{ truncateTitle(post.title, 4) }}</h3>
+                            <p><b>Price:</b> ${{ post.price.toFixed(2) }}</p>
+                            <p><b>Needs repair:</b> {{ post.is_repair ? 'Yes' : 'No' }}</p>
+                          </div>
+                        </div>
+                      </router-link>
                     </div>
                     <div class="carousel-spacer"></div>
                   </div>
@@ -103,13 +113,16 @@
               <!-- End -->
             </div>
             <div>
-              <button class="button" style="width: 100%; margin-top: 20px">All Posts</button>
+              <router-link :to="`/comingsoon`" custom v-slot="{ navigate }">
+                <button class="button" style="width: 100%; margin-top: 20px" @click="navigate">
+                  All Posts
+                </button>
+              </router-link>
             </div>
           </div>
           <div v-else class="card">No Posts</div>
         </div>
       </div>
-
       <div class="grid-reviews">
         <div>
           <div>Reviews</div>
@@ -120,24 +133,61 @@
               <div
                 v-for="rating in ratings"
                 :key="rating.id"
-                class="card"
+                class="card review-card"
                 style="margin-top: 20px; padding: 10px; width: 100%; text-align: start"
+                @click="toggleReviewExtention(rating.id)"
               >
-                <span style="font-size: 18px; font-weight: bold">
-                  <span v-for="i in 5" :key="i" style="font-size: 24px">
-                    <span v-if="i <= rating.repair_rating">★</span>
-                    <span v-else>☆</span>
+                <div v-if="!isExpanded(rating.id)">
+                  <span class="review-stars-summary">
+                    <span v-for="i in 5" :key="i" style="font-size: 24px">
+                      <span v-if="i <= rating.repair_rating">★</span>
+                      <span v-else>☆</span>
+                    </span>
                   </span>
-                </span>
-                <span style="font-size: 20px; color: #555; margin-left: 1rem">
-                  <strong>Comment:</strong> {{ shortenComment(rating.rating_comment) }}
-                </span>
+                  <span class="review-comment-short">
+                    <strong>Comment:</strong> {{ shortenComment(rating.rating_comment) }}
+                  </span>
+                </div>
+
+                <div v-else class="review-expanded-grid">
+                  <div class="review-comment-label">
+                    <strong>Comment:</strong>
+                  </div>
+
+                  <div class="review-ratings">
+                    <div class="review-rating-block">
+                      <span>Repair:</span>
+                      <span v-for="i in 5" :key="i">
+                        <span v-if="i <= rating.repair_rating">★</span>
+                        <span v-else>☆</span>
+                      </span>
+                    </div>
+
+                    <div class="review-rating-block" style="font-size: 20px">
+                      <span>General:</span>
+                      <span v-for="i in 5" :key="i">
+                        <span v-if="i <= rating.general_rating">★</span>
+                        <span v-else>☆</span>
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="review-comment-full">
+                    {{ rating.rating_comment }}
+                  </div>
+                </div>
               </div>
             </div>
-            <div>
-              <button class="button" style="width: 100%; margin-top: 20px">All Ratings</button>
-            </div>
+
+            <router-link :to="`/comingsoon`" custom v-slot="{ navigate }">
+              <div>
+                <button class="button" style="width: 100%; margin-top: 20px" @click="navigate">
+                  All Ratings
+                </button>
+              </div>
+            </router-link>
           </div>
+
           <div v-else class="card">No ratings</div>
         </div>
       </div>
@@ -146,10 +196,14 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { onMounted, ref, computed } from 'vue'
+import { useRoute } from 'vue-router'
+import slugify from 'slugify'
 
-const router = useRouter()
+const reviewExtendId = ref(0)
+function isExpanded(id) {
+  return reviewExtendId.value === id
+}
 const route = useRoute()
 const userId = route.params.id
 const isOwnProfile = ref(false)
@@ -159,14 +213,14 @@ const error = ref(null)
 const user = ref(null)
 const ratings = ref(null)
 const posts = ref(null)
-const fetchUrl = 'http://127.0.0.1:8000'
+const fetchUrl = 'https://api.ohdeer-bmsd22a.bbzwinf.ch'
 
 function shortenComment(comment) {
   return comment.length > 100 ? comment.substring(0, 100) + '...' : comment
 }
 
-const goBack = () => {
-  router.go(-1)
+function toggleReviewExtention(id) {
+  reviewExtendId.value = reviewExtendId.value === id ? 0 : id
 }
 
 async function fetchFromApi(path = '') {
@@ -240,9 +294,9 @@ const scrollCarousel = (direction) => {
   })
 }
 
-function truncateTitle(title) {
+function truncateTitle(title, maxLength) {
   const words = title.split(' ')
-  return words.length > 4 ? words.slice(0, 4).join(' ') + '...' : title
+  return words.length > maxLength ? words.slice(0, maxLength).join(' ') + '...' : title
 }
 
 // End
@@ -286,6 +340,7 @@ function truncateTitle(title) {
   border-radius: 8px;
   font-size: 1rem;
   cursor: pointer;
+  box-shadow: 0.1rem 0.1rem 5px rgb(141, 141, 141);
 }
 
 .avatar {
@@ -358,13 +413,39 @@ function truncateTitle(title) {
   margin-top: 3rem;
 }
 
-/* Created alongside help of ChatGPT, particularly scroll-X types. */
+.username {
+  margin: 0 0 2rem 0;
+}
+
+/* Created alongside help of ChatGPT, particularly scroll-X types.*/
 
 .carousel-container {
   width: 100%;
   overflow: hidden;
   margin-top: 1rem;
   max-width: 700px;
+  position: relative;
+}
+
+.carousel-container::before,
+.carousel-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 4rem;
+  height: 100%;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.carousel-container::before {
+  left: 0;
+  background: linear-gradient(to right, #f6f9fc, transparent);
+}
+
+.carousel-container::after {
+  right: 0;
+  background: linear-gradient(to left, #f6f9fc, transparent);
 }
 
 .carousel-track {
@@ -421,6 +502,55 @@ function truncateTitle(title) {
 }
 
 /* End */
+
+.review-stars-summary {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.review-comment-short {
+  font-size: 20px;
+  color: #555;
+  margin-left: 1rem;
+}
+
+.review-expanded-grid {
+  display: grid;
+  grid-template-rows: 2;
+  grid-template-columns: 2;
+}
+
+.review-comment-label {
+  font-size: 25px;
+  color: #000;
+  margin-left: 1rem;
+  grid-row: 1;
+  grid-column: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: end;
+}
+
+.review-ratings {
+  font-size: 18px;
+  font-weight: bold;
+  grid-row: 1;
+  grid-column: 2;
+  border-left: 2px solid #ccc;
+  padding-left: 10px;
+  display: grid;
+  grid-template-rows: 2;
+}
+
+.review-rating-block {
+  font-size: 25px;
+}
+
+.review-comment-full {
+  font-size: 20px;
+  color: #555;
+  margin-left: 1rem;
+}
 
 @media (max-width: 830px) {
   .profile-grid {

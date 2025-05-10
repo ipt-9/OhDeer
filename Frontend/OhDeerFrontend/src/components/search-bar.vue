@@ -27,14 +27,14 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { onMounted } from 'vue';
+import { onMounted } from 'vue'
 
-const isLoggedIn = ref(false);
+const isLoggedIn = ref(false)
 
 onMounted(() => {
-  const token = localStorage.getItem('token');
-  isLoggedIn.value = !!token;
-});
+  const token = localStorage.getItem('token')
+  isLoggedIn.value = !!token
+})
 
 const router = useRouter()
 

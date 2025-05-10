@@ -25,13 +25,13 @@ export default {
   },
 
   methods: {
-  async handleLogin() {
-    this.error = '';
+    async handleLogin() {
+      this.error = ''
 
-    if (!this.email || !this.password) {
-      this.error = 'Please fill in all fields.';
-      return;
-    }
+      if (!this.email || !this.password) {
+        this.error = "Please fill in all fields."
+        return
+      }
 
       try {
         const response = await fetch('https://api.ohdeer-bmsd22a.bbzwinf.ch/api/auth/login', {
@@ -46,8 +46,7 @@ export default {
           }),
         })
 
-      const data = await response.json();
-
+        const data = await response.json()
 
       if (!response.ok) {
         this.error = data.message || 'Login failed.';
@@ -67,8 +66,7 @@ export default {
     }
   }
 }
-
-};
+}
 </script>
 
 <style scoped>

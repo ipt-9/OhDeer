@@ -53,15 +53,14 @@
 </template>
 <script>
 import SearchBar from './search-bar.vue'
-import { ref, onMounted } from 'vue';
+import { ref, onMounted } from 'vue'
 
-const isLoggedIn = ref(false);
+const isLoggedIn = ref(false)
 
 onMounted(() => {
-  const token = localStorage.getItem('token');
-  isLoggedIn.value = !!token;
-
-});
+  const token = localStorage.getItem('token')
+  isLoggedIn.value = !!token
+})
 
 export default {
   name: 'Nav-bar',
@@ -78,8 +77,8 @@ export default {
   },
   computed: {
     isLoggedIn() {
-      return !!localStorage.getItem('token');
-    }
+      return !!localStorage.getItem('token')
+    },
   },
   methods: {
     toggleMobileMenu() {
