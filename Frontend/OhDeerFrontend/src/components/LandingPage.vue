@@ -1,441 +1,366 @@
-<template>
-  <div class="container">
-    <div class="head">
-      <navBar />
-      <div class="slideshow">
-        <a :href="images[currentIndex].url" target="_blank">
-          <img :src="images[currentIndex].src" class="slide" alt="Slideshow Image" />
-        </a>
-        <button class="arrow left" @click="prevSlide">&#9664;</button>
-        <button class="arrow right" @click="nextSlide">&#9654;</button>
-      </div>
-    </div>
-
-    <div class="filterButtons">
-      <button :class="{ active: slideFilter === 'all' }" @click="slideFilter = 'all'">All</button>
-      <button :class="{ active: slideFilter === 'items' }" @click="slideFilter = 'items'">Only Items</button>
-      <button :class="{ active: slideFilter === 'repairs' }" @click="slideFilter = 'repairs'">Only Repair Shops</button>
-    </div>
-    
-    <div class="main">
-      <div class="shop">
-        <div class="shopCategoriesComponent">
-          <h3>Categories</h3>
-          <div class="categoryGrid">
-            <router-link
-              v-for="category in categories"
-              :key="category.id"
-              :to="`/category/${category.slug}`"
-              class="categoryCard"
-              :style="{ backgroundImage: `url(${category.image})` }"
-            >
-              <h3>{{ category.name }}</h3>
-            </router-link>
-          </div>
-        </div>
-
-        <div class="shopComponent">
-          <h3>Items Near You</h3>
-          <div class="shopGrid">
-            <div v-for="item in nonRepairItems" :key="item.id" class="shopCard">
-              <img :src="item.image" alt="Product Image" class="productImage" />
-              <h4>{{ item.title }}</h4>
-              <div class="infoGridItem">
-                <p class="desc">{{ item.description }}</p>
-                <p class="price">${{ item.price }}</p>
-                <router-link :to="`/inspectitem/${slugify(item.link)}-${item.id}`" custom v-slot="{navigate}">
-                  <button class="but" @click="navigate">Buy Now</button>
-                </router-link>
-              </div>                           
-            </div>
-          </div>
-        </div>
-
-        <div class="shopComponent">
-          <h3>Repair Shops Near You</h3>
-          <div class="shopGrid">
-            <div v-for="shop in repairItems" :key="shop.id" class="shopCard">
-              <img :src="shop.image" alt="Product Image" class="productImage" />
-              <h4>{{ shop.title }}</h4>
-              <div class="infoGridShop">  
-                <p class="lab1">Phone: </p>
-                <p class="inf1">{{ shop.phone }}</p>
-                <p class="lab2">Address: </p>
-                <p class="inf2">{{ shop.address + ", " + shop.postalCode }}</p>
-                <p class="descShop">{{ shop.description }}</p>
-                <router-link :to="`/inspectrepair/${slugify(shop.link)}-${shop.id}`" custom v-slot="{navigate}">
-                  <button class="butShop" @click="navigate">more information</button>
-                </router-link>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="shopComponent">
-          <h3>New Arrivals</h3>
-          <div class="shopGrid">
-            <div v-for="item in newArrivals" :key="item.id" class="shopCard">
-              <img :src="item.image" alt="Product Image" class="productImage" />
-              <div class="cardContent">
-                <h4>{{ item.title }}</h4>
-                <p>{{ item.description }}</p>
-                <p class="price">${{ item.price }}</p>
-                <button class="buyButton">Buy Now</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script setup>
 import navBar from "./nav-bar.vue";
-import { ref } from "vue";
-import { computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import slugify from "slugify";
-import { onMounted } from 'vue';
+
 const isLoggedIn = ref(false);
-onMounted(() => {
-  const token = localStorage.getItem('token');
-  isLoggedIn.value = !!token;
-});
-const shopItems = ref([
-  { id: 1, is_repair: 0, title: "Wooden Table", link: "WoodenTable", description: "Handcrafted table", price: 120, image: "https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg" },
-  { id: 2, is_repair: 0, title: "Vintage Chair", link: "VintageChair", description: "Classic chair", price: 80, image: "https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg" },
-  { id: 3, is_repair: 0, title: "Vintage Chair", link: "VintageChair", description: "Classic chair", price: 80, image: "https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg" },
-  { id: 1, is_repair: 1, title: "Furniture Repair", link: "FurnitureRepair", description: "Fix broken furniture", address: "Fifi Street 21", postalCode: "7649 Gabgob", phone: "043 748 384 213 64", image: "https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg" },
-  { id: 2, is_repair: 1, title: "Sofa Repair", link: "SofaRepair", description: "Fix broken sofas", address: "huhu Street 2", postalCode: "2765 Sigma City", phone: "043 748 384 213 64", image: "https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg" },
-  { id: 3, is_repair: 1, title: "Sofa Repair", link: "SofaRepair", description: "Fix broken sofas", address: "huhu Street 2", postalCode: "2765 Sigma City", phone: "043 748 384 213 64", image: "https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg" },
-]);
-
-const categories = ref([
-  { id: 1, name: "Furniture & Home Items", slug: "furniture-home", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaVNmjsv3kTlDf_0RS0xRjuR4QSqJfrppOUQ&s" },
-  { id: 2, name: "Electronics", slug: "electronics", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaVNmjsv3kTlDf_0RS0xRjuR4QSqJfrppOUQ&s" },
-  { id: 3, name: "Household Appliances", slug: "household-appliances", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaVNmjsv3kTlDf_0RS0xRjuR4QSqJfrppOUQ&s" },
-  { id: 4, name: "Clothing & Accessories", slug: "clothing-accessories", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaVNmjsv3kTlDf_0RS0xRjuR4QSqJfrppOUQ&s" },
-  { id: 5, name: "Vehicles & Mobility", slug: "vehicles-mobility", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaVNmjsv3kTlDf_0RS0xRjuR4QSqJfrppOUQ&s" },
-  { id: 6, name: "Luxury & Accessories", slug: "luxury-accessories", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaVNmjsv3kTlDf_0RS0xRjuR4QSqJfrppOUQ&s" },
-  { id: 7, name: "Toys & Hobby Items", slug: "toys-hobby", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaVNmjsv3kTlDf_0RS0xRjuR4QSqJfrppOUQ&s" },
-  { id: 8, name: "More Categories", slug: "more-categories", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaVNmjsv3kTlDf_0RS0xRjuR4QSqJfrppOUQ&s" }
-]);
-
-const nonRepairItems = computed(() => shopItems.value.filter(item => item.is_repair === 0));
-const repairItems = computed(() => shopItems.value.filter(item => item.is_repair === 1));
-const newArrivals = computed(() => shopItems.value.slice(-2));
-
-const images = ref([
-  { src: "https://cdn-images-1.medium.com/max/1600/1*bzScNScXnXNvjg-Ak70EHA.jpeg", url: "https://example.com/1" },
-  { src: "https://dornob.com/wp-content/uploads/2009/04/plywood02_1000.jpg", url: "https://example.com/2" },
-  { src: "https://www.gen-pack.com/wp-content/uploads/2021/04/Rework-_-Repair-Button-212287633-768x509.jpg", url: "https://example.com/3" },
-]);
-
+const userPostalCode = ref("");
+const shopItems = ref([]);
+const nonRepairItems = ref([]);
+const repairItems = ref([]);
+const newArrivals = ref([]);
+const images = ref([]);
 const slideFilter = ref("all");
+const currentIndex = ref(0);
+const errorMessage = ref("");
 
-const filteredSlides = computed(() => {
-  if (slideFilter.value === "items") return images.value.filter(img => img.type === "item");
-  if (slideFilter.value === "repairs") return images.value.filter(img => img.type === "repair");
-  return images.value;
+onMounted(async () => {
+  const token = localStorage.getItem("token");
+  isLoggedIn.value = !!token;
+
+  if (isLoggedIn.value) {
+    await fetchUserDetails(token);
+  }
+
+  await fetchItems();
 });
 
-const currentIndex = ref(0);
-const prevSlide = () => currentIndex.value = (currentIndex.value - 1 + filteredSlides.value.length) % filteredSlides.value.length;
-const nextSlide = () => currentIndex.value = (currentIndex.value + 1) % filteredSlides.value.length;
+
+
+const slides = [
+  {
+    title: 'Shop the Latest Furniture Collection',
+    description: 'Discover stylish and affordable furniture pieces for every room.',
+    image: 'https://blog.meyerhatchery.com/wp-content/uploads/2022/06/Main-Blog-Images-Always-1200x____-6-1.png',
+    link: '/marketplace',
+    buttonText: 'Shop Now'
+  },
+  {
+    title: 'Find Trusted Repair Services',
+    description: 'Get your items fixed by verified repair shops near you.',
+    image: 'https://blog.meyerhatchery.com/wp-content/uploads/2022/06/Main-Blog-Images-Always-1200x____-6-1.png',
+    link: '/repairlistings',
+    buttonText: 'Find Repairs'
+  },
+  {
+    title: 'Sell Your Items Quickly and Easily',
+    description: 'List your items and connect with local buyers today.',
+    image: 'https://blog.meyerhatchery.com/wp-content/uploads/2022/06/Main-Blog-Images-Always-1200x____-6-1.png',
+    link: '/create-listing',
+    buttonText: 'Start Selling'
+  },
+  {
+    title: 'Explore Our New Arrivals',
+    description: 'Check out the latest additions to our marketplace.',
+    image: 'https://blog.meyerhatchery.com/wp-content/uploads/2022/06/Main-Blog-Images-Always-1200x____-6-1.png',
+    link: '/marketplace',
+    buttonText: 'View Now'
+  },
+];
+
+
+
+const truncate = (text, maxLength) => {
+  return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
+};
+
+async function fetchUserDetails(token) {
+  try {
+    const response = await fetch('https://api.ohdeer-bmsd22a.bbzwinf.ch/api/users/user', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) throw new Error('Failed to fetch user data');
+    const data = await response.json();
+    userPostalCode.value = data.postal_code;
+  } catch (err) {
+    errorMessage.value = 'Error fetching user data: ' + err.message;
+    console.error(err);
+  }
+}
+
+async function fetchItems() {
+  try {
+    const response = await fetch('https://api.ohdeer-bmsd22a.bbzwinf.ch/api/posts/all', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) throw new Error('Failed to fetch items');
+    const data = await response.json();
+
+   
+    shopItems.value = data
+      .filter(item => !item.is_complete) 
+      .sort((a, b) => new Date(b.created_at) - new Date(a.created_at)) 
+      .map(item => ({
+        id: item.id,
+        is_repair: item.is_repair,
+        title: item.title,
+        link: slugify(item.title),
+        description: item.description,
+        price: item.price,
+        image: item.image_1 || 'https://api.ohdeer-bmsd22a.bbzwinf.ch/OhDeerPlaceholder.png',
+        address: item.address || 'No address',
+        postalCode: item.postal_code || 'No postal code',
+        phone: item.phone_number || 'No phone number',
+        created_at: item.created_at,
+      }));
+
+    nonRepairItems.value = shopItems.value.filter(item => !item.is_repair);
+    repairItems.value = shopItems.value.filter(item => item.is_repair);
+    newArrivals.value = shopItems.value.slice(0, 5);
+
+    images.value = newArrivals.value.map(item => ({
+      src: item.image,
+      url: `/inspectitem/${slugify(item.title)}-${item.id}`,
+    }));
+  } catch (err) {
+    errorMessage.value = 'Error fetching items: ' + err.message;
+    console.error(err);
+  }
+}
+
+const prevSlide = () => {
+  currentIndex.value = (currentIndex.value - 1 + slides.length) % slides.length;
+};
+
+const nextSlide = () => {
+  currentIndex.value = (currentIndex.value + 1) % slides.length;
+};
 
 </script>
+<template>
+  <div class="container">
+    <navBar />
 
+    <div class="slideshow">
+  <div 
+    v-for="(slide, index) in slides" 
+    :key="index" 
+    class="slide" 
+    :style="{ backgroundImage: `url(${slide.image})` }"
+    v-show="index === currentIndex"
+  >
+    <div class="slide-content">
+      <h2 class="slide-title">{{ truncate(slide.title, 40) }}</h2>
+      <p class="slide-desc">{{ truncate(slide.description, 100) }}</p>
+      <router-link :to="slide.link">
+        <button class="slide-button">{{ slide.buttonText }}</button>
+      </router-link>
+    </div>
+  </div>
+  <button class="arrow left" @click="prevSlide">&#9664;</button>
+  <button class="arrow right" @click="nextSlide">&#9654;</button>
+</div>
+
+    <button class="arrow left" @click="prevSlide">&#9664;</button>
+    <button class="arrow right" @click="nextSlide">&#9654;</button>
+  </div>
+    <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+
+    <div class="shopComponent">
+      <h3>Categories</h3>
+      <div class="categoryGrid">
+        <div v-for="category in ['Electronics', 'Furniture', 'Appliances', 'Services']" :key="category" class="categoryCard">
+          {{ category }}
+        </div>
+      </div>
+    </div>
+
+    <div class="shopComponent">
+      <h3>Newest Items Near You</h3>
+      <div class="shopGrid">
+        <div v-for="item in newArrivals" :key="item.id" class="shopCard">
+          <img :src="item.image" alt="Product Image" class="productImage" />
+          <h4>{{ item.title }}</h4>
+          <p>{{ item.description }}</p>
+          <p class="price">CHF {{ item.price }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="shopComponent">
+      <h3>Repair Shops Near You</h3>
+      <div class="shopGrid">
+        <div v-for="shop in repairItems" :key="shop.id" class="shopCard">
+          <img :src="shop.image" alt="Shop Image" class="productImage" />
+          <h4>{{ shop.title }}</h4>
+          <p>{{ shop.description }}</p>
+          <p class="price">CHF {{ shop.price }}</p>
+        </div>
+      </div>
+    </div>
+
+</template>
 <style scoped>
 .container {
-margin: 0px;
-padding: 0px;
-font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
 }
-
-.categoryGrid {
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-gap: 15px;
-padding-top: 10px;
-}
-
-.categoryCard {
-display: flex;
-align-items: center;
-justify-content: center;
-text-align: center;
-background-size: cover;
-background-position: center;
-color: white;
-font-weight: bold;
-text-decoration: none;
-height: 150px;
-border-radius: 10px;
-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-transition: transform 0.2s;
-}
-
-.categoryCard:hover {
-  transform: scale(1.05);
-  opacity: 0.9;
-}
-
-.head {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
 .slideshow {
-position: relative;
-display: block;
-min-width: 100%;
-background-position: center;
-height: 65vh;
-max-height: 70%;
-margin: auto;
-overflow: hidden;
-border-radius: 0px;
-box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-text-align: center;
-object-fit: cover;
-object-position: center;
+  position: relative;
+  width: 100%;
+  max-height: 400px;
+  overflow: hidden;
+  border-radius: 10px;
 }
 
 .slide {
-width: 100%;
-height: 100%;
-object-fit: cover;
-border-radius: 15px;
+  position: relative;
+  width: 100%;
+  height: 400px;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.slide-content {
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 1.5rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.slide-title {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.slide-desc {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.slide-button {
+  background-color: #388659;
+  color: white;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.slide-button:hover {
+  background-color: #2d6a4f;
 }
 
 .arrow {
-position: absolute;
-top: 50%;
-transform: translateY(-50%);
-background: rgba(0, 0, 0, 0.5);
-color: white;
-border: none;
-padding: 10px 15px;
-cursor: pointer;
-font-size: 20px;
-transition: background 0.3s;
-border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 0.5rem;
+  cursor: pointer;
+  font-size: 1.5rem;
+  border-radius: 50%;
 }
 
 .arrow.left {
-left: 15px;
+  left: 15px;
 }
 
 .arrow.right {
-right: 15px;
+  right: 15px;
 }
 
 .arrow:hover {
   background: rgba(0, 0, 0, 0.8);
 }
 
-.shop {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-  padding: 20px;
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.arrow.left {
+  left: 10px;
+}
+
+.arrow.right {
+  right: 10px;
 }
 
 .shopComponent {
-  background: #f3f4f3;
   padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-h3 {
-text-align: center;
-font-size: 22px;
-margin-bottom: 15px;
-color: #333;
+  margin: 10px;
+  background: #f4f4f4;
+  border-radius: 8px;
 }
 
 .shopGrid {
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-gap: 20px;
-padding: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
 }
 
 .shopCard {
-background: white;
-border-radius: 12px;
-padding: 15px;
-text-align: center;
-box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
-transition:
-  transform 0.3s,
-  box-shadow 0.3s;
+  background: white;
+  padding: 10px;
+  border-radius: 8px;
 }
 
-.shopCard:hover {
-transform: scale(1.05);
-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+.categoryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 10px;
 }
 
+.categoryCard {
+  background: #ddd;
+  padding: 10px;
+  text-align: center;
+  border-radius: 8px;
+}
 .productImage {
   width: 100%;
-  height: 200px;
+  height: auto;
+  max-height: 300px; 
   object-fit: contain;
   border-radius: 12px;
 }
 
-.cardContent {
-padding: 15px 0;
-}
 
-h4 {
-margin: 5px 0;
-font-size: 18px;
-font-weight: bold;
-}
-
-p {
-  font-size: 14px;
-  color: black;
-  margin: 5px 0;
-}
-
-button:hover {
-  opacity: 0.9;
-  transform: scale(1.05);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+.shopCard, .categoryCard {
+  max-width: 300px; 
 }
 
 @media (max-width: 768px) {
-  .shopGrid {
-    grid-template-columns: 1fr;
+  .productImage, .slide {
+    max-height: 200px;
   }
 
-  .slideshow {
-    height: 300px;
+  .shopCard, .categoryCard {
+    max-width: 100%;
   }
-}
-
-.infoGridItem {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 6px 12px;
-  grid-template-areas:
-  "a"
-  "b"
-  "c";
-  align-items: center;
-  margin-left: 10%;
-  margin-right: 10%;
-  color: black;
-}
-
-.desc {
-  grid-area: a;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: normal;
-  max-height: 4.5em;
-  height: 4.5em;
-  text-align: center;
-}
-
-.price {
-  grid-area: b;
-  font-weight: bold;
-  font-size: 16px;
-  color: #388659;
-  text-align: center;
-}
-
-.but {
-  grid-area: c;
-  background: #388659;
-  color: white;
-  border: none;
-  padding: 10px 16px;
-  margin-top: 10px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: 0.3s ease;
-  align-items: center;
-}
-
-button:hover {
-  opacity: 0.9;
-  transform: scale(1.05);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-.infoGridShop {
-  display: grid;
-  grid-template-columns: 1fr 3fr;
-  gap: 6px 12px;
-  grid-template-areas:
-  "a b"
-  "c d"
-  "e e"
-  "f f";
-  align-items: center;
-  margin-left: 10%;
-  margin-right: 10%;
-  color: black;
-}
-
-.lab1 {
-  grid-area: a;
-  font-weight: bold;
-  text-align: left;
-}
-
-.lab2 {
-  grid-area: c;
-  font-weight: bold;
-  text-align: left;
-  max-height: 3em;
-  height: 3em;
-}
-
-.inf1 {
-  grid-area: b;
-  text-align: left;
-}
-
-.inf2 {
-  grid-area: d;
-  text-align: left;
-  max-height: 3em;
-  height: 3em;
-}
-
-.descShop {
-  grid-area: e;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: normal;
-  max-height: 4.5em;
-  height: 4.5em;
-}
-
-.butShop {
-  grid-area: f;
-  background: linear-gradient(135deg, #007bff, #0056b3);
-  color: white;
-  border: none;
-  padding: 10px 16px;
-  margin-top: 10px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: 0.3s ease;
-  align-items: center;
 }
 </style>
