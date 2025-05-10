@@ -55,13 +55,6 @@
 import SearchBar from './search-bar.vue'
 import { ref, onMounted } from 'vue'
 
-const isLoggedIn = ref(false)
-
-onMounted(() => {
-  const token = localStorage.getItem('token')
-  isLoggedIn.value = !!token
-})
-
 export default {
   name: 'Nav-bar',
   components: { SearchBar },
@@ -69,10 +62,12 @@ export default {
     return {
       mobileMenuOpen: false,
       dropdownOpen: false,
+      errorMessage: '',
       user: {
-        name: 'Polish Chicken',
-        profileImage: 'https://i.redd.it/87kxdlhrk3z71.jpg',
+        name: '',
+        profileImage: '',
       },
+      isLoggedIn: false,
     }
   },
   computed: {
@@ -84,32 +79,71 @@ export default {
     toggleMobileMenu() {
       this.mobileMenuOpen = !this.mobileMenuOpen
     },
-    async logout() {
-    try {
-      const token = localStorage.getItem('token');
-      if (!token) return;
+    async fetchUserDetails() {
+      try {
+        const token = localStorage.getItem('token')
+        if (!token) return
 
-      const response = await fetch('https://api.ohdeer-bmsd22a.bbzwinf.ch/api/auth/logout', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
+        const response = await fetch(
+          'https://api.ohdeer-bmsd22a.bbzwinf.ch/api/users/user',
+          {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          }
+        )
 
-      if (!response.ok) {
-        console.error('Logout failed');
-        return;
+        if (!response.ok) throw new Error('Failed to fetch user data')
+
+        const data = await response.json()
+        this.user.name = data.name || 'User'
+        this.user.profileImage = data.profileImage || 'https://i.redd.it/87kxdlhrk3z71.jpg'
+        this.isLoggedIn = true
+      } catch (err) {
+        this.errorMessage = 'Error fetching user data: ' + err.message
+        console.error(err)
       }
-      localStorage.removeItem('token');
-      this.$router.push('/login');
-    } catch (err) {
-      console.error('Error during logout:', err);
-    }
+    },
+    async logout() {
+      try {
+        const token = localStorage.getItem('token')
+        if (!token) return
+
+        const response = await fetch(
+          'https://api.ohdeer-bmsd22a.bbzwinf.ch/api/auth/logout',
+          {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          }
+        )
+
+        if (!response.ok) {
+          console.error('Logout failed')
+          return
+        }
+
+        localStorage.removeItem('token')
+        this.isLoggedIn = false
+        this.user = { name: '', profileImage: '' }
+        this.$router.push('/login')
+      } catch (err) {
+        console.error('Error during logout:', err)
+      }
+    },
   },
+  mounted() {
+    if (this.isLoggedIn) {
+      this.fetchUserDetails()
+    }
   },
 }
 </script>
+
 <style>
 .navbar {
   overflow: visible;

@@ -14,15 +14,16 @@
         <div class="content">
           <div v-if="activeTab === 'settings'">
             <h3>Settings</h3>
+            <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+            <p v-if="successMessage" class="success">{{ successMessage }}</p>
             <form @submit.prevent="updateSettings">
               <label>Username: <input v-model="username" /></label>
               <label>Email: <input v-model="email" type="email" /></label>
               <label>Password: <input v-model="password" type="password" /></label>
+              <label>Profile Image Link: <input v-model="profileImage" type="text" /></label>
               <label>Language:
                 <select v-model="language">
                   <option value="en">English</option>
-                  <option value="de">German</option>
-                  <option value="fr">French</option>
                 </select>
               </label>
               <label>Address: <input v-model="address" /></label>
@@ -45,23 +46,92 @@
     </div>
   </template>
   
-  <script setup>
-  import { ref } from 'vue';
-  import navBar from "./nav-bar.vue";
-  
-  const activeTab = ref('settings');
-  
-  const username = ref('');
-  const email = ref('');
-  const password = ref('');
-  const language = ref('en');
-  const address = ref('');
-  const postalCode = ref('');
-  
-  function updateSettings() {
-    console.log('Settings updated:', { username: username.value, email: email.value, password: password.value, language: language.value, address: address.value, postalCode: postalCode.value });
+
+<script setup>
+import { ref, onMounted } from 'vue';
+import navBar from "./nav-bar.vue";
+
+const activeTab = ref('settings');
+
+const username = ref('');
+const email = ref('');
+const password = ref('');
+const language = ref('en');
+const address = ref('');
+const postalCode = ref('');
+const profileImage = ref('');
+const errorMessage = ref('');
+const successMessage = ref('');
+
+async function fetchUserDetails() {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) throw new Error('User not authenticated');
+
+    const response = await fetch('https://api.ohdeer-bmsd22a.bbzwinf.ch/api/users/user', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) throw new Error('Failed to fetch user data');
+
+    const data = await response.json();
+    username.value = data.name || '';
+    email.value = data.email || '';
+    address.value = data.address || '';
+    postalCode.value = data.postal_code || '';
+    language.value = data.language || 'en';
+    profileImage.value = data.profile_image || '';
+
+  } catch (err) {
+    errorMessage.value = 'Error fetching user data: ' + err.message;
+    console.error(err);
   }
-  </script>
+}
+
+async function updateSettings() {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) throw new Error('User not authenticated');
+
+    const updateData = {
+      name: username.value,
+      email: email.value,
+      password: password.value,
+      language: language.value,
+      address: address.value,
+      postal_code: postalCode.value,
+      profile_image: profileImage.value,
+    };
+
+    const response = await fetch('https://api.ohdeer-bmsd22a.bbzwinf.ch/api/users/update', {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(updateData),
+    });
+
+    if (!response.ok) throw new Error('Failed to update settings');
+
+    successMessage.value = 'Settings updated successfully!';
+    errorMessage.value = '';
+  } catch (err) {
+    errorMessage.value = 'Error updating settings: ' + err.message;
+    console.error(err);
+  }
+}
+
+onMounted(() => {
+  fetchUserDetails();
+});
+</script>
+
+
   
   <style scoped>
   .settings-container {
