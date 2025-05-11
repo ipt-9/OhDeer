@@ -26,6 +26,7 @@
             </label>
             <label>Address: <input v-model="address" /></label>
             <label>Postal Code: <input v-model.number="postalCode" type="number" /></label>
+            <label>Phone Number: <input v-model="phoneNumber" type="text" /></label>
             <label>Website: <input v-model="website" type="text" /></label>
             <button type="submit">Save Changes</button>
           </form>
@@ -80,6 +81,7 @@ const postalCode = ref('');
 const profileImage = ref('');
 const userId = ref('');
 const website = ref('');
+const phoneNumber = ref('');
 const errorMessage = ref('');
 const successMessage = ref('');
 const userListings = ref([]);
@@ -108,6 +110,7 @@ async function fetchUserDetails() {
     language.value = data.language || '';
     profileImage.value = data.profile_image || '';
     website.value = data.website || '';
+    phoneNumber.value = data.phone_number || '';
     userId.value = data.id || '';
 
     await fetchUserListings();
@@ -154,7 +157,8 @@ async function updateSettings() {
       address: address.value,
       postal_code: postalCode.value,
       profile_image: profileImage.value,
-      website: website.value
+      website: website.value,
+      phone_number: phoneNumber.value
     };
 
     const response = await fetch('https://api.ohdeer-bmsd22a.bbzwinf.ch/api/users/update', {

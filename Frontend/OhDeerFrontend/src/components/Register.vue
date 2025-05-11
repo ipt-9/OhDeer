@@ -10,6 +10,7 @@
         <input type="password" v-model="confirmPassword" placeholder="Confirm Password" />
         <input type="text" v-model="address" placeholder="Address" />
         <input type="text" v-model="postalCode" placeholder="Postal Code" />
+        <input type="text" v-model="phoneNumber" placeholder="Phone Number" /> 
         <p v-if="error" class="error">{{ error }}</p>
         <button type="submit">Register</button>
       </form>
@@ -60,7 +61,8 @@ export default {
         !this.password ||
         !this.confirmPassword ||
         !this.address ||
-        !this.postalCode
+        !this.postalCode ||
+        !this.phoneNumber
       ) {
         this.error = 'Please fill in all fields.'
         return
@@ -89,6 +91,7 @@ export default {
             password: this.password,
             address: this.address,
             postal_code: this.postalCode,
+            phone_number: this.phoneNumber,
           }),
         })
 
