@@ -96,7 +96,7 @@ export default {
 
         const data = await response.json()
 
-        this.user.name = data.name ? data.name : 'User'
+        this.user.name = data.username ? data.username : 'User'
         this.isLoggedIn = true
 
         if (data.profile_image && data.profile_image.startsWith('http')) {

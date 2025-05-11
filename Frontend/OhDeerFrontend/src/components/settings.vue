@@ -79,7 +79,7 @@ async function fetchUserDetails() {
     if (!response.ok) throw new Error('Failed to fetch user data');
 
     const data = await response.json();
-    username.value = data.name || '';
+    username.value = data.username || '';
     email.value = data.email || '';
     address.value = data.address || '';
     postalCode.value = data.postal_code || '';
