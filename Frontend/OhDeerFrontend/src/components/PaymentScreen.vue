@@ -24,9 +24,7 @@
                 If you're interested in where this commission goes and who it helps, we invite you
                 to read our GTC.
               </p>
-              <a href="https://projectsekai.fandom.com/wiki/Shinonome_Ena" target="_blank" rel="noopener noreferrer"
-                >Read our general terms and conditions here</a
-              >
+              <router-link to="/comingsoon" exact-active-class="active">Read our general terms and conditions here</router-link>
             </div>
           </div>
         </div>
