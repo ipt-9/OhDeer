@@ -141,24 +141,24 @@ const nextSlide = () => {
     <navBar />
 
     <div class="slideshow">
-  <div 
-    v-for="(slide, index) in slides" 
-    :key="index" 
-    class="slide" 
-    :style="{ backgroundImage: `url(${slide.image})` }"
-    v-show="index === currentIndex"
-  >
-    <div class="slide-content">
-      <h2 class="slide-title">{{ truncate(slide.title, 40) }}</h2>
-      <p class="slide-desc">{{ truncate(slide.description, 100) }}</p>
-      <router-link :to="slide.link">
-        <button class="slide-button">{{ slide.buttonText }}</button>
-      </router-link>
+      <div 
+        v-for="(slide, index) in slides" 
+        :key="index" 
+        class="slide" 
+        :style="{ backgroundImage: `url(${slide.image})` }"
+        v-show="index === currentIndex"
+      >
+        <div class="slide-content">
+          <h2 class="slide-title">{{ truncate(slide.title, 40) }}</h2>
+          <p class="slide-desc">{{ truncate(slide.description, 100) }}</p>
+          <router-link :to="slide.link">
+            <button class="slide-button">{{ slide.buttonText }}</button>
+          </router-link>
+        </div>
+      </div>
+      <button class="arrow left" @click="prevSlide">&#9664;</button>
+      <button class="arrow right" @click="nextSlide">&#9654;</button>
     </div>
-  </div>
-  <button class="arrow left" @click="prevSlide">&#9664;</button>
-  <button class="arrow right" @click="nextSlide">&#9654;</button>
-  </div>
   </div>
     <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
 
@@ -283,45 +283,34 @@ const nextSlide = () => {
 
 .arrow {
   position: absolute;
-  top: 50%;
+  top: 193.2px;
   background: rgba(0, 0, 0, 0.5);
   color: white;
   border: none;
-  padding: 0.5rem;
+  padding-top: 0.2rem;
+  padding-bottom: 0.4rem;
   cursor: pointer;
   font-size: 1.5rem;
   border-radius: 50%;
+  text-align: center;
 }
 
 .arrow.left {
   left: 15px;
+  padding-left: 0.3rem;
+  padding-right: 0.5rem;
 }
 
 .arrow.right {
   right: 15px;
+  padding-left: 0.5rem;
+  padding-right: 0.3rem;
 }
 
 .arrow:hover {
   background: rgba(0, 0, 0, 0.8);
 }
 
-.arrow {
-  position: absolute;
-  top: 50%;
-  background: rgba(0, 0, 0, 0.5);
-  color: white;
-  border: none;
-  padding: 10px;
-  cursor: pointer;
-}
-
-.arrow.left {
-  left: 10px;
-}
-
-.arrow.right {
-  right: 10px;
-}
 
 .shopComponent {
   padding: 20px;
