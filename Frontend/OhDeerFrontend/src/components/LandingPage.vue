@@ -52,28 +52,28 @@ const slides = [
   {
     title: 'Shop the Latest Furniture Collection',
     description: 'Discover stylish and affordable furniture pieces for every room.',
-    image: 'https://blog.meyerhatchery.com/wp-content/uploads/2022/06/Main-Blog-Images-Always-1200x____-6-1.png',
+    image: 'https://images.pexels.com/photos/45175/hirsch-forest-wild-fallow-deer-45175.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
     link: '/marketplace',
     buttonText: 'Shop Now'
   },
   {
     title: 'Find Trusted Repair Services',
     description: 'Get your items fixed by verified repair shops near you.',
-    image: 'https://blog.meyerhatchery.com/wp-content/uploads/2022/06/Main-Blog-Images-Always-1200x____-6-1.png',
+    image: 'https://images.pexels.com/photos/3329812/pexels-photo-3329812.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
     link: '/repairlistings',
     buttonText: 'Find Repairs'
   },
   {
     title: 'Sell Your Items Quickly and Easily',
     description: 'List your items and connect with local buyers today.',
-    image: 'https://blog.meyerhatchery.com/wp-content/uploads/2022/06/Main-Blog-Images-Always-1200x____-6-1.png',
+    image: 'https://images.pexels.com/photos/682373/pexels-photo-682373.jpeg?cs=srgb&dl=pexels-steve-130217-682373.jpg&fm=jpg',
     link: '/create-listing',
     buttonText: 'Start Selling'
   },
   {
     title: 'Explore Our New Arrivals',
     description: 'Check out the latest additions to our marketplace.',
-    image: 'https://blog.meyerhatchery.com/wp-content/uploads/2022/06/Main-Blog-Images-Always-1200x____-6-1.png',
+    image: 'https://images.pexels.com/photos/735987/pexels-photo-735987.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
     link: '/marketplace',
     buttonText: 'View Now'
   },
@@ -199,7 +199,7 @@ const nextSlide = () => {
         <div class="carousel" id="item-carousel">
           <div v-for="item in nonRepairItems" :key="item.id" class="shopCard">
             <img :src="item.image" alt="Product Image" class="productImage" />
-            <h4 class="title">{{ item.title }}</h4>
+            <h4 class="title" style="padding-bottom: 30px;">{{ item.title }}</h4>
             <div class="infoGridItem">
               <p class="desc">{{ item.description }}</p>
               <p class="price">CHF {{ item.price }}</p>
@@ -213,23 +213,23 @@ const nextSlide = () => {
     </div>
 
     <div class="shopComponent">
-      <h3>Repair Shops Near You</h3>
-      <div class="carousel-wrapper">
-        <div class="carousel" id="repair-carousel">
-          <div v-for="shop in repairItems" :key="shop.id" class="shopCard">
-            <img :src="shop.image" alt="Shop Image" class="productImage" />
-            <h4 class="title">{{ shop.title }}</h4>
-            <div class="infoGridShop">
-              <p class="descShop">{{ shop.description }}</p>
-              <router-link :to="{ path: `/inspectrepair/${slugify(shop.title)}`, query: { id: shop.id } }">
-                <button class="butShop">More Information</button>
-              </router-link>
-            </div>
+    <h3>Repair Shops Near You</h3>
+    <div class="carousel-wrapper">
+      <div class="carousel" id="repair-carousel">
+        <div v-for="shop in repairItems" :key="shop.id" class="shopCard">
+          <img :src="shop.image" alt="Shop Image" class="productImage" />
+          <h4 class="title" style="padding-bottom: 30px;">{{ shop.title }}</h4>
+          <p class="descShop" style="padding-bottom: 40px;">{{ shop.description }}</p>
+          <div class="button-center">
+            <router-link :to="{ path: `/inspectrepair/${slugify(shop.title)}`, query: { id: shop.id } }">
+              <button class="butShop">More Information</button>
+            </router-link>
           </div>
         </div>
       </div>
     </div>
     </div>
+  </div>
 </template>
 
 <style scoped>
@@ -294,6 +294,29 @@ const nextSlide = () => {
   cursor: pointer;
   font-size: 1rem;
   transition: background-color 0.3s;
+}
+
+.button-center {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.butShop {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  margin-top: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.3s ease;
+  align-items: center;
+}
+
+.butShop:hover {
+  background: linear-gradient(135deg, #0056b3, #00448a);
 }
 
 .slide-button:hover {
@@ -546,7 +569,7 @@ const nextSlide = () => {
     max-height: 200px;
   }
 
-  .shopCard, .categoryCard {
+ .categoryCard {
     max-width: 100%;
   }
 }
@@ -632,17 +655,25 @@ h4 {
 .shopCard {
   min-width: 250px;
   max-width: 250px;
+  height: 450px;
   background: white;
   border-radius: 12px;
   padding: 15px;
   text-align: center;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s, box-shadow 0.3s;
+  height: 100%; 
 }
 
 .shopCard:hover {
   transform: scale(1.025);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.button-bottom {
+  display: flex;
+  justify-content: center;
+  margin-top: auto; 
 }
 
 .productImage {
