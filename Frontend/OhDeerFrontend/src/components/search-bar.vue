@@ -1,157 +1,92 @@
 <template>
-  <div class="search-bar-wrapper">
-    <div class="search-input">
-      <input
-        type="text"
-        v-model="searchQuery"
-        placeholder="Search by name..."
-        @keyup.enter="submitSearch"
-      />
-    </div>
-    <div class="filter-dropdown">
-      <div @click="toggleDropdown" class="dropdown-toggle">Filter by Category ▾</div>
-      <div class="dropdown-menu" v-show="dropdownOpen" @click.stop>
-        <div v-for="option in categoryOptions" :key="option.slug">
-          <label class="checkbox-label">
-            <input type="checkbox" :value="option.slug" v-model="selectedCategories" />
-            {{ option.label }}
-          </label>
-        </div>
-      </div>
-    </div>
+  <div class="search-bar">
+    <input
+      v-model="searchQuery"
+      type="text"
+      placeholder="Search items..."
+    />
 
-    <div class="search-button" @click="submitSearch">Search</div>
+    <select v-model="selectedRepairStatus">
+      <option value="">All Items</option>
+      <option value="repair">Repair Items</option>
+      <option value="non-repair">Non-Repair Items</option>
+    </select>
+
+    <select v-model="selectedCategory">
+      <option value="">All Categories</option>
+      <option value="electronics">Electronics</option>
+      <option value="furniture">Furniture</option>
+      <option value="appliances">Household Appliances</option>
+      <option value="services">Services</option>
+      <option value="automotive">Automotive</option>
+      <option value="clothing">Clothing & Accessories</option>
+      <option value="vehicles">Vehicles & Mobility</option>
+      <option value="luxury">Luxury & Accessories</option>
+      <option value="toys">Toys & Hobby Items</option>
+      <option value="other">Other</option>
+    </select>
+
+    <button @click="onSearch">Search</button>
   </div>
 </template>
 
+
 <script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { onMounted } from 'vue'
+import { ref } from 'vue';
 
-const isLoggedIn = ref(false)
+const searchQuery = ref('');
+const selectedRepairStatus = ref('');
+const selectedCategory = ref('');
 
-onMounted(() => {
-  const token = localStorage.getItem('token')
-  isLoggedIn.value = !!token
-})
+function onSearch() {
+  const queryParams = new URLSearchParams();
 
-const router = useRouter()
+  if (searchQuery.value) {
+    queryParams.append('q', searchQuery.value);
+  }
 
-const searchQuery = ref('')
-const selectedCategories = ref([])
-const dropdownOpen = ref(false)
+  if (selectedRepairStatus.value) {
+    queryParams.append('repair', selectedRepairStatus.value);
+  }
 
-const categoryOptions = [
-  { slug: 'furniture-home', label: 'Furniture & Home Items' },
-  { slug: 'electronics', label: 'Electronics' },
-  { slug: 'household-appliances', label: 'Household Appliances' },
-]
+  if (selectedCategory.value) {
+    queryParams.append('category', selectedCategory.value);
+  }
 
-function toggleDropdown() {
-  dropdownOpen.value = !dropdownOpen.value
-}
-
-function submitSearch() {
-  router.push({
-    path: '/search-results',
-    query: {
-      q: searchQuery.value.trim(),
-      categories: selectedCategories.value.join(','),
-    },
-  })
-}
-
-function categoryLabel(slug) {
-  const found = categoryOptions.find((cat) => cat.slug === slug)
-  return found ? found.label : slug
+  window.location.href = `/search-results?${queryParams.toString()}`;
 }
 </script>
-
-<style>
-.search-bar-wrapper {
+<style scoped>
+.search-bar {
   display: flex;
-  flex-direction: row;
+  gap: 0.5rem;
   align-items: center;
-  gap: 1rem;
-  background-color: transparent;
-  padding: 0;
-  max-width: 100%;
 }
 
-.search-input input {
-  padding: 0.4rem 0.8rem;
-  font-size: 0.95rem;
+input[type="text"] {
+  padding: 0.5rem;
   border: 1px solid #ccc;
-  border-radius: 6px;
+  border-radius: 4px;
   width: 200px;
 }
 
-.dropdown-toggle {
-  padding: 0.4rem 0.8rem;
+select {
+  padding: 0.5rem;
   border: 1px solid #ccc;
-  border-radius: 6px;
-  background-color: #f5f5f5;
-  cursor: pointer;
-  font-size: 0.95rem;
-  transition: background-color 0.2s;
-}
-.dropdown-toggle:hover {
-  background-color: #e6e6e6;
-}
-
-.filter-dropdown {
-  position: relative;
-  user-select: none;
-}
-
-.dropdown-menu {
-  position: absolute;
-  top: calc(100% + 4px);
-  left: 0;
-  min-width: 250px;
-  background-color: white;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  padding: 1rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  z-index: 10;
-}
-
-.checkbox-label {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.95rem;
-  margin-bottom: 0.4rem;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  padding: 0.25rem;
   border-radius: 4px;
 }
 
-.checkbox-label:hover {
-  background-color: #f0f0f0;
-}
-
-input[type='checkbox'] {
-  cursor: pointer;
-}
-
-.search-button {
-  background-color: #6b8e23;
+button {
+  padding: 0.6rem 1.2rem;
+  background-color: #388659;
   color: white;
-  padding: 0.5rem 1rem;
-  font-size: 0.95rem;
+  border: none;
   border-radius: 6px;
   cursor: pointer;
-  transition:
-    background-color 0.2s,
-    box-shadow 0.2s;
+  transition: background-color 0.3s;
 }
 
-.search-button:hover {
-  background-color: #5a7f1a;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+button:hover {
+  background-color: #2c6a4e;
 }
 </style>

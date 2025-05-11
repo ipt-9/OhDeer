@@ -25,6 +25,15 @@ onMounted(async () => {
   await fetchItems();
 });
 
+const scrollLeft = (carouselId) => {
+  const carousel = document.getElementById(carouselId);
+  carousel.scrollBy({ left: -300, behavior: 'smooth' });
+};
+
+const scrollRight = (carouselId) => {
+  const carousel = document.getElementById(carouselId);
+  carousel.scrollBy({ left: 300, behavior: 'smooth' });
+};
 
 
 const slides = [
@@ -159,60 +168,54 @@ const nextSlide = () => {
       <button class="arrow left" @click="prevSlide">&#9664;</button>
       <button class="arrow right" @click="nextSlide">&#9654;</button>
     </div>
-  </div>
-    <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
-
-    <div class="shopComponent">
-    <h3>Categories</h3>
-    <div class="categoryGrid">
-      <router-link
-        v-for="category in ['Electronics', 'Furniture', 'Appliances', 'Services']"
-        :key="category"
-        :to="`/search-results?categories=${category.toLowerCase()}`"
-        class="categoryCard"
-      >
-        {{ category }}
-      </router-link>
-    </div>
-  </div>
 
     <div class="shopComponent">
       <h3>Items Near You</h3>
-      <div class="shopGrid">
-        <div v-for="item in nonRepairItems.slice(0, 4)" :key="item.id" class="shopCard">
-          <img :src="item.image" alt="Product Image" class="productImage" />
-          <h4 class="title">{{ item.title }}</h4>
-          <div class="infoGridItem">
-            <p class="desc">{{ item.description }}</p>
-            <p class="price">CHF {{ item.price }}</p>
-            <router-link :to="{ path: `/inspectitem/${slugify(item.title)}`, query: { id: item.id } }">
-              <button class="but" @click="navigate">More Information</button>
-            </router-link>
-          </div>  
+      <div class="carousel-wrapper">
+        <button class="carousel-arrow left" @click="scrollLeft('item-carousel')">&#9664;</button>
+        <div class="carousel" id="item-carousel">
+          <div v-for="item in nonRepairItems" :key="item.id" class="shopCard">
+            <img :src="item.image" alt="Product Image" class="productImage" />
+            <h4 class="title">{{ item.title }}</h4>
+            <div class="infoGridItem">
+              <p class="desc">{{ item.description }}</p>
+              <p class="price">CHF {{ item.price }}</p>
+              <router-link :to="{ path: `/inspectitem/${slugify(item.title)}`, query: { id: item.id } }">
+                <button class="but">More Information</button>
+              </router-link>
+            </div>  
+          </div>
         </div>
+        <button class="carousel-arrow right" @click="scrollRight('item-carousel')">&#9654;</button>
       </div>
     </div>
 
     <div class="shopComponent">
       <h3>Repair Shops Near You</h3>
-      <div class="shopGrid">
-        <div v-for="shop in repairItems.slice(0, 4)" :key="shop.id" class="shopCard">
-          <img :src="shop.image" alt="Product Image" class="productImage" />
-          <h4 class="title">{{ shop.title }}</h4>
-          <div class="infoGridShop">  
-            <p class="lab1">Phone: </p>
-            <p class="inf1">{{ shop.phone }}</p>
-            <p class="lab2">Address: </p>
-            <p class="inf2">{{ shop.address + ", " + shop.postalCode }}</p>
-            <p class="descShop">{{ shop.description }}</p>
-            <router-link :to="{ path: `/inspectrepair/${slugify(shop.title)}`, query: { id: shop.id } }" custom v-slot="{navigate}">
-              <button class="butShop" @click="navigate">More Information</button>
-            </router-link>
+      <div class="carousel-wrapper">
+        <button class="carousel-arrow left" @click="scrollLeft('repair-carousel')">&#9664;</button>
+        <div class="carousel" id="repair-carousel">
+          <div v-for="shop in repairItems" :key="shop.id" class="shopCard">
+            <img :src="shop.image" alt="Shop Image" class="productImage" />
+            <h4 class="title">{{ shop.title }}</h4>
+            <div class="infoGridShop">
+              <p class="lab1">Phone:</p>
+              <p class="inf1">{{ shop.phone }}</p>
+              <p class="lab2">Address:</p>
+              <p class="inf2">{{ shop.address }}, {{ shop.postalCode }}</p>
+              <p class="descShop">{{ shop.description }}</p>
+              <router-link :to="{ path: `/inspectrepair/${slugify(shop.title)}`, query: { id: shop.id } }">
+                <button class="butShop">More Information</button>
+              </router-link>
+            </div>
           </div>
         </div>
+        <button class="carousel-arrow right" @click="scrollRight('repair-carousel')">&#9654;</button>
       </div>
     </div>
+  </div>
 </template>
+
 <style scoped>
 .container {
   margin: 0;
@@ -534,4 +537,114 @@ h4 {
   max-height: 23px;
   height: 23px;
 }
+.carousel-wrapper {
+  position: relative;
+  overflow: hidden;
+  padding: 10px 0;
+}
+
+.carousel {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+}
+
+.carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 0.5rem;
+  cursor: pointer;
+  font-size: 1.5rem;
+  border-radius: 50%;
+  z-index: 2;
+}
+
+.carousel-arrow.left {
+  left: 10px;
+}
+
+.carousel-arrow.right {
+  right: 10px;
+}
+
+.carousel-arrow:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.shopCard {
+  min-width: 250px;
+  max-width: 250px;
+  background: white;
+  border-radius: 12px;
+  padding: 15px;
+  text-align: center;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.shopCard:hover {
+  transform: scale(1.025);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.productImage {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+h4.title {
+  font-size: 1.2rem;
+  margin: 0.5rem 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.desc, .descShop {
+  font-size: 0.9rem;
+  color: #555;
+  margin: 0.3rem 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.price {
+  font-weight: bold;
+  font-size: 1rem;
+  color: #388659;
+}
+
+@media (max-width: 768px) {
+  .carousel-arrow {
+    font-size: 1.2rem;
+    padding: 0.4rem;
+  }
+
+  .productImage {
+    height: 150px;
+  }
+
+  h4.title {
+    font-size: 1rem;
+  }
+
+  .desc, .descShop {
+    font-size: 0.8rem;
+  }
+}
+
+
 </style>
