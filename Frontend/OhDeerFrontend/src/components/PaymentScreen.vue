@@ -149,7 +149,7 @@ const pay = async () => {
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json',
-          Authoristion: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           amount: post.value.amount,
