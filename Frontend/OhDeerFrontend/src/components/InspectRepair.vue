@@ -5,7 +5,6 @@ import navBar from './nav-bar.vue'
 import { ref, onMounted } from 'vue'
 
 const route = useRoute()
-const title = route.params.title
 const ID = route.query.id
 const errorMessage = ref('')
 const item = ref(null)

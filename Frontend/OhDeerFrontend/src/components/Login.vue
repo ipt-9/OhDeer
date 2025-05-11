@@ -52,9 +52,7 @@ export default {
           this.error = data.message || 'Login failed.'
           return
         }
-        const user = await fetch('https://api.ohdeer-bmsd22a.bbzwinf.ch/api/users/user', {
-          method: 'GET',
-        })
+
         localStorage.setItem('token', data.token)
         localStorage.setItem('user', JSON.stringify())
         this.$router.push('/')

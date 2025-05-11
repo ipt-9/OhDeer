@@ -39,6 +39,7 @@
       </div>
     </div>
   </div>
+  <div v-else-if="error" class="error-text">{{ error }}</div>
 </template>
 
 <script setup>
@@ -49,6 +50,7 @@ const router = useRouter()
 const route = useRoute()
 const postId = route.params.id
 
+const error = ref(null)
 const post = ref(null)
 const fee = ref(null)
 const showInfo = ref(false)
@@ -78,6 +80,7 @@ const fetchData = async () => {
   } catch (err) {
     console.error(err)
     error.value = 'Failed to load post.'
+    return null
   } finally {
     try {
       const response = await fetch(`https://api.ohdeer-bmsd22a.bbzwinf.ch/api/getFee`, {
@@ -89,7 +92,7 @@ const fetchData = async () => {
       })
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
+        throw new Error(data.message || `Fetch failed.`)
       }
 
       const data = await response.json()
@@ -99,34 +102,6 @@ const fetchData = async () => {
       error.value = 'Failed to load post.'
     }
   }
-
-  /*
-
-    post.value = {
-        id: 1,
-        title: "Broken Motherboard",
-        description: "A broken motherboard that doesn't work with my current system anymore.",
-        price: 100,
-        is_repair: false,
-        is_complete: false,
-        category_id: 3,
-        user_id: 2,
-        image_1: "https://www.budgetpcupgraderepair.com/wp-content/uploads/2020/05/Old-Laptop-computer-motherboard-750x500.png",
-        created_at: "2025-04-10T12:00:00Z",
-        updated_at: "2025-04-12T15:30:00Z",
-        user: {
-            id: 2,
-            username: "techguru",
-            email: "techguru@example.com",
-            iban: "CH9300762011623852957"
-        }
-    }
-
-    fee.value = {
-        amount: 12
-    }
-
-    */
 
   commission.value = post.value.price * (fee.value.amount / 100.0)
   totalprice.value = post.value.price * (fee.value.amount / 100.0) + post.value.price

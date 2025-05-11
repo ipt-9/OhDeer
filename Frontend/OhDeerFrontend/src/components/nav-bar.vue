@@ -61,7 +61,6 @@
 
 <script>
 import SearchBar from './search-bar.vue'
-import { ref, onMounted } from 'vue'
 
 export default {
   name: 'Nav-bar',

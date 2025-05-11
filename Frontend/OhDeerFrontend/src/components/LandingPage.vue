@@ -1,6 +1,6 @@
 <script setup>
 import navBar from './nav-bar.vue'
-import { ref, computed, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import slugify from 'slugify'
 
 const isLoggedIn = ref(false)
@@ -10,7 +10,6 @@ const nonRepairItems = ref([])
 const repairItems = ref([])
 const newArrivals = ref([])
 const images = ref([])
-const slideFilter = ref('all')
 const currentIndex = ref(0)
 const errorMessage = ref('')
 const categories = [
@@ -52,16 +51,6 @@ onMounted(async () => {
     repairCarousel.addEventListener('wheel', (event) => handleScroll(event, 'repair-carousel'))
   }
 })
-
-const scrollLeft = (carouselId) => {
-  const carousel = document.getElementById(carouselId)
-  carousel.scrollBy({ left: -300, behavior: 'smooth' })
-}
-
-const scrollRight = (carouselId) => {
-  const carousel = document.getElementById(carouselId)
-  carousel.scrollBy({ left: 300, behavior: 'smooth' })
-}
 
 const slides = [
   {
