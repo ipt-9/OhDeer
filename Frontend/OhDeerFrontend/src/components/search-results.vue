@@ -24,29 +24,13 @@
 <script setup>
 import { computed, ref, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import slugify from 'slugify'
 import NavBar from './nav-bar.vue'
 
 const posts = ref([]);
-const categories = [
-  { id: 1, name: 'Furniture & Home Items' },
-  { id: 2, name: 'Electronics' },
-  { id: 3, name: 'Household Appliances' },
-  { id: 4, name: 'Clothing & Accessories' },
-  { id: 5, name: 'Vehicles & Mobility' },
-  { id: 6, name: 'Luxury & Accessories' },
-  { id: 7, name: 'Toys & Hobby Items' },
-  { id: 8, name: 'Other' },
-  { id: 9, name: 'Services' },
-  { id: 10, name: 'Automotive' }
-];
-
 const route = useRoute();
 const searchQuery = ref(route.query.q?.toLowerCase() || '');
 const selectedRepairStatus = ref(route.query.repair || '');
-const selectedCategories = ref(
-  (route.query.categories || '').split(',').filter((c) => c.trim() !== ''),
-);
+const selectedCategory = ref(route.query.category || '');
 
 async function fetchPosts() {
   try {
@@ -64,20 +48,17 @@ async function fetchPosts() {
     const data = await response.json();
 
     posts.value = data
-      .filter(post => !post.is_complete) 
-      .map(post => {
-        const category = categories.find(c => c.id === post.category_id);
-        return {
-          id: post.id,
-          title: post.title,
-          description: post.description,
-          price: post.price,
-          image: post.image_1, 
-          isRepair: post.is_repair,
-          isComplete: post.is_complete,
-          categoryName: category ? category.name : 'Unknown'
-        };
-      });
+      .filter(post => !post.is_complete)
+      .map(post => ({
+        id: post.id,
+        title: post.title,
+        description: post.description,
+        price: post.price,
+        image: post.image_1,
+        isRepair: post.is_repair,
+        isComplete: post.is_complete,
+        categoryID: post.category_id || null
+      }));
 
   } catch (err) {
     console.error('Error fetching posts:', err);
@@ -86,7 +67,6 @@ async function fetchPosts() {
 
 function matchesSearch(post, query) {
   if (!query) return true;
-
   const words = query.trim().toLowerCase().split(/\s+/);
   const haystack = (post.title + ' ' + post.description).toLowerCase();
   return words.every((word) => haystack.includes(word));
@@ -100,23 +80,18 @@ const filteredPosts = computed(() => {
       (selectedRepairStatus.value === 'repair' && post.isRepair) || 
       (selectedRepairStatus.value === 'non-repair' && !post.isRepair);
 
-    const catName = slugify(post.categoryName, { lower: true, replacement: '-' });
-    const matchesCategory =
-      selectedCategories.value.length === 0 || 
-      selectedCategories.value.includes(catName);
+    const matchesCategory = !selectedCategory.value || post.categoryID === parseInt(selectedCategory.value);
 
     return matchesQuery && matchesRepairStatus && matchesCategory;
   });
 });
-
-
 
 watch(
   () => route.query,
   (newQuery) => {
     searchQuery.value = newQuery.q?.toLowerCase() || '';
     selectedRepairStatus.value = newQuery.repair || '';
-    selectedCategories.value = (newQuery.categories || '').split(',').filter((c) => c.trim() !== '');
+    selectedCategory.value = newQuery.category || '';
   },
   { immediate: true },
 );
@@ -125,6 +100,8 @@ onMounted(() => {
   fetchPosts();
 });
 </script>
+
+
 
 <style scoped>
 .search-page {

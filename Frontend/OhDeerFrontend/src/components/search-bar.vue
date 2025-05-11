@@ -14,16 +14,16 @@
 
     <select v-model="selectedCategory">
       <option value="">All Categories</option>
-      <option value="furniture-home-items">Furniture & Home Items</option>
-      <option value="electronics">Electronics</option>
-      <option value="household-appliances">Household Appliances</option>
-      <option value="clothing-accessories">Clothing & Accessories</option>
-      <option value="vehicles-mobility">Vehicles & Mobility</option>
-      <option value="luxury-accessories">Luxury & Accessories</option>
-      <option value="toys-hobby-items">Toys & Hobby Items</option>
-      <option value="other">Other</option>
-      <option value="services">Services</option>
-      <option value="automotive">Automotive</option>
+      <option value="1">Furniture & Home Items</option>
+      <option value="2">Electronics</option>
+      <option value="3">Household Appliances</option>
+      <option value="4">Clothing & Accessories</option>
+      <option value="5">Vehicles & Mobility</option>
+      <option value="6">Luxury & Accessories</option>
+      <option value="7">Toys & Hobby Items</option>
+      <option value="8">Other</option>
+      <option value="9">Services</option>
+      <option value="10">Automotive</option>
     </select>
 
     <button @click="onSearch">Search</button>
@@ -49,7 +49,7 @@ function onSearch() {
   }
 
   if (selectedCategory.value) {
-    queryParams.append('categories', selectedCategory.value); 
+    queryParams.append('category', selectedCategory.value); 
   }
 
   window.location.href = `/search-results?${queryParams.toString()}`;
