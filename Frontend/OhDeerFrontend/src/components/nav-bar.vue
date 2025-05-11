@@ -6,6 +6,7 @@
         <router-link to="/" exact-active-class="active">Home</router-link>
         <router-link to="/marketplace" exact-active-class="active">Marketplace</router-link>
         <router-link to="/repairlistings" exact-active-class="active">Repair Shops</router-link>
+        <router-link to="/create-listing" exact-active-class="active">Create Listing</router-link>
       </div>
     </div>
 
@@ -36,6 +37,7 @@
       <router-link @click="mobileMenuOpen = false" to="/">Home</router-link>
       <router-link @click="mobileMenuOpen = false" to="/marketplace">Marketplace</router-link>
       <router-link @click="mobileMenuOpen = false" to="/repairlistings">Repair Shops</router-link>
+      <router-link @click="mobileMenuOpen = false" to="/create-listing">Create Listing</router-link>
       <router-link @click="mobileMenuOpen = false" to="/settings" v-if="isLoggedIn">Settings</router-link>
       <router-link @click="mobileMenuOpen = false" to="/login" v-if="!isLoggedIn">Login</router-link>
       <router-link @click="mobileMenuOpen = false" to="/register" v-if="!isLoggedIn">Register</router-link>
@@ -43,6 +45,7 @@
     </div>
   </nav>
 </template>
+
 <script>
 import SearchBar from './search-bar.vue'
 import { ref, onMounted } from 'vue'

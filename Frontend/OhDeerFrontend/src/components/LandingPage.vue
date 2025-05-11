@@ -13,6 +13,18 @@ const images = ref([]);
 const slideFilter = ref("all");
 const currentIndex = ref(0);
 const errorMessage = ref("");
+const categories = [
+  { id: 1, name: 'Furniture & Home Items' },
+  { id: 2, name: 'Electronics' },
+  { id: 3, name: 'Household Appliances' },
+  { id: 4, name: 'Clothing & Accessories' },
+  { id: 5, name: 'Vehicles & Mobility' },
+  { id: 6, name: 'Luxury & Accessories' },
+  { id: 7, name: 'Toys & Hobby Items' },
+  { id: 8, name: 'Services' },
+  { id: 9, name: 'Automotive' },
+  { id: 10, name: 'Other' }
+];
 
 onMounted(async () => {
   const token = localStorage.getItem("token");
@@ -168,6 +180,18 @@ const nextSlide = () => {
       <button class="arrow left" @click="prevSlide">&#9664;</button>
       <button class="arrow right" @click="nextSlide">&#9654;</button>
     </div>
+    <div class="category-nav">
+      <div class="category-scroll">
+        <router-link
+          v-for="(category, index) in categories"
+          :key="index"
+          :to="`/search-results?category=${category.id}`"
+          class="category-link"
+        >
+          {{ category.name }}
+        </router-link>
+      </div>
+    </div>
 
     <div class="shopComponent">
       <h3>Items Near You</h3>
@@ -199,10 +223,6 @@ const nextSlide = () => {
             <img :src="shop.image" alt="Shop Image" class="productImage" />
             <h4 class="title">{{ shop.title }}</h4>
             <div class="infoGridShop">
-              <p class="lab1">Phone:</p>
-              <p class="inf1">{{ shop.phone }}</p>
-              <p class="lab2">Address:</p>
-              <p class="inf2">{{ shop.address }}, {{ shop.postalCode }}</p>
               <p class="descShop">{{ shop.description }}</p>
               <router-link :to="{ path: `/inspectrepair/${slugify(shop.title)}`, query: { id: shop.id } }">
                 <button class="butShop">More Information</button>
@@ -314,6 +334,34 @@ const nextSlide = () => {
   background: rgba(0, 0, 0, 0.8);
 }
 
+.category-nav {
+  margin: 20px 0;
+  padding: 10px;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.category-scroll {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.category-link {
+  padding: 8px 16px;
+  background-color: #388659;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.category-link:hover {
+  background-color: #2c6a4e;
+}
 
 .shopComponent {
   padding: 20px;
@@ -391,6 +439,15 @@ const nextSlide = () => {
     .slideshow {
       height: 300px;
     }
+    .category-scroll {
+    gap: 8px;
+    overflow-x: auto;
+  }
+
+  .category-link {
+    font-size: 0.9rem;
+    padding: 6px 12px;
+  }
   }
 
   .infoGridItem {

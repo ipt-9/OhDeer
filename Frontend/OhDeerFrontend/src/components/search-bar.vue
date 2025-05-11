@@ -21,9 +21,9 @@
       <option value="5">Vehicles & Mobility</option>
       <option value="6">Luxury & Accessories</option>
       <option value="7">Toys & Hobby Items</option>
-      <option value="8">Other</option>
-      <option value="9">Services</option>
-      <option value="10">Automotive</option>
+      <option value="8">Services</option>
+      <option value="9">Automotive</option>
+      <option value="10">Other</option>
     </select>
 
     <button @click="onSearch">Search</button>
