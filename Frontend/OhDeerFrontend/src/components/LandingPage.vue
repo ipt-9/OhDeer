@@ -196,7 +196,6 @@ const nextSlide = () => {
     <div class="shopComponent">
       <h3>Items Near You</h3>
       <div class="carousel-wrapper">
-        <button class="carousel-arrow left" @click="scrollLeft('item-carousel')">&#9664;</button>
         <div class="carousel" id="item-carousel">
           <div v-for="item in nonRepairItems" :key="item.id" class="shopCard">
             <img :src="item.image" alt="Product Image" class="productImage" />
@@ -210,14 +209,12 @@ const nextSlide = () => {
             </div>  
           </div>
         </div>
-        <button class="carousel-arrow right" @click="scrollRight('item-carousel')">&#9654;</button>
       </div>
     </div>
 
     <div class="shopComponent">
       <h3>Repair Shops Near You</h3>
       <div class="carousel-wrapper">
-        <button class="carousel-arrow left" @click="scrollLeft('repair-carousel')">&#9664;</button>
         <div class="carousel" id="repair-carousel">
           <div v-for="shop in repairItems" :key="shop.id" class="shopCard">
             <img :src="shop.image" alt="Shop Image" class="productImage" />
@@ -230,10 +227,9 @@ const nextSlide = () => {
             </div>
           </div>
         </div>
-        <button class="carousel-arrow right" @click="scrollRight('repair-carousel')">&#9654;</button>
       </div>
     </div>
-  </div>
+    </div>
 </template>
 
 <style scoped>
@@ -377,22 +373,6 @@ const nextSlide = () => {
   padding: 10px;
 }
 
-.shopCard {
-  background: white;
-  border-radius: 12px;
-  padding: 15px;
-  text-align: center;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
-  transition:
-    transform 0.3s,
-    box-shadow 0.3s;
-}
-
-.shopCard:hover {
-  transform: scale(1.025);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
 .categoryGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
@@ -417,13 +397,7 @@ const nextSlide = () => {
   background: #c4c4c4;
 }
 
-.productImage {
-  width: 100%;
-  height: auto;
-  max-height: 300px; 
-  object-fit: contain;
-  border-radius: 12px;
-}
+
 
   button:hover {
     opacity: 0.9;
@@ -605,10 +579,24 @@ h4 {
   gap: 1rem;
   overflow-x: auto;
   scroll-behavior: smooth;
+  padding: 10px;
 }
 
 .carousel::-webkit-scrollbar {
-  display: none;
+  height: 8px;
+}
+
+.carousel::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+.carousel::-webkit-scrollbar-track {
+  background-color: #f4f4f4;
+}
+
+.carousel:hover::-webkit-scrollbar-thumb {
+  background-color: #888;
 }
 
 .carousel-arrow {
@@ -697,9 +685,7 @@ h4.title {
     height: 150px;
   }
 
-  h4.title {
-    font-size: 1rem;
-  }
+  
 
   .desc, .descShop {
     font-size: 0.8rem;
