@@ -1,6 +1,5 @@
 <script setup>
 import { useRoute } from 'vue-router';
-import { RouterLink } from "vue-router";
 import slugify from "slugify";
 import navBar from './nav-bar.vue';
 import { ref, onMounted } from 'vue';

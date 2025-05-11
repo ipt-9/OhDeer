@@ -59,13 +59,13 @@ onMounted(() => {
               <h4 class="title">{{ item.title }}</h4>
               <div class="infoGrid">
                 <p class="desc">{{ item.description }}</p>
-                <p class="price">${{ item.price }}</p>
+                <p class="price">CHF {{ item.price }}</p>
                 <router-link
                   :to="{ path: `/inspectitem/${slugify(item.title)}`, query: { id: item.id } }"
                   custom
                   v-slot="{ navigate }"
                 >
-                  <button class="but" @click="navigate">Buy Now</button>
+                  <button class="but" @click="navigate">More Information</button>
                 </router-link>
               </div>
             </div>

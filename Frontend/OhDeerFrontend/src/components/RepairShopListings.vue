@@ -69,7 +69,7 @@ onMounted(() => {
                   custom
                   v-slot="{ navigate }"
                 >
-                  <button class="but" @click="navigate">more information</button>
+                  <button class="but" @click="navigate">More Information</button>
                 </router-link>
               </div>
             </div>

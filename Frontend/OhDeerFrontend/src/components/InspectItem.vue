@@ -81,8 +81,8 @@ onMounted(async () => {
                             </div>
                             <div class="space"></div>
                             <div class="footer">
-                                <h4 class="price">{{ item.price }}</h4>
-                                <router-link :to="`/InspectItem`" custom v-slot="{navigate}"> 
+                                <h4 class="price">CHF {{ item.price }}</h4>
+                                <router-link :to="`/payment/${slugify(ID)}`" custom v-slot="{navigate}"> <!-- /${slugify(item.link)}-${item.id} -->
                                     <button class="but" @click="navigate">Purchase</button>
                                 </router-link>
                             </div>

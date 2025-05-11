@@ -184,9 +184,9 @@ const nextSlide = () => {
           <h4 class="title">{{ item.title }}</h4>
           <div class="infoGridItem">
             <p class="desc">{{ item.description }}</p>
-            <p class="price">${{ item.price }}</p>
-            <router-link :to="`/inspectitem/${slugify(item.link)}-${item.id}`" custom v-slot="{navigate}">
-              <button class="but" @click="navigate">Buy Now</button>
+            <p class="price">CHF {{ item.price }}</p>
+            <router-link :to="{ path: `/inspectitem/${slugify(item.title)}`, query: { id: item.id } }">
+              <button class="but" @click="navigate">More Information</button>
             </router-link>
           </div>  
         </div>
@@ -205,8 +205,8 @@ const nextSlide = () => {
             <p class="lab2">Address: </p>
             <p class="inf2">{{ shop.address + ", " + shop.postalCode }}</p>
             <p class="descShop">{{ shop.description }}</p>
-            <router-link :to="`/inspectrepair/${slugify(shop.link)}-${shop.id}`" custom v-slot="{navigate}">
-              <button class="butShop" @click="navigate">more information</button>
+            <router-link :to="{ path: `/inspectrepair/${slugify(shop.title)}`, query: { id: shop.id } }" custom v-slot="{navigate}">
+              <button class="butShop" @click="navigate">More Information</button>
             </router-link>
           </div>
         </div>
@@ -346,6 +346,11 @@ const nextSlide = () => {
   transition:
     transform 0.3s,
     box-shadow 0.3s;
+}
+
+.shopCard:hover {
+  transform: scale(1.025);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .categoryGrid {
@@ -511,6 +516,7 @@ const nextSlide = () => {
     transition: 0.3s ease;
     align-items: center;
   }
+  
 
 @media (max-width: 768px) {
   .productImage, .slide {
