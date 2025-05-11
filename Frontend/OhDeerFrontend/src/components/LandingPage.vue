@@ -306,7 +306,7 @@ const nextSlide = () => {
 
 .arrow {
   position: absolute;
-  top: 193.2px;
+  top: 47.5%;
   background: rgba(0, 0, 0, 0.5);
   color: white;
   border: none;
@@ -613,12 +613,12 @@ h4 {
 
 .carousel-arrow {
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 51%;
   background: rgba(0, 0, 0, 0.5);
   color: white;
   border: none;
-  padding: 0.5rem;
+  padding-top: 0.2rem;
+  padding-bottom: 0.4rem;
   cursor: pointer;
   font-size: 1.5rem;
   border-radius: 50%;
@@ -626,11 +626,15 @@ h4 {
 }
 
 .carousel-arrow.left {
-  left: 10px;
+  right: 15px;
+  padding-left: 0.3rem;
+  padding-right: 0.5rem;
 }
 
 .carousel-arrow.right {
-  right: 10px;
+  right: 15px;
+  padding-left: 0.5rem;
+  padding-right: 0.3rem;
 }
 
 .carousel-arrow:hover {
@@ -687,7 +691,6 @@ h4.title {
 @media (max-width: 768px) {
   .carousel-arrow {
     font-size: 1.2rem;
-    padding: 0.4rem;
   }
 
   .productImage {
