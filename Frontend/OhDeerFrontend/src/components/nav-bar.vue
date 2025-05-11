@@ -15,21 +15,19 @@
 
     <div class="nav-right">
       <div class="auth-buttons" v-if="!isLoggedIn">
-        <router-link to="/login" exact-active-class="active">Login</router-link>
-        <router-link to="/register" exact-active-class="active">Register</router-link>
+        <router-link to="/login" exact-active-class="active" class="auth-link">Login</router-link>
+        <span class="separator">|</span>
+        <router-link to="/register" exact-active-class="active" class="auth-link">Register</router-link>
       </div>
 
       <div class="user-dropdown" v-if="isLoggedIn">
         <img :src="user.profileImage" class="profile-img" alt="Profile" />
-        <span>{{ user.name }}</span>
+        <span class="user-name">{{ user.name }}</span>
         <div class="dropdown-menu-profile">
           <router-link to="/settings">Settings</router-link>
           <a href="#" @click.prevent="logout">Logout</a>
         </div>
       </div>
-    </div>
-    <div class="user-dropdown" v-if="!isLoggedIn">
-      <router-link to="/login">Login</router-link>
     </div>
 
     <div class="mobile-toggle" @click="toggleMobileMenu()">☰</div>
@@ -38,15 +36,9 @@
       <router-link @click="mobileMenuOpen = false" to="/">Home</router-link>
       <router-link @click="mobileMenuOpen = false" to="/marketplace">Marketplace</router-link>
       <router-link @click="mobileMenuOpen = false" to="/repairlistings">Repair Shops</router-link>
-      <router-link @click="mobileMenuOpen = false" to="/settings" v-if="isLoggedIn"
-        >Settings</router-link
-      >
-      <router-link @click="mobileMenuOpen = false" to="/login" v-if="!isLoggedIn"
-        >Login</router-link
-      >
-      <router-link @click="mobileMenuOpen = false" to="/register" v-if="!isLoggedIn"
-        >Register</router-link
-      >
+      <router-link @click="mobileMenuOpen = false" to="/settings" v-if="isLoggedIn">Settings</router-link>
+      <router-link @click="mobileMenuOpen = false" to="/login" v-if="!isLoggedIn">Login</router-link>
+      <router-link @click="mobileMenuOpen = false" to="/register" v-if="!isLoggedIn">Register</router-link>
       <a href="#" v-if="isLoggedIn" @click.prevent="logout">Logout</a>
     </div>
   </nav>
@@ -64,16 +56,11 @@ export default {
       dropdownOpen: false,
       errorMessage: '',
       user: {
-        name: '',
-        profileImage: '',
+        name: 'User',
+        profileImage: 'https://i.redd.it/87kxdlhrk3z71.jpg',
       },
-      isLoggedIn: false,
+      isLoggedIn: ref(false),
     }
-  },
-  computed: {
-    isLoggedIn() {
-      return !!localStorage.getItem('token')
-    },
   },
   methods: {
     toggleMobileMenu() {
@@ -82,7 +69,10 @@ export default {
     async fetchUserDetails() {
       try {
         const token = localStorage.getItem('token')
-        if (!token) return
+        if (!token) {
+          this.isLoggedIn = false
+          return
+        }
 
         const response = await fetch(
           'https://api.ohdeer-bmsd22a.bbzwinf.ch/api/users/user',
@@ -99,11 +89,11 @@ export default {
 
         const data = await response.json()
         this.user.name = data.name || 'User'
-        this.user.profileImage = data.profileImage || 'https://i.redd.it/87kxdlhrk3z71.jpg'
+        this.user.profileImage = data.profile_image || 'https://i.redd.it/87kxdlhrk3z71.jpg'
         this.isLoggedIn = true
       } catch (err) {
-        this.errorMessage = 'Error fetching user data: ' + err.message
-        console.error(err)
+        console.error('Error fetching user data:', err)
+        this.isLoggedIn = false
       }
     },
     async logout() {
@@ -137,18 +127,25 @@ export default {
     },
   },
   mounted() {
-    if (this.isLoggedIn) {
+    const token = localStorage.getItem('token')
+    if (token) {
+      this.isLoggedIn = true
       this.fetchUserDetails()
+    } else {
+      this.isLoggedIn = false
     }
   },
 }
 </script>
 
+
+
+
+
 <style>
 .navbar {
-  overflow: visible;
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
   background-color: #f4f9f4;
   padding: 1rem 2rem;
@@ -156,9 +153,13 @@ export default {
   position: sticky;
   top: 0;
   z-index: 1000;
-  gap: 1rem;
 }
-
+.auth-link {
+  text-decoration: none;
+  color: #6b8e23;
+  margin: 0 0.5rem;
+  font-weight: bold;
+}
 .nav-left {
   display: flex;
   align-items: center;
@@ -231,8 +232,9 @@ export default {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  border: 1px solid #ccc;
+  margin-right: 0.5rem;
 }
+
 .dropdown-menu {
   position: absolute;
   top: calc(100% + 4px);
@@ -251,13 +253,9 @@ export default {
   top: 100%;
   right: 0;
   background-color: white;
-  border: 1px solid #ccc;
-  border-radius: 6px;
   padding: 0.5rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  flex-direction: column;
-  min-width: 140px;
-  z-index: 1000;
+  border-radius: 6px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .user-dropdown:hover .dropdown-menu-profile {
@@ -320,10 +318,49 @@ export default {
 }
 
 @media (max-width: 768px) {
-  .nav-links,
-  .nav-center,
-  .nav-right {
+  .nav-links a,
+  .auth-link {
+    text-decoration: none;
+    color: #333;
+    padding: 0.3rem;
+  }
+  .navbar {
+    flex-direction: column;
+  }
+  .nav-links a:hover,
+  .auth-link:hover {
+    color: #6b8e23;
+  }
+  .nav-center{
     display: none;
+  }
+  .navbar {
+    flex-direction: column;
+  }
+
+  .nav-right {
+    margin-top: 0.5rem;
+  }
+
+  .user-dropdown {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .user-dropdown:hover {
+    display: flex;
+  }
+
+  .dropdown-menu-profile {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: white;
+    padding: 0.5rem;
+    border-radius: 6px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
 
   .mobile-toggle {
@@ -343,4 +380,13 @@ export default {
 .dropdown-menu label:hover {
   background-color: #f5f5f5;
 }
+.separator {
+  margin: 0 0.5rem;
+  color: #999;
+}
+.user-name {
+  margin-left: 0.5rem;
+  font-weight: bold;
+}
+
 </style>
