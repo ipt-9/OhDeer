@@ -7,7 +7,6 @@
         <ul>
           <li :class="{ active: activeTab === 'settings' }" @click="activeTab = 'settings'">Settings</li>
           <li :class="{ active: activeTab === 'listings' }" @click="activeTab = 'listings'">Listings</li>
-          <li :class="{ active: activeTab === 'subscriptions' }" @click="activeTab = 'subscriptions'">Subscriptions</li>
         </ul>
       </div>
 
@@ -106,7 +105,7 @@ async function fetchUserDetails() {
     email.value = data.email || '';
     address.value = data.address || '';
     postalCode.value = data.postal_code || '';
-    language.value = data.language || 'en';
+    language.value = data.language || '';
     profileImage.value = data.profile_image || '';
     website.value = data.website || '';
     userId.value = data.id || '';
