@@ -14,22 +14,21 @@
 
     <select v-model="selectedCategory">
       <option value="">All Categories</option>
+      <option value="furniture-home-items">Furniture & Home Items</option>
       <option value="electronics">Electronics</option>
-      <option value="furniture">Furniture</option>
-      <option value="appliances">Household Appliances</option>
+      <option value="household-appliances">Household Appliances</option>
+      <option value="clothing-accessories">Clothing & Accessories</option>
+      <option value="vehicles-mobility">Vehicles & Mobility</option>
+      <option value="luxury-accessories">Luxury & Accessories</option>
+      <option value="toys-hobby-items">Toys & Hobby Items</option>
+      <option value="other">Other</option>
       <option value="services">Services</option>
       <option value="automotive">Automotive</option>
-      <option value="clothing">Clothing & Accessories</option>
-      <option value="vehicles">Vehicles & Mobility</option>
-      <option value="luxury">Luxury & Accessories</option>
-      <option value="toys">Toys & Hobby Items</option>
-      <option value="other">Other</option>
     </select>
 
     <button @click="onSearch">Search</button>
   </div>
 </template>
-
 
 <script setup>
 import { ref } from 'vue';
@@ -50,12 +49,14 @@ function onSearch() {
   }
 
   if (selectedCategory.value) {
-    queryParams.append('category', selectedCategory.value);
+    queryParams.append('categories', selectedCategory.value); 
   }
 
   window.location.href = `/search-results?${queryParams.toString()}`;
 }
 </script>
+
+
 <style scoped>
 .search-bar {
   display: flex;

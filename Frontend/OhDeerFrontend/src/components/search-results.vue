@@ -21,24 +21,29 @@
     </div>
   </div>
 </template>
-
 <script setup>
 import { computed, ref, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import slugify from 'slugify'
 import NavBar from './nav-bar.vue'
 
 const posts = ref([]);
 const categories = [
-  { id: 1, name: 'Household Appliances' },
+  { id: 1, name: 'Furniture & Home Items' },
   { id: 2, name: 'Electronics' },
-  { id: 3, name: 'Furniture' },
-  { id: 4, name: 'Services' },
-  { id: 5, name: 'Automotive' }
+  { id: 3, name: 'Household Appliances' },
+  { id: 4, name: 'Clothing & Accessories' },
+  { id: 5, name: 'Vehicles & Mobility' },
+  { id: 6, name: 'Luxury & Accessories' },
+  { id: 7, name: 'Toys & Hobby Items' },
+  { id: 8, name: 'Other' },
+  { id: 9, name: 'Services' },
+  { id: 10, name: 'Automotive' }
 ];
 
 const route = useRoute();
 const searchQuery = ref(route.query.q?.toLowerCase() || '');
-
+const selectedRepairStatus = ref(route.query.repair || '');
 const selectedCategories = ref(
   (route.query.categories || '').split(',').filter((c) => c.trim() !== ''),
 );
@@ -89,20 +94,28 @@ function matchesSearch(post, query) {
 
 const filteredPosts = computed(() => {
   return posts.value.filter((post) => {
-    const matches = matchesSearch(post, searchQuery.value);
+    const matchesQuery = matchesSearch(post, searchQuery.value);
+    const matchesRepairStatus = 
+      !selectedRepairStatus.value || 
+      (selectedRepairStatus.value === 'repair' && post.isRepair) || 
+      (selectedRepairStatus.value === 'non-repair' && !post.isRepair);
 
-    const catName = post.categoryName.toLowerCase();
+    const catName = slugify(post.categoryName, { lower: true, replacement: '-' });
     const matchesCategory =
-      selectedCategories.value.length === 0 || selectedCategories.value.includes(catName);
+      selectedCategories.value.length === 0 || 
+      selectedCategories.value.includes(catName);
 
-    return matches && matchesCategory;
+    return matchesQuery && matchesRepairStatus && matchesCategory;
   });
 });
+
+
 
 watch(
   () => route.query,
   (newQuery) => {
     searchQuery.value = newQuery.q?.toLowerCase() || '';
+    selectedRepairStatus.value = newQuery.repair || '';
     selectedCategories.value = (newQuery.categories || '').split(',').filter((c) => c.trim() !== '');
   },
   { immediate: true },
@@ -112,9 +125,6 @@ onMounted(() => {
   fetchPosts();
 });
 </script>
-
-
-
 
 <style scoped>
 .search-page {
