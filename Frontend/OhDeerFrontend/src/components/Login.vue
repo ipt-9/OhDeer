@@ -29,7 +29,7 @@ export default {
       this.error = ''
 
       if (!this.email || !this.password) {
-        this.error = "Please fill in all fields."
+        this.error = 'Please fill in all fields.'
         return
       }
 
@@ -48,24 +48,22 @@ export default {
 
         const data = await response.json()
 
-      if (!response.ok) {
-        this.error = data.message || 'Login failed.';
-        return;
+        if (!response.ok) {
+          this.error = data.message || 'Login failed.'
+          return
+        }
+        const user = await fetch('https://api.ohdeer-bmsd22a.bbzwinf.ch/api/users/user', {
+          method: 'GET',
+        })
+        localStorage.setItem('token', data.token)
+        localStorage.setItem('user', JSON.stringify())
+        this.$router.push('/')
+      } catch (err) {
+        this.error = 'An error occurred. Please try again.'
+        console.error(err)
       }
-      const user = await fetch('https://api.ohdeer-bmsd22a.bbzwinf.ch/api/users/user', {
-        method: 'GET',
-
-      })
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('user', JSON.stringify())
-      this.$router.push('/');
-
-    } catch (err) {
-      this.error = 'An error occurred. Please try again.';
-      console.error(err);
-    }
-  }
-}
+    },
+  },
 }
 </script>
 

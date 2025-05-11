@@ -18,8 +18,12 @@
         <label>Title: <input v-model="title" type="text" /></label>
         <label>Description: <textarea v-model="description"></textarea></label>
         <label>Price: <input v-model.number="price" type="number" /></label>
-        <label>Image Link: <input v-model="imageLink" type="text" placeholder="https://example.com/image.jpg" /></label>
-        <label>Category:
+        <label
+          >Image Link:
+          <input v-model="imageLink" type="text" placeholder="https://example.com/image.jpg"
+        /></label>
+        <label
+          >Category:
           <select v-model="categoryId">
             <option value="1">Furniture & Home Items</option>
             <option value="2">Electronics</option>
@@ -44,44 +48,44 @@
 </template>
 
 <script setup>
-import navBar from "./nav-bar.vue";
-import { ref, onMounted } from 'vue';
+import navBar from './nav-bar.vue'
+import { ref, onMounted } from 'vue'
 
-const token = ref('');
-const isLoggedIn = ref(false);
-const canCreateRepairShop = ref(true); // Setting as true because we cant change the subscriptions in the backend
+const token = ref('')
+const isLoggedIn = ref(false)
+const canCreateRepairShop = ref(true) // Setting as true because we cant change the subscriptions in the backend
 
-const listingType = ref('product');
-const title = ref('');
-const description = ref('');
-const price = ref(0);
-const categoryId = ref(1);
-const imageLink = ref('');
+const listingType = ref('product')
+const title = ref('')
+const description = ref('')
+const price = ref(0)
+const categoryId = ref(1)
+const imageLink = ref('')
 
-const errorMessage = ref('');
-const successMessage = ref('');
+const errorMessage = ref('')
+const successMessage = ref('')
 
 onMounted(() => {
-  token.value = localStorage.getItem('token');
+  token.value = localStorage.getItem('token')
   if (!token.value) {
-    isLoggedIn.value = false;
-    return;
+    isLoggedIn.value = false
+    return
   }
-  isLoggedIn.value = true;
-});
+  isLoggedIn.value = true
+})
 
 async function submitListing() {
-  errorMessage.value = '';
-  successMessage.value = '';
+  errorMessage.value = ''
+  successMessage.value = ''
 
   if (!isLoggedIn.value) {
-    errorMessage.value = 'You must be logged in to create a listing.';
-    return;
+    errorMessage.value = 'You must be logged in to create a listing.'
+    return
   }
 
   if (!title.value || !description.value || !price.value || !imageLink.value) {
-    errorMessage.value = 'Please fill out all fields.';
-    return;
+    errorMessage.value = 'Please fill out all fields.'
+    return
   }
 
   const payload = {
@@ -91,7 +95,7 @@ async function submitListing() {
     price: parseFloat(price.value),
     is_repair: listingType.value === 'repair',
     image_1: imageLink.value,
-  };
+  }
 
   try {
     const res = await fetch('https://api.ohdeer-bmsd22a.bbzwinf.ch/api/posts/create', {
@@ -102,24 +106,23 @@ async function submitListing() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(payload),
-    });
+    })
 
     if (!res.ok) {
-      const errData = await res.json();
-      throw new Error(errData.message || 'Failed to create listing');
+      const errData = await res.json()
+      throw new Error(errData.message || 'Failed to create listing')
     }
 
-    successMessage.value = 'Listing created successfully!';
-    title.value = '';
-    description.value = '';
-    price.value = 0;
-    imageLink.value = '';
+    successMessage.value = 'Listing created successfully!'
+    title.value = ''
+    description.value = ''
+    price.value = 0
+    imageLink.value = ''
   } catch (err) {
-    errorMessage.value = `Error: ${err.message}`;
+    errorMessage.value = `Error: ${err.message}`
   }
 }
 </script>
-
 
 <style scoped>
 .create-listing {

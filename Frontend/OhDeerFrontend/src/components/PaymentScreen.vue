@@ -24,7 +24,9 @@
                 If you're interested in where this commission goes and who it helps, we invite you
                 to read our GTC.
               </p>
-              <router-link to="/comingsoon" exact-active-class="active">Read our general terms and conditions here</router-link>
+              <router-link to="/comingsoon" exact-active-class="active"
+                >Read our general terms and conditions here</router-link
+              >
             </div>
           </div>
         </div>

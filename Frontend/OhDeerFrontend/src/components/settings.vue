@@ -5,8 +5,12 @@
       <div class="sidebar">
         <h2>Dashboard</h2>
         <ul>
-          <li :class="{ active: activeTab === 'settings' }" @click="activeTab = 'settings'">Settings</li>
-          <li :class="{ active: activeTab === 'listings' }" @click="activeTab = 'listings'">Listings</li>
+          <li :class="{ active: activeTab === 'settings' }" @click="activeTab = 'settings'">
+            Settings
+          </li>
+          <li :class="{ active: activeTab === 'listings' }" @click="activeTab = 'listings'">
+            Listings
+          </li>
         </ul>
       </div>
 
@@ -19,7 +23,8 @@
             <label>Username: <input v-model="username" /></label>
             <label>Email: <input v-model="email" type="email" /></label>
             <label>Profile Image Link: <input v-model="profileImage" type="text" /></label>
-            <label>Language:
+            <label
+              >Language:
               <select v-model="language">
                 <option value="en">English</option>
               </select>
@@ -38,15 +43,13 @@
           <p v-if="!loading && userListings.length === 0" class="no-listings">No listings found.</p>
 
           <div v-if="!loading" class="listings-grid">
-            <router-link 
-              v-for="listing in userListings" 
-              :key="listing.id" 
+            <router-link
+              v-for="listing in userListings"
+              :key="listing.id"
               :to="{ path: `/inspectitem/${listing.id}` }"
               class="listing-card-link"
             >
-              <div 
-                :class="['listing-card', listing.is_complete ? 'closed' : 'active']"
-              >
+              <div :class="['listing-card', listing.is_complete ? 'closed' : 'active']">
                 <img :src="listing.image_1" alt="Listing Image" class="listing-image" />
                 <h4>{{ listing.title }}</h4>
                 <p>{{ listing.description }}</p>
@@ -64,91 +67,91 @@
   </div>
 </template>
 
-
-
-  
 <script setup>
-import { ref, onMounted } from 'vue';
-import navBar from "./nav-bar.vue";
+import { ref, onMounted } from 'vue'
+import navBar from './nav-bar.vue'
 
-const activeTab = ref('settings');
+const activeTab = ref('settings')
 
-const username = ref('');
-const email = ref('');
-const language = ref('en');
-const address = ref('');
-const postalCode = ref('');
-const profileImage = ref('');
-const userId = ref('');
-const website = ref('');
-const phoneNumber = ref('');
-const errorMessage = ref('');
-const successMessage = ref('');
-const userListings = ref([]);
-const loading = ref(true);
+const username = ref('')
+const email = ref('')
+const language = ref('en')
+const address = ref('')
+const postalCode = ref('')
+const profileImage = ref('')
+const userId = ref('')
+const website = ref('')
+const phoneNumber = ref('')
+const errorMessage = ref('')
+const successMessage = ref('')
+const userListings = ref([])
+const loading = ref(true)
 
 async function fetchUserDetails() {
   try {
-    const token = localStorage.getItem('token');
-    if (!token) throw new Error('User not authenticated');
+    const token = localStorage.getItem('token')
+    if (!token) throw new Error('User not authenticated')
 
     const response = await fetch('https://api.ohdeer-bmsd22a.bbzwinf.ch/api/users/user', {
       method: 'GET',
       headers: {
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
-    });
+    })
 
-    if (!response.ok) throw new Error('Failed to fetch user data');
+    if (!response.ok) throw new Error('Failed to fetch user data')
 
-    const data = await response.json();
-    username.value = data.username || '';
-    email.value = data.email || '';
-    address.value = data.address || '';
-    postalCode.value = data.postal_code || '';
-    language.value = data.language || '';
-    profileImage.value = data.profile_image || '';
-    website.value = data.website || '';
-    phoneNumber.value = data.phone_number || '';
-    userId.value = data.id || '';
+    const data = await response.json()
+    username.value = data.username || ''
+    email.value = data.email || ''
+    address.value = data.address || ''
+    postalCode.value = data.postal_code || ''
+    language.value = data.language || ''
+    profileImage.value = data.profile_image || ''
+    website.value = data.website || ''
+    phoneNumber.value = data.phone_number || ''
+    userId.value = data.id || ''
 
-    await fetchUserListings();
+    await fetchUserListings()
   } catch (err) {
-    errorMessage.value = 'Error fetching user data: ' + err.message;
+    errorMessage.value = 'Error fetching user data: ' + err.message
   }
 }
 
 async function fetchUserListings() {
   try {
-    const token = localStorage.getItem('token');
-    if (!token) throw new Error('User not authenticated');
+    const token = localStorage.getItem('token')
+    if (!token) throw new Error('User not authenticated')
 
-    if (!userId.value) await fetchUserDetails();
+    if (!userId.value) await fetchUserDetails()
 
-    const response = await fetch(`https://api.ohdeer-bmsd22a.bbzwinf.ch/api/users/${userId.value}/posts`, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
+    const response = await fetch(
+      `https://api.ohdeer-bmsd22a.bbzwinf.ch/api/users/${userId.value}/posts`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
       },
-    });
+    )
 
-    if (!response.ok) throw new Error('Failed to fetch listings');
+    if (!response.ok) throw new Error('Failed to fetch listings')
 
-    const data = await response.json();
-    userListings.value = data;
+    const data = await response.json()
+    userListings.value = data
   } catch (err) {
-    errorMessage.value = 'Error fetching listings: ' + err.message;
+    errorMessage.value = 'Error fetching listings: ' + err.message
   } finally {
-    loading.value = false;
+    loading.value = false
   }
 }
 
 async function updateSettings() {
   try {
-    const token = localStorage.getItem('token');
-    if (!token) throw new Error('User not authenticated');
+    const token = localStorage.getItem('token')
+    if (!token) throw new Error('User not authenticated')
 
     const updateData = {
       name: username.value,
@@ -158,29 +161,29 @@ async function updateSettings() {
       postal_code: postalCode.value,
       profile_image: profileImage.value,
       website: website.value,
-      phone_number: phoneNumber.value
-    };
+      phone_number: phoneNumber.value,
+    }
 
     const response = await fetch('https://api.ohdeer-bmsd22a.bbzwinf.ch/api/users/update', {
       method: 'PUT',
       headers: {
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(updateData),
-    });
+    })
 
-    if (!response.ok) throw new Error('Failed to update settings');
+    if (!response.ok) throw new Error('Failed to update settings')
 
-    successMessage.value = 'Settings updated successfully!';
+    successMessage.value = 'Settings updated successfully!'
   } catch (err) {
-    errorMessage.value = 'Error updating settings: ' + err.message;
+    errorMessage.value = 'Error updating settings: ' + err.message
   }
 }
 
 onMounted(() => {
-  fetchUserDetails();
-});
+  fetchUserDetails()
+})
 </script>
 
 <style scoped>
@@ -222,7 +225,8 @@ onMounted(() => {
   cursor: pointer;
 }
 
-.sidebar li:hover, .sidebar li.active {
+.sidebar li:hover,
+.sidebar li.active {
   background-color: #d0d0d0;
 }
 
@@ -239,7 +243,8 @@ form {
   gap: 0.8rem;
 }
 
-input, select {
+input,
+select {
   padding: 0.5rem;
   margin-top: 0.2rem;
   border-radius: 4px;
@@ -260,7 +265,8 @@ button {
 button:hover {
   background-color: #2c6a4e;
 }
-.loading, .no-listings {
+.loading,
+.no-listings {
   text-align: center;
   color: #666;
   margin: 1rem 0;
@@ -321,9 +327,7 @@ button:hover {
     width: 100%;
   }
   .listings-grid {
-  grid-template-columns: 1fr;
+    grid-template-columns: 1fr;
   }
 }
-
-
 </style>

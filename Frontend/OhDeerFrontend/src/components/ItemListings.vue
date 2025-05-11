@@ -1,11 +1,11 @@
 <script setup>
-import { ref, onMounted } from 'vue';
-import slugify from 'slugify';
-import navBar from './nav-bar.vue';
+import { ref, onMounted } from 'vue'
+import slugify from 'slugify'
+import navBar from './nav-bar.vue'
 
-const shopItems = ref([]);
-const errorMessage = ref('');
-const nonRepairItems = ref([]);
+const shopItems = ref([])
+const errorMessage = ref('')
+const nonRepairItems = ref([])
 
 async function fetchItems() {
   try {
@@ -14,16 +14,15 @@ async function fetchItems() {
       headers: {
         'Content-Type': 'application/json',
       },
-    });
+    })
 
-    if (!response.ok) throw new Error('Failed to fetch items');
+    if (!response.ok) throw new Error('Failed to fetch items')
 
-    const data = await response.json();
+    const data = await response.json()
 
-    
     shopItems.value = data
-      .filter(item => !item.is_complete) 
-      .map(item => ({
+      .filter((item) => !item.is_complete)
+      .map((item) => ({
         id: item.id,
         is_repair: item.is_repair,
         title: item.title,
@@ -31,19 +30,18 @@ async function fetchItems() {
         description: item.description,
         price: item.price,
         image: item.image_1 || 'https://api.ohdeer-bmsd22a.bbzwinf.ch/OhDeerPlaceholder.png',
-      }));
+      }))
 
-  nonRepairItems.value = shopItems.value.filter(item => !item.is_repair);
-
+    nonRepairItems.value = shopItems.value.filter((item) => !item.is_repair)
   } catch (err) {
-    errorMessage.value = 'Error fetching items: ' + err.message;
-    console.error(err);
+    errorMessage.value = 'Error fetching items: ' + err.message
+    console.error(err)
   }
 }
 
 onMounted(() => {
-  fetchItems();
-});
+  fetchItems()
+})
 </script>
 
 <template>
@@ -127,7 +125,6 @@ onMounted(() => {
   object-fit: contain;
   border-radius: 12px;
 }
-
 
 @media (max-width: 768px) {
   .shopGrid {

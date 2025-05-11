@@ -1,18 +1,18 @@
 <script setup>
-import navBar from "./nav-bar.vue";
-import { ref, computed, onMounted } from "vue";
-import slugify from "slugify";
+import navBar from './nav-bar.vue'
+import { ref, computed, onMounted } from 'vue'
+import slugify from 'slugify'
 
-const isLoggedIn = ref(false);
-const userPostalCode = ref("");
-const shopItems = ref([]);
-const nonRepairItems = ref([]);
-const repairItems = ref([]);
-const newArrivals = ref([]);
-const images = ref([]);
-const slideFilter = ref("all");
-const currentIndex = ref(0);
-const errorMessage = ref("");
+const isLoggedIn = ref(false)
+const userPostalCode = ref('')
+const shopItems = ref([])
+const nonRepairItems = ref([])
+const repairItems = ref([])
+const newArrivals = ref([])
+const images = ref([])
+const slideFilter = ref('all')
+const currentIndex = ref(0)
+const errorMessage = ref('')
 const categories = [
   { id: 1, name: 'Furniture & Home Items' },
   { id: 2, name: 'Electronics' },
@@ -23,100 +23,101 @@ const categories = [
   { id: 7, name: 'Toys & Hobby Items' },
   { id: 8, name: 'Services' },
   { id: 9, name: 'Automotive' },
-  { id: 10, name: 'Other' }
-];
+  { id: 10, name: 'Other' },
+]
 const handleScroll = (event, carouselId) => {
-  const carousel = document.getElementById(carouselId);
+  const carousel = document.getElementById(carouselId)
   if (carousel) {
-    carousel.scrollBy({ left: event.deltaY, behavior: 'smooth' });
+    carousel.scrollBy({ left: event.deltaY, behavior: 'smooth' })
   }
-};
+}
 
 onMounted(async () => {
-  const token = localStorage.getItem("token");
-  isLoggedIn.value = !!token;
+  const token = localStorage.getItem('token')
+  isLoggedIn.value = !!token
 
   if (isLoggedIn.value) {
-    await fetchUserDetails(token);
+    await fetchUserDetails(token)
   }
 
-  await fetchItems();
-  const itemCarousel = document.getElementById('item-carousel');
-  const repairCarousel = document.getElementById('repair-carousel');
+  await fetchItems()
+  const itemCarousel = document.getElementById('item-carousel')
+  const repairCarousel = document.getElementById('repair-carousel')
 
   if (itemCarousel) {
-    itemCarousel.addEventListener('wheel', (event) => handleScroll(event, 'item-carousel'));
+    itemCarousel.addEventListener('wheel', (event) => handleScroll(event, 'item-carousel'))
   }
 
   if (repairCarousel) {
-    repairCarousel.addEventListener('wheel', (event) => handleScroll(event, 'repair-carousel'));
+    repairCarousel.addEventListener('wheel', (event) => handleScroll(event, 'repair-carousel'))
   }
-});
+})
 
 const scrollLeft = (carouselId) => {
-  const carousel = document.getElementById(carouselId);
-  carousel.scrollBy({ left: -300, behavior: 'smooth' });
-};
+  const carousel = document.getElementById(carouselId)
+  carousel.scrollBy({ left: -300, behavior: 'smooth' })
+}
 
 const scrollRight = (carouselId) => {
-  const carousel = document.getElementById(carouselId);
-  carousel.scrollBy({ left: 300, behavior: 'smooth' });
-};
-
+  const carousel = document.getElementById(carouselId)
+  carousel.scrollBy({ left: 300, behavior: 'smooth' })
+}
 
 const slides = [
   {
     title: 'Shop the Latest Furniture Collection',
     description: 'Discover stylish and affordable furniture pieces for every room.',
-    image: 'https://images.pexels.com/photos/45175/hirsch-forest-wild-fallow-deer-45175.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    image:
+      'https://images.pexels.com/photos/45175/hirsch-forest-wild-fallow-deer-45175.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
     link: '/marketplace',
-    buttonText: 'Shop Now'
+    buttonText: 'Shop Now',
   },
   {
     title: 'Find Trusted Repair Services',
     description: 'Get your items fixed by verified repair shops near you.',
-    image: 'https://images.pexels.com/photos/3329812/pexels-photo-3329812.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    image:
+      'https://images.pexels.com/photos/3329812/pexels-photo-3329812.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
     link: '/repairlistings',
-    buttonText: 'Find Repairs'
+    buttonText: 'Find Repairs',
   },
   {
     title: 'Sell Your Items Quickly and Easily',
     description: 'List your items and connect with local buyers today.',
-    image: 'https://images.pexels.com/photos/682373/pexels-photo-682373.jpeg?cs=srgb&dl=pexels-steve-130217-682373.jpg&fm=jpg',
+    image:
+      'https://images.pexels.com/photos/682373/pexels-photo-682373.jpeg?cs=srgb&dl=pexels-steve-130217-682373.jpg&fm=jpg',
     link: '/create-listing',
-    buttonText: 'Start Selling'
+    buttonText: 'Start Selling',
   },
   {
     title: 'Explore Our New Arrivals',
     description: 'Check out the latest additions to our marketplace.',
-    image: 'https://images.pexels.com/photos/735987/pexels-photo-735987.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    image:
+      'https://images.pexels.com/photos/735987/pexels-photo-735987.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
     link: '/marketplace',
-    buttonText: 'View Now'
+    buttonText: 'View Now',
   },
-];
-
-
+]
 
 const truncate = (text, maxLength) => {
-  return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
-};
+  return text.length > maxLength ? text.slice(0, maxLength) + '...' : text
+}
 
 async function fetchUserDetails(token) {
   try {
     const response = await fetch('https://api.ohdeer-bmsd22a.bbzwinf.ch/api/users/user', {
       method: 'GET',
       headers: {
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
-    });
+    })
 
-    if (!response.ok) throw new Error('Failed to fetch user data');
-    const data = await response.json();
-    userPostalCode.value = data.postal_code;
+    if (!response.ok) throw new Error('Failed to fetch user data')
+    const data = await response.json()
+    userPostalCode.value = data.postal_code
   } catch (err) {
-    errorMessage.value = 'Error fetching user data: ' + err.message;
-    console.error(err);
+    errorMessage.value = 'Error fetching user data: ' + err.message
+    console.error(err)
   }
 }
 
@@ -127,16 +128,15 @@ async function fetchItems() {
       headers: {
         'Content-Type': 'application/json',
       },
-    });
+    })
 
-    if (!response.ok) throw new Error('Failed to fetch items');
-    const data = await response.json();
+    if (!response.ok) throw new Error('Failed to fetch items')
+    const data = await response.json()
 
-   
     shopItems.value = data
-      .filter(item => !item.is_complete) 
-      .sort((a, b) => new Date(b.created_at) - new Date(a.created_at)) 
-      .map(item => ({
+      .filter((item) => !item.is_complete)
+      .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+      .map((item) => ({
         id: item.id,
         is_repair: item.is_repair,
         title: item.title,
@@ -148,40 +148,39 @@ async function fetchItems() {
         postalCode: item.postal_code || 'No postal code',
         phone: item.phone_number || 'No phone number',
         created_at: item.created_at,
-      }));
+      }))
 
-    nonRepairItems.value = shopItems.value.filter(item => !item.is_repair);
-    repairItems.value = shopItems.value.filter(item => item.is_repair);
-    newArrivals.value = shopItems.value.slice(0, 5);
+    nonRepairItems.value = shopItems.value.filter((item) => !item.is_repair)
+    repairItems.value = shopItems.value.filter((item) => item.is_repair)
+    newArrivals.value = shopItems.value.slice(0, 5)
 
-    images.value = newArrivals.value.map(item => ({
+    images.value = newArrivals.value.map((item) => ({
       src: item.image,
       url: `/inspectitem/${slugify(item.title)}-${item.id}`,
-    }));
+    }))
   } catch (err) {
-    errorMessage.value = 'Error fetching items: ' + err.message;
-    console.error(err);
+    errorMessage.value = 'Error fetching items: ' + err.message
+    console.error(err)
   }
 }
 
 const prevSlide = () => {
-  currentIndex.value = (currentIndex.value - 1 + slides.length) % slides.length;
-};
+  currentIndex.value = (currentIndex.value - 1 + slides.length) % slides.length
+}
 
 const nextSlide = () => {
-  currentIndex.value = (currentIndex.value + 1) % slides.length;
-};
-
+  currentIndex.value = (currentIndex.value + 1) % slides.length
+}
 </script>
 <template>
   <div class="container">
     <navBar />
 
     <div class="slideshow">
-      <div 
-        v-for="(slide, index) in slides" 
-        :key="index" 
-        class="slide" 
+      <div
+        v-for="(slide, index) in slides"
+        :key="index"
+        class="slide"
         :style="{ backgroundImage: `url(${slide.image})` }"
         v-show="index === currentIndex"
       >
@@ -215,35 +214,39 @@ const nextSlide = () => {
         <div class="carousel" id="item-carousel">
           <div v-for="item in nonRepairItems" :key="item.id" class="shopCard">
             <img :src="item.image" alt="Product Image" class="productImage" />
-            <h4 class="title" style="padding-bottom: 30px;">{{ item.title }}</h4>
+            <h4 class="title" style="padding-bottom: 30px">{{ item.title }}</h4>
             <div class="infoGridItem">
               <p class="desc">{{ item.description }}</p>
               <p class="price">CHF {{ item.price }}</p>
-              <router-link :to="{ path: `/inspectitem/${slugify(item.title)}`, query: { id: item.id } }">
+              <router-link
+                :to="{ path: `/inspectitem/${slugify(item.title)}`, query: { id: item.id } }"
+              >
                 <button class="but">More Information</button>
               </router-link>
-            </div>  
+            </div>
           </div>
         </div>
       </div>
     </div>
 
     <div class="shopComponent">
-    <h3>Repair Shops Near You</h3>
-    <div class="carousel-wrapper">
-      <div class="carousel" id="repair-carousel">
-        <div v-for="shop in repairItems" :key="shop.id" class="shopCard">
-          <img :src="shop.image" alt="Shop Image" class="productImage" />
-          <h4 class="title" style="padding-bottom: 30px;">{{ shop.title }}</h4>
-          <p class="descShop" style="padding-bottom: 40px;">{{ shop.description }}</p>
-          <div class="button-center">
-            <router-link :to="{ path: `/inspectrepair/${slugify(shop.title)}`, query: { id: shop.id } }">
-              <button class="butShop">More Information</button>
-            </router-link>
+      <h3>Repair Shops Near You</h3>
+      <div class="carousel-wrapper">
+        <div class="carousel" id="repair-carousel">
+          <div v-for="shop in repairItems" :key="shop.id" class="shopCard">
+            <img :src="shop.image" alt="Shop Image" class="productImage" />
+            <h4 class="title" style="padding-bottom: 30px">{{ shop.title }}</h4>
+            <p class="descShop" style="padding-bottom: 40px">{{ shop.description }}</p>
+            <div class="button-center">
+              <router-link
+                :to="{ path: `/inspectrepair/${slugify(shop.title)}`, query: { id: shop.id } }"
+              >
+                <button class="butShop">More Information</button>
+              </router-link>
+            </div>
           </div>
         </div>
       </div>
-    </div>
     </div>
   </div>
 </template>
@@ -439,23 +442,21 @@ const nextSlide = () => {
   background: #c4c4c4;
 }
 
+button:hover {
+  opacity: 0.9;
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
 
-
-  button:hover {
-    opacity: 0.9;
-    transform: scale(1.05);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+@media (max-width: 768px) {
+  .shopGrid {
+    grid-template-columns: 1fr;
   }
 
-  @media (max-width: 768px) {
-    .shopGrid {
-      grid-template-columns: 1fr;
-    }
-
-    .slideshow {
-      height: 300px;
-    }
-    .category-scroll {
+  .slideshow {
+    height: 300px;
+  }
+  .category-scroll {
     gap: 8px;
     justify-content: flex-start;
   }
@@ -464,131 +465,131 @@ const nextSlide = () => {
     font-size: 0.9rem;
     padding: 6px 12px;
   }
-  }
+}
 
-  .infoGridItem {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 6px 12px;
-    grid-template-areas:
-    "a"
-    "b"
-    "c";
-    align-items: center;
-    margin-left: 10%;
-    margin-right: 10%;
-    color: black;
-  }
+.infoGridItem {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px 12px;
+  grid-template-areas:
+    'a'
+    'b'
+    'c';
+  align-items: center;
+  margin-left: 10%;
+  margin-right: 10%;
+  color: black;
+}
 
-  .desc {
-    grid-area: a;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: normal;
-    max-height: 4.5em;
-    height: 4.5em;
-    text-align: center;
-  }
+.desc {
+  grid-area: a;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  max-height: 4.5em;
+  height: 4.5em;
+  text-align: center;
+}
 
-  .price {
-    grid-area: b;
-    font-weight: bold;
-    font-size: 16px;
-    color: #388659;
-    text-align: center;
-  }
+.price {
+  grid-area: b;
+  font-weight: bold;
+  font-size: 16px;
+  color: #388659;
+  text-align: center;
+}
 
-  .but {
-    grid-area: c;
-    background: #388659;
-    color: white;
-    border: none;
-    padding: 10px 16px;
-    margin-top: 10px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: 0.3s ease;
-    align-items: center;
-  }
+.but {
+  grid-area: c;
+  background: #388659;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  margin-top: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.3s ease;
+  align-items: center;
+}
 
-  .infoGridShop {
-    display: grid;
-    grid-template-columns: 1fr 3fr;
-    gap: 6px 12px;
-    grid-template-areas:
-    "a b"
-    "c d"
-    "e e"
-    "f f";
-    align-items: center;
-    margin-left: 10%;
-    margin-right: 10%;
-    color: black;
-  }
+.infoGridShop {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  gap: 6px 12px;
+  grid-template-areas:
+    'a b'
+    'c d'
+    'e e'
+    'f f';
+  align-items: center;
+  margin-left: 10%;
+  margin-right: 10%;
+  color: black;
+}
 
-  .lab1 {
-    grid-area: a;
-    font-weight: bold;
-    text-align: left;
-  }
+.lab1 {
+  grid-area: a;
+  font-weight: bold;
+  text-align: left;
+}
 
-  .lab2 {
-    grid-area: c;
-    font-weight: bold;
-    text-align: left;
-    max-height: 3em;
-    height: 3em;
-  }
+.lab2 {
+  grid-area: c;
+  font-weight: bold;
+  text-align: left;
+  max-height: 3em;
+  height: 3em;
+}
 
-  .inf1 {
-    grid-area: b;
-    text-align: left;
-  }
+.inf1 {
+  grid-area: b;
+  text-align: left;
+}
 
-  .inf2 {
-    grid-area: d;
-    text-align: left;
-    max-height: 3em;
-    height: 3em;
-  }
+.inf2 {
+  grid-area: d;
+  text-align: left;
+  max-height: 3em;
+  height: 3em;
+}
 
-  .descShop {
-    grid-area: e;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: normal;
-    max-height: 4.5em;
-    height: 4.5em;
-  }
+.descShop {
+  grid-area: e;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  max-height: 4.5em;
+  height: 4.5em;
+}
 
-  .butShop {
-    grid-area: f;
-    background: linear-gradient(135deg, #007bff, #0056b3);
-    color: white;
-    border: none;
-    padding: 10px 16px;
-    margin-top: 10px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: 0.3s ease;
-    align-items: center;
-  }
-  
+.butShop {
+  grid-area: f;
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  margin-top: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.3s ease;
+  align-items: center;
+}
 
 @media (max-width: 768px) {
-  .productImage, .slide {
+  .productImage,
+  .slide {
     max-height: 200px;
   }
 
- .categoryCard {
+  .categoryCard {
     max-width: 100%;
   }
 }
@@ -681,8 +682,10 @@ h4 {
   padding: 15px;
   text-align: center;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s, box-shadow 0.3s;
-  height: 100%; 
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
+  height: 100%;
 }
 
 .shopCard:hover {
@@ -693,7 +696,7 @@ h4 {
 .button-bottom {
   display: flex;
   justify-content: center;
-  margin-top: auto; 
+  margin-top: auto;
 }
 
 .productImage {
@@ -711,7 +714,8 @@ h4.title {
   text-overflow: ellipsis;
 }
 
-.desc, .descShop {
+.desc,
+.descShop {
   font-size: 0.9rem;
   color: #555;
   margin: 0.3rem 0;
@@ -736,12 +740,9 @@ h4.title {
     height: 150px;
   }
 
-  
-
-  .desc, .descShop {
+  .desc,
+  .descShop {
     font-size: 0.8rem;
   }
 }
-
-
 </style>

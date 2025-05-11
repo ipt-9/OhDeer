@@ -10,7 +10,7 @@
         <input type="password" v-model="confirmPassword" placeholder="Confirm Password" />
         <input type="text" v-model="address" placeholder="Address" />
         <input type="text" v-model="postalCode" placeholder="Postal Code" />
-        <input type="text" v-model="phoneNumber" placeholder="Phone Number" /> 
+        <input type="text" v-model="phoneNumber" placeholder="Phone Number" />
         <p v-if="error" class="error">{{ error }}</p>
         <button type="submit">Register</button>
       </form>

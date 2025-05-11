@@ -18,7 +18,9 @@
       <div class="auth-buttons" v-if="!isLoggedIn">
         <router-link to="/login" exact-active-class="active" class="auth-link">Login</router-link>
         <span class="separator">|</span>
-        <router-link to="/register" exact-active-class="active" class="auth-link">Register</router-link>
+        <router-link to="/register" exact-active-class="active" class="auth-link"
+          >Register</router-link
+        >
       </div>
 
       <div class="user-dropdown" v-if="isLoggedIn">
@@ -43,14 +45,19 @@
       <router-link @click="mobileMenuOpen = false" to="/marketplace">Marketplace</router-link>
       <router-link @click="mobileMenuOpen = false" to="/repairlistings">Repair Shops</router-link>
       <router-link @click="mobileMenuOpen = false" to="/create-listing">Create Listing</router-link>
-      <router-link @click="mobileMenuOpen = false" to="/settings" v-if="isLoggedIn">Settings</router-link>
-      <router-link @click="mobileMenuOpen = false" to="/login" v-if="!isLoggedIn">Login</router-link>
-      <router-link @click="mobileMenuOpen = false" to="/register" v-if="!isLoggedIn">Register</router-link>
+      <router-link @click="mobileMenuOpen = false" to="/settings" v-if="isLoggedIn"
+        >Settings</router-link
+      >
+      <router-link @click="mobileMenuOpen = false" to="/login" v-if="!isLoggedIn"
+        >Login</router-link
+      >
+      <router-link @click="mobileMenuOpen = false" to="/register" v-if="!isLoggedIn"
+        >Register</router-link
+      >
       <a href="#" v-if="isLoggedIn" @click.prevent="logout">Logout</a>
     </div>
   </nav>
 </template>
-
 
 <script>
 import SearchBar from './search-bar.vue'
@@ -66,8 +73,8 @@ export default {
       errorMessage: '',
       user: {
         id: 0,
-        name: 'User', 
-        profileImage: 'https://i.redd.it/87kxdlhrk3z71.jpg', 
+        name: 'User',
+        profileImage: 'https://i.redd.it/87kxdlhrk3z71.jpg',
       },
       isLoggedIn: false,
     }
@@ -84,16 +91,13 @@ export default {
           return
         }
 
-        const response = await fetch(
-          'https://api.ohdeer-bmsd22a.bbzwinf.ch/api/users/user',
-          {
-            method: 'GET',
-            headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
-          }
-        )
+        const response = await fetch('https://api.ohdeer-bmsd22a.bbzwinf.ch/api/users/user', {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        })
 
         if (!response.ok) throw new Error('Failed to fetch user data')
 
@@ -122,16 +126,13 @@ export default {
         const token = localStorage.getItem('token')
         if (!token) return
 
-        const response = await fetch(
-          'https://api.ohdeer-bmsd22a.bbzwinf.ch/api/auth/logout',
-          {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
-          }
-        )
+        const response = await fetch('https://api.ohdeer-bmsd22a.bbzwinf.ch/api/auth/logout', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        })
 
         if (!response.ok) {
           console.error('Logout failed')
@@ -158,11 +159,6 @@ export default {
   },
 }
 </script>
-
-
-
-
-
 
 <style>
 .navbar {
@@ -360,7 +356,7 @@ export default {
   .auth-link:hover {
     color: #6b8e23;
   }
-  .nav-center{
+  .nav-center {
     display: none;
   }
   .navbar {
@@ -376,7 +372,7 @@ export default {
     align-items: center;
     cursor: pointer;
   }
-  
+
   .user-dropdown:hover {
     display: flex;
   }
@@ -427,5 +423,4 @@ export default {
   margin-left: 0.5rem;
   font-weight: bold;
 }
-
 </style>

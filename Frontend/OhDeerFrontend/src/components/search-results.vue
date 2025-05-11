@@ -3,31 +3,31 @@
     <NavBar />
     <div class="content-wrapper">
       <h2 class="page-title">Search Results</h2>
-        <div v-if="filteredPosts.length === 0" class="no-results">No results found.</div>
-          <div v-else class="posts-grid">
-            <router-link 
-              v-for="post in filteredPosts" 
-              :key="post.id" 
-              :to="{ path: `/inspectitem/${slugify(post.title)}`, query: { id: post.id } }"
-              class="post-card-link"
-            >
-              <div class="post-card">
-                <h3 class="post-title">{{ post.title }}</h3>
-                <img :src="post.image" alt="Post Image" class="post-img" />
-                <div class="post-content">
-                  <p class="post-description">{{ post.description }}</p>
-                  <p><strong>Category:</strong> {{ post.categoryName }}</p>
-                  <p class="price"><strong>Price:</strong> CHF {{ post.price }}</p>
-                  <div class="tags">
-                    <span v-if="post.isRepair" class="tag repair">Repair</span>
-                    <span v-if="post.isComplete" class="tag complete">Complete</span>
-                  </div>
-                </div>
+      <div v-if="filteredPosts.length === 0" class="no-results">No results found.</div>
+      <div v-else class="posts-grid">
+        <router-link
+          v-for="post in filteredPosts"
+          :key="post.id"
+          :to="{ path: `/inspectitem/${slugify(post.title)}`, query: { id: post.id } }"
+          class="post-card-link"
+        >
+          <div class="post-card">
+            <h3 class="post-title">{{ post.title }}</h3>
+            <img :src="post.image" alt="Post Image" class="post-img" />
+            <div class="post-content">
+              <p class="post-description">{{ post.description }}</p>
+              <p><strong>Category:</strong> {{ post.categoryName }}</p>
+              <p class="price"><strong>Price:</strong> CHF {{ post.price }}</p>
+              <div class="tags">
+                <span v-if="post.isRepair" class="tag repair">Repair</span>
+                <span v-if="post.isComplete" class="tag complete">Complete</span>
               </div>
-            </router-link>
+            </div>
           </div>
+        </router-link>
       </div>
     </div>
+  </div>
 </template>
 
 <script setup>
@@ -36,11 +36,11 @@ import { useRoute } from 'vue-router'
 import slugify from 'slugify'
 import NavBar from './nav-bar.vue'
 
-const posts = ref([]);
-const route = useRoute();
-const searchQuery = ref(route.query.q?.toLowerCase() || '');
-const selectedRepairStatus = ref(route.query.repair || '');
-const selectedCategory = ref(route.query.category || '');
+const posts = ref([])
+const route = useRoute()
+const searchQuery = ref(route.query.q?.toLowerCase() || '')
+const selectedRepairStatus = ref(route.query.repair || '')
+const selectedCategory = ref(route.query.category || '')
 
 async function fetchPosts() {
   try {
@@ -49,17 +49,17 @@ async function fetchPosts() {
       headers: {
         'Content-Type': 'application/json',
       },
-    });
+    })
 
     if (!response.ok) {
-      throw new Error('Failed to fetch posts');
+      throw new Error('Failed to fetch posts')
     }
 
-    const data = await response.json();
+    const data = await response.json()
 
     posts.value = data
-      .filter(post => !post.is_complete)
-      .map(post => ({
+      .filter((post) => !post.is_complete)
+      .map((post) => ({
         id: post.id,
         title: post.title,
         description: post.description,
@@ -68,20 +68,18 @@ async function fetchPosts() {
         isRepair: post.is_repair,
         isComplete: post.is_complete,
         categoryID: post.category_id || null,
-        categoryName: categoryMap[post.category_id] || 'Unknown'  
-      }));
-
+        categoryName: categoryMap[post.category_id] || 'Unknown',
+      }))
   } catch (err) {
-    console.error('Error fetching posts:', err);
+    console.error('Error fetching posts:', err)
   }
 }
 
-
 function matchesSearch(post, query) {
-  if (!query) return true;
-  const words = query.trim().toLowerCase().split(/\s+/);
-  const haystack = (post.title + ' ' + post.description).toLowerCase();
-  return words.every((word) => haystack.includes(word));
+  if (!query) return true
+  const words = query.trim().toLowerCase().split(/\s+/)
+  const haystack = (post.title + ' ' + post.description).toLowerCase()
+  return words.every((word) => haystack.includes(word))
 }
 const categoryMap = {
   1: 'Household Appliances',
@@ -93,40 +91,38 @@ const categoryMap = {
   7: 'Toys & Hobby Items',
   8: 'Services',
   9: 'Automotive',
-  10: 'Other'
-};
-
+  10: 'Other',
+}
 
 const filteredPosts = computed(() => {
   return posts.value.filter((post) => {
-    const matchesQuery = matchesSearch(post, searchQuery.value);
-    const matchesRepairStatus = 
-      !selectedRepairStatus.value || 
-      (selectedRepairStatus.value === 'repair' && post.isRepair) || 
-      (selectedRepairStatus.value === 'non-repair' && !post.isRepair);
+    const matchesQuery = matchesSearch(post, searchQuery.value)
+    const matchesRepairStatus =
+      !selectedRepairStatus.value ||
+      (selectedRepairStatus.value === 'repair' && post.isRepair) ||
+      (selectedRepairStatus.value === 'non-repair' && !post.isRepair)
 
-    const matchesCategory = !selectedCategory.value || post.categoryID === parseInt(selectedCategory.value);
+    const matchesCategory =
+      !selectedCategory.value || post.categoryID === parseInt(selectedCategory.value)
 
-    return matchesQuery && matchesRepairStatus && matchesCategory;
-  });
-});
+    return matchesQuery && matchesRepairStatus && matchesCategory
+  })
+})
 
 watch(
   () => route.query,
   (newQuery) => {
-    searchQuery.value = newQuery.q?.toLowerCase() || '';
-    selectedRepairStatus.value = newQuery.repair || '';
-    selectedCategory.value = newQuery.category || '';
+    searchQuery.value = newQuery.q?.toLowerCase() || ''
+    selectedRepairStatus.value = newQuery.repair || ''
+    selectedCategory.value = newQuery.category || ''
   },
   { immediate: true },
-);
+)
 
 onMounted(() => {
-  fetchPosts();
-});
+  fetchPosts()
+})
 </script>
-
-
 
 <style scoped>
 .search-page {
@@ -156,27 +152,28 @@ onMounted(() => {
 .posts-grid {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center; 
-  gap: 1rem; 
+  justify-content: center;
+  gap: 1rem;
   margin-top: 1.5rem;
 }
 
 .post-card {
   width: 300px;
-  height: 450px; 
+  height: 450px;
   background: white;
   border-radius: 10px;
   padding: 1rem 1.2rem;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   border: 1px solid #ddd;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   cursor: pointer;
   margin: 0.5rem;
 }
-
 
 .post-content {
   flex-grow: 1;
@@ -192,7 +189,7 @@ onMounted(() => {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 2; 
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
 
@@ -230,7 +227,7 @@ onMounted(() => {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  text-align: center; 
+  text-align: center;
 }
 
 .post-card-link {
@@ -250,7 +247,7 @@ onMounted(() => {
 
 .post-img {
   width: 100%;
-  height: 200px; 
+  height: 200px;
   object-fit: cover;
   border-radius: 8px;
   margin-bottom: 0.8rem;

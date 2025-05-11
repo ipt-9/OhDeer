@@ -1,15 +1,14 @@
 <script setup>
-import { useRoute } from 'vue-router';
-import slugify from "slugify";
-import navBar from './nav-bar.vue';
-import { ref, onMounted } from 'vue';
+import { useRoute } from 'vue-router'
+import slugify from 'slugify'
+import navBar from './nav-bar.vue'
+import { ref, onMounted } from 'vue'
 
-const route = useRoute();
-const title = route.params.title;
-const ID = route.query.id;
-const errorMessage = ref("");
-const item = ref(null);
-
+const route = useRoute()
+const title = route.params.title
+const ID = route.query.id
+const errorMessage = ref('')
+const item = ref(null)
 
 async function fetchItemById(id) {
   try {
@@ -18,12 +17,12 @@ async function fetchItemById(id) {
       headers: {
         'Content-Type': 'application/json',
       },
-    });
+    })
 
-    if (!response.ok) throw new Error('Failed to fetch items');
-    const data = await response.json();
+    if (!response.ok) throw new Error('Failed to fetch items')
+    const data = await response.json()
 
-    const item = data;
+    const item = data
 
     return {
       id: item.id,
@@ -34,20 +33,17 @@ async function fetchItemById(id) {
       postalCode: item.user.postal_code || 'No postal code',
       phone: item.user.phone_number || 'No phone number',
       price: item.price,
-      email: item.user.email || 'No user E-mail'
-    };
-
+      email: item.user.email || 'No user E-mail',
+    }
   } catch (err) {
-    errorMessage.value = 'Error fetching items: ' + err.message;
-    console.error(err);
+    errorMessage.value = 'Error fetching items: ' + err.message
+    console.error(err)
   }
 }
 
 onMounted(async () => {
-  item.value = await fetchItemById(ID);
-});
-
-
+  item.value = await fetchItemById(ID)
+})
 </script>
 <template>
   <main>
@@ -67,25 +63,27 @@ onMounted(async () => {
               <div class="info">
                 <h4 class="lab1">Description:</h4>
                 <p class="desc">{{ item.description }}</p>
-                
+
                 <h4 class="lab2">Link:</h4>
-                <p class="inf1"><a :href="item.link" target="_blank">{{ item.link }}</a></p>
-                
+                <p class="inf1">
+                  <a :href="item.link" target="_blank">{{ item.link }}</a>
+                </p>
+
                 <h4 class="lab3">Address:</h4>
                 <p class="inf2">{{ item.address }}</p>
-                
-                <h4 class="lab4">Postal Code:</h4> 
-                <p class="inf3">{{ item.postalCode }}</p>    
-                
+
+                <h4 class="lab4">Postal Code:</h4>
+                <p class="inf3">{{ item.postalCode }}</p>
+
                 <h4 class="lab5">Email:</h4>
                 <p class="inf4">{{ item.email }}</p>
-                
+
                 <h4 class="lab6">Phone:</h4>
                 <p class="inf5">{{ item.phone }}</p>
-              </div>       
+              </div>
             </div>
-          </div>                   
-        </div>                                     
+          </div>
+        </div>
       </div>
     </div>
   </main>
@@ -174,8 +172,8 @@ p {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 720px;  
-  width: 100%;  
+  height: 720px;
+  width: 100%;
 }
 
 .infoGrid {
@@ -272,13 +270,13 @@ p {
 
 @media (max-width: 768px) {
   .grid {
-  grid-template-columns: 1fr; 
+    grid-template-columns: 1fr;
   }
   .info {
-      grid-template-columns: 1fr; 
+    grid-template-columns: 1fr;
   }
   h1 {
-      font-size: 20px;
+    font-size: 20px;
   }
   .cardImage {
     height: 320px;

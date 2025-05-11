@@ -1,10 +1,6 @@
 <template>
   <div class="search-bar">
-    <input
-      v-model="searchQuery"
-      type="text"
-      placeholder="Search items..."
-    />
+    <input v-model="searchQuery" type="text" placeholder="Search items..." />
 
     <select v-model="selectedRepairStatus">
       <option value="">All Items</option>
@@ -31,31 +27,30 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref } from 'vue'
 
-const searchQuery = ref('');
-const selectedRepairStatus = ref('');
-const selectedCategory = ref('');
+const searchQuery = ref('')
+const selectedRepairStatus = ref('')
+const selectedCategory = ref('')
 
 function onSearch() {
-  const queryParams = new URLSearchParams();
+  const queryParams = new URLSearchParams()
 
   if (searchQuery.value) {
-    queryParams.append('q', searchQuery.value);
+    queryParams.append('q', searchQuery.value)
   }
 
   if (selectedRepairStatus.value) {
-    queryParams.append('repair', selectedRepairStatus.value);
+    queryParams.append('repair', selectedRepairStatus.value)
   }
 
   if (selectedCategory.value) {
-    queryParams.append('category', selectedCategory.value); 
+    queryParams.append('category', selectedCategory.value)
   }
 
-  window.location.href = `/search-results?${queryParams.toString()}`;
+  window.location.href = `/search-results?${queryParams.toString()}`
 }
 </script>
-
 
 <style scoped>
 .search-bar {
@@ -64,7 +59,7 @@ function onSearch() {
   align-items: center;
 }
 
-input[type="text"] {
+input[type='text'] {
   padding: 0.5rem;
   border: 1px solid #ccc;
   border-radius: 4px;

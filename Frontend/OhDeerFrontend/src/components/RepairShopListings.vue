@@ -3,9 +3,9 @@ import { ref, onMounted } from 'vue'
 import slugify from 'slugify'
 import navBar from './nav-bar.vue'
 
-const shopItems = ref([]);
-const repairItems = ref([]);
-const errorMessage = ref("");
+const shopItems = ref([])
+const repairItems = ref([])
+const errorMessage = ref('')
 
 async function fetchItems() {
   try {
@@ -14,15 +14,14 @@ async function fetchItems() {
       headers: {
         'Content-Type': 'application/json',
       },
-    });
+    })
 
-    if (!response.ok) throw new Error('Failed to fetch items');
-    const data = await response.json();
+    if (!response.ok) throw new Error('Failed to fetch items')
+    const data = await response.json()
 
-   
     shopItems.value = data
-      .filter(item => !item.is_complete) 
-      .map(item => ({
+      .filter((item) => !item.is_complete)
+      .map((item) => ({
         id: item.id,
         is_repair: item.is_repair,
         title: item.title,
@@ -32,20 +31,18 @@ async function fetchItems() {
         address: item.address || 'No address',
         postalCode: item.postal_code || 'No postal code',
         phone: item.phone_number || 'No phone number',
-      }));
+      }))
 
-    repairItems.value = shopItems.value.filter(item => item.is_repair);
-
+    repairItems.value = shopItems.value.filter((item) => item.is_repair)
   } catch (err) {
-    errorMessage.value = 'Error fetching items: ' + err.message;
-    console.error(err);
+    errorMessage.value = 'Error fetching items: ' + err.message
+    console.error(err)
   }
 }
 
 onMounted(() => {
-  fetchItems();
-});
-
+  fetchItems()
+})
 </script>
 <template>
   <main>
