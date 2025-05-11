@@ -282,4 +282,20 @@ onMounted(async () => {
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     }
 
+    @media (max-width: 768px) {
+        .grid {
+        grid-template-columns: 1fr; 
+        }
+        .info {
+            grid-template-columns: 1fr; 
+        }
+        h1 {
+            font-size: 20px;
+        }
+        .cardImage {
+        height: 320px;
+        }
+    }
+    
+
 </style>
