@@ -8,30 +8,32 @@
             <router-link 
               v-for="post in filteredPosts" 
               :key="post.id" 
-              :to="{ path: `/inspectitem/${post.id}` }"
+              :to="{ path: `/inspectitem/${slugify(post.title)}`, query: { id: post.id } }"
               class="post-card-link"
             >
-            <div class="post-card">
-              <h3 class="post-title">{{ post.title }}</h3>
-              <img :src="post.image" alt="Post Image" class="post-img" />
-              <div class="post-content">
-                <p class="post-description">{{ post.description }}</p>
-                <p><strong>Category:</strong> {{ post.categoryName }}</p>
-                <p class="price"><strong>Price:</strong> CHF {{ post.price }}</p>
-                <div class="tags">
-                  <span v-if="post.isRepair" class="tag repair">Repair</span>
-                  <span v-if="post.isComplete" class="tag complete">Complete</span>
+              <div class="post-card">
+                <h3 class="post-title">{{ post.title }}</h3>
+                <img :src="post.image" alt="Post Image" class="post-img" />
+                <div class="post-content">
+                  <p class="post-description">{{ post.description }}</p>
+                  <p><strong>Category:</strong> {{ post.categoryName }}</p>
+                  <p class="price"><strong>Price:</strong> CHF {{ post.price }}</p>
+                  <div class="tags">
+                    <span v-if="post.isRepair" class="tag repair">Repair</span>
+                    <span v-if="post.isComplete" class="tag complete">Complete</span>
+                  </div>
                 </div>
               </div>
+            </router-link>
           </div>
-        </router-link>
       </div>
     </div>
-  </div>
 </template>
+
 <script setup>
 import { computed, ref, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import slugify from 'slugify'
 import NavBar from './nav-bar.vue'
 
 const posts = ref([]);
