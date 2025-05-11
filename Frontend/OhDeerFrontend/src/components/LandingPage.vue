@@ -25,6 +25,12 @@ const categories = [
   { id: 9, name: 'Automotive' },
   { id: 10, name: 'Other' }
 ];
+const handleScroll = (event, carouselId) => {
+  const carousel = document.getElementById(carouselId);
+  if (carousel) {
+    carousel.scrollBy({ left: event.deltaY, behavior: 'smooth' });
+  }
+};
 
 onMounted(async () => {
   const token = localStorage.getItem("token");
@@ -35,6 +41,16 @@ onMounted(async () => {
   }
 
   await fetchItems();
+  const itemCarousel = document.getElementById('item-carousel');
+  const repairCarousel = document.getElementById('repair-carousel');
+
+  if (itemCarousel) {
+    itemCarousel.addEventListener('wheel', (event) => handleScroll(event, 'item-carousel'));
+  }
+
+  if (repairCarousel) {
+    repairCarousel.addEventListener('wheel', (event) => handleScroll(event, 'repair-carousel'));
+  }
 });
 
 const scrollLeft = (carouselId) => {
