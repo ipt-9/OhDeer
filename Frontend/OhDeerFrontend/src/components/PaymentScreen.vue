@@ -125,7 +125,7 @@ const fetchData = async () => {
     fee.value = {
         amount: 12
     }
-    
+
     */
 
   commission.value = post.value.price * (fee.value.amount / 100.0)
@@ -152,7 +152,7 @@ const pay = async () => {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          amount: post.value.amount,
+          amount: post.value.price,
           post_id: post.value.id,
           is_outstanding: true,
         }),
