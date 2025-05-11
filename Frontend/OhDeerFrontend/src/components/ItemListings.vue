@@ -5,6 +5,7 @@ import navBar from './nav-bar.vue';
 
 const shopItems = ref([]);
 const errorMessage = ref('');
+const nonRepairItems = ref([]);
 
 async function fetchItems() {
   try {
@@ -24,12 +25,15 @@ async function fetchItems() {
       .filter(item => !item.is_complete) 
       .map(item => ({
         id: item.id,
+        is_repair: item.is_repair,
         title: item.title,
         link: slugify(item.title),
         description: item.description,
         price: item.price,
         image: item.image_1 || 'https://api.ohdeer-bmsd22a.bbzwinf.ch/OhDeerPlaceholder.png',
       }));
+
+  nonRepairItems.value = shopItems.value.filter(item => !item.is_repair);
 
   } catch (err) {
     errorMessage.value = 'Error fetching items: ' + err.message;
@@ -50,7 +54,7 @@ onMounted(() => {
         <div class="shopComponent">
           <h3>Items</h3>
           <div class="shopGrid">
-            <div v-for="item in shopItems" :key="item.id" class="shopCard">
+            <div v-for="item in nonRepairItems" :key="item.id" class="shopCard">
               <img :src="item.image" alt="Product Image" class="productImage" />
               <h4 class="title">{{ item.title }}</h4>
               <div class="infoGrid">

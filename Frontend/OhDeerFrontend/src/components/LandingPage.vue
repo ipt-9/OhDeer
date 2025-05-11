@@ -158,10 +158,7 @@ const nextSlide = () => {
   </div>
   <button class="arrow left" @click="prevSlide">&#9664;</button>
   <button class="arrow right" @click="nextSlide">&#9654;</button>
-</div>
-
-    <button class="arrow left" @click="prevSlide">&#9664;</button>
-    <button class="arrow right" @click="nextSlide">&#9654;</button>
+  </div>
   </div>
     <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
 
@@ -180,13 +177,18 @@ const nextSlide = () => {
   </div>
 
     <div class="shopComponent">
-      <h3>Newest Items Near You</h3>
+      <h3>Items Near You</h3>
       <div class="shopGrid">
-        <div v-for="item in newArrivals" :key="item.id" class="shopCard">
+        <div v-for="item in nonRepairItems.slice(0, 4)" :key="item.id" class="shopCard">
           <img :src="item.image" alt="Product Image" class="productImage" />
-          <h4>{{ item.title }}</h4>
-          <p>{{ item.description }}</p>
-          <p class="price">CHF {{ item.price }}</p>
+          <h4 class="title">{{ item.title }}</h4>
+          <div class="infoGridItem">
+            <p class="desc">{{ item.description }}</p>
+            <p class="price">${{ item.price }}</p>
+            <router-link :to="`/inspectitem/${slugify(item.link)}-${item.id}`" custom v-slot="{navigate}">
+              <button class="but" @click="navigate">Buy Now</button>
+            </router-link>
+          </div>  
         </div>
       </div>
     </div>
@@ -194,15 +196,22 @@ const nextSlide = () => {
     <div class="shopComponent">
       <h3>Repair Shops Near You</h3>
       <div class="shopGrid">
-        <div v-for="shop in repairItems" :key="shop.id" class="shopCard">
-          <img :src="shop.image" alt="Shop Image" class="productImage" />
-          <h4>{{ shop.title }}</h4>
-          <p>{{ shop.description }}</p>
-          <p class="price">CHF {{ shop.price }}</p>
+        <div v-for="shop in repairItems.slice(0, 4)" :key="shop.id" class="shopCard">
+          <img :src="shop.image" alt="Product Image" class="productImage" />
+          <h4 class="title">{{ shop.title }}</h4>
+          <div class="infoGridShop">  
+            <p class="lab1">Phone: </p>
+            <p class="inf1">{{ shop.phone }}</p>
+            <p class="lab2">Address: </p>
+            <p class="inf2">{{ shop.address + ", " + shop.postalCode }}</p>
+            <p class="descShop">{{ shop.description }}</p>
+            <router-link :to="`/inspectrepair/${slugify(shop.link)}-${shop.id}`" custom v-slot="{navigate}">
+              <button class="butShop" @click="navigate">more information</button>
+            </router-link>
+          </div>
         </div>
       </div>
     </div>
-
 </template>
 <style scoped>
 .container {
@@ -210,6 +219,7 @@ const nextSlide = () => {
   padding: 0;
   font-family: 'Poppins', sans-serif;
 }
+
 .slideshow {
   position: relative;
   width: 100%;
@@ -274,7 +284,6 @@ const nextSlide = () => {
 .arrow {
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
   background: rgba(0, 0, 0, 0.5);
   color: white;
   border: none;
@@ -299,7 +308,6 @@ const nextSlide = () => {
 .arrow {
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
   background: rgba(0, 0, 0, 0.5);
   color: white;
   border: none;
@@ -319,19 +327,25 @@ const nextSlide = () => {
   padding: 20px;
   margin: 10px;
   background: #f4f4f4;
-  border-radius: 8px;
+  border-radius: 12px;
 }
 
 .shopGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 10px;
 }
 
 .shopCard {
   background: white;
-  padding: 10px;
-  border-radius: 8px;
+  border-radius: 12px;
+  padding: 15px;
+  text-align: center;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
 }
 
 .categoryGrid {
@@ -358,11 +372,6 @@ const nextSlide = () => {
   background: #c4c4c4;
 }
 
-.shopCard h4, .shopCard p {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
 .productImage {
   width: 100%;
   height: auto;
@@ -371,10 +380,137 @@ const nextSlide = () => {
   border-radius: 12px;
 }
 
+  button:hover {
+    opacity: 0.9;
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
 
-.shopCard, .categoryCard {
-  max-width: 300px; 
-}
+  @media (max-width: 768px) {
+    .shopGrid {
+      grid-template-columns: 1fr;
+    }
+
+    .slideshow {
+      height: 300px;
+    }
+  }
+
+  .infoGridItem {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 6px 12px;
+    grid-template-areas:
+    "a"
+    "b"
+    "c";
+    align-items: center;
+    margin-left: 10%;
+    margin-right: 10%;
+    color: black;
+  }
+
+  .desc {
+    grid-area: a;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    max-height: 4.5em;
+    height: 4.5em;
+    text-align: center;
+  }
+
+  .price {
+    grid-area: b;
+    font-weight: bold;
+    font-size: 16px;
+    color: #388659;
+    text-align: center;
+  }
+
+  .but {
+    grid-area: c;
+    background: #388659;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    margin-top: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.3s ease;
+    align-items: center;
+  }
+
+  .infoGridShop {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: 6px 12px;
+    grid-template-areas:
+    "a b"
+    "c d"
+    "e e"
+    "f f";
+    align-items: center;
+    margin-left: 10%;
+    margin-right: 10%;
+    color: black;
+  }
+
+  .lab1 {
+    grid-area: a;
+    font-weight: bold;
+    text-align: left;
+  }
+
+  .lab2 {
+    grid-area: c;
+    font-weight: bold;
+    text-align: left;
+    max-height: 3em;
+    height: 3em;
+  }
+
+  .inf1 {
+    grid-area: b;
+    text-align: left;
+  }
+
+  .inf2 {
+    grid-area: d;
+    text-align: left;
+    max-height: 3em;
+    height: 3em;
+  }
+
+  .descShop {
+    grid-area: e;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    max-height: 4.5em;
+    height: 4.5em;
+  }
+
+  .butShop {
+    grid-area: f;
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    margin-top: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.3s ease;
+    align-items: center;
+  }
 
 @media (max-width: 768px) {
   .productImage, .slide {
@@ -384,5 +520,23 @@ const nextSlide = () => {
   .shopCard, .categoryCard {
     max-width: 100%;
   }
+}
+
+h4 {
+  margin: 5px 0;
+  font-size: 18px;
+  font-weight: bold;
+  color: black;
+}
+
+.title {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  max-height: 23px;
+  height: 23px;
 }
 </style>

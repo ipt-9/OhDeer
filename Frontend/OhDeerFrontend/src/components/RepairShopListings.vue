@@ -1,81 +1,51 @@
 <script setup>
-import { ref, computed } from 'vue'
-import testImage from '@/assets/test.png'
+import { ref, onMounted } from 'vue'
 import slugify from 'slugify'
 import navBar from './nav-bar.vue'
 
-const repairshopItems = ref([
-  {
-    id: 1,
-    title: 'Furniture Repair',
-    link: 'FurnitureRepair',
-    description: 'Fix broken furniture',
-    address: 'Fifi Street 21',
-    postalCode: '7649 Gabgob',
-    phone: '043 748 384 213 64',
-    image:
-      'https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg',
-  },
-  {
-    id: 2,
-    title: 'Sofa Repair',
-    link: 'SofaRepair',
-    description: 'Fix broken sofas',
-    address: 'huhu Street 2',
-    postalCode: '2765 Sigma City',
-    phone: '043 748 384 213 64',
-    image:
-      'https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg',
-  },
-  {
-    id: 3,
-    title: 'chingchenghanji',
-    link: 'chingchenghanji',
-    description:
-      'Some text about the nverui78  43h79f h78 3478  78z 8 438ohgc348 fzew zewbvf euerhufheberuigjeans..qefrgvergregreger wefewewf ew rgiegier ierg hi hhhhhh pppppp 2222 w r e q 7gregh9ehgehugherhge reui jihnuu ewz',
-    address: 'buien vreievniu veri 893',
-    postalCode: '1003 Delta County',
-    phone: '043 748 384 213 64',
-    image: testImage,
-  },
-  {
-    id: 4,
-    title: 'chingchenghanji',
-    link: 'chingchenghanji',
-    description:
-      'Some text about the nverui78  43h79f h78 3478  78z 8 438ohgc348 fzew zewbvf euerhufheberuigjeans..qefrgvergregreger wefewewf ew rgiegier ierg hi hhhhhh pppppp 2222 w r e q 7gregh9ehgehugherhge reui jihnuu ewz',
-    address: 'buien vreievniu veri 893',
-    postalCode: '1003 Delta County',
-    phone: '043 748 384 213 64',
-    image: testImage,
-  },
-  {
-    id: 5,
-    title: 'chingchenghanji',
-    link: 'chingchenghanji',
-    description:
-      'Some text about the nverui78  43h79f h78 3478  78z 8 438ohgc348 fzew zewbvf euerhufheberuigjeans..qefrgvergregreger wefewewf ew rgiegier ierg hi hhhhhh pppppp 2222 w r e q 7gregh9ehgehugherhge reui jihnuu ewz',
-    address: 'buien vreievniu veri 893',
-    postalCode: '1003 Delta County',
-    phone: '043 748 384 213 64',
-    image: testImage,
-  },
-])
+const shopItems = ref([]);
+const repairItems = ref([]);
+const errorMessage = ref("");
 
-const images = ref([
-  {
-    src: 'https://cdn-images-1.medium.com/max/1600/1*bzScNScXnXNvjg-Ak70EHA.jpeg',
-    url: 'https://example.com/1',
-  },
-  {
-    src: 'https://dornob.com/wp-content/uploads/2009/04/plywood02_1000.jpg',
-    url: 'https://example.com/2',
-  },
-  {
-    src: 'https://www.gen-pack.com/wp-content/uploads/2021/04/Rework-_-Repair-Button-212287633-768x509.jpg',
-    url: 'https://example.com/3',
-  },
-])
+async function fetchItems() {
+  try {
+    const response = await fetch('https://api.ohdeer-bmsd22a.bbzwinf.ch/api/posts/all', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) throw new Error('Failed to fetch items');
+    const data = await response.json();
+
+   
+    shopItems.value = data
+      .filter(item => !item.is_complete) 
+      .map(item => ({
+        id: item.id,
+        is_repair: item.is_repair,
+        title: item.title,
+        link: slugify(item.title),
+        description: item.description,
+        image: item.image_1 || 'https://api.ohdeer-bmsd22a.bbzwinf.ch/OhDeerPlaceholder.png',
+        address: item.address || 'No address',
+        postalCode: item.postal_code || 'No postal code',
+        phone: item.phone_number || 'No phone number',
+      }));
+
+    repairItems.value = shopItems.value.filter(item => item.is_repair);
+
+  } catch (err) {
+    errorMessage.value = 'Error fetching items: ' + err.message;
+    console.error(err);
+  }
+}
+
+onMounted(() => {
+  fetchItems();
+});
+
 </script>
 <template>
   <main>
@@ -85,9 +55,9 @@ const images = ref([
         <div class="shopComponent">
           <h3>Repair Shops</h3>
           <div class="shopGrid">
-            <div v-for="shop in repairshopItems" :key="shop.id" class="shopCard">
+            <div v-for="shop in repairItems" :key="shop.id" class="shopCard">
               <img :src="shop.image" alt="Product Image" class="productImage" />
-              <h4>{{ shop.title }}</h4>
+              <h4 class="title">{{ shop.title }}</h4>
               <div class="infoGrid">
                 <p class="lab1">Phone:</p>
                 <p class="inf1">{{ shop.phone }}</p>
@@ -267,5 +237,16 @@ button:hover {
   opacity: 0.9;
   transform: scale(1.05);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.title {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  max-height: 23px;
+  height: 23px;
 }
 </style>
