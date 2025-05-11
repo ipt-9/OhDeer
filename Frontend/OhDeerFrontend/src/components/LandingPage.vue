@@ -376,12 +376,14 @@ const nextSlide = () => {
   border-radius: 8px;
   overflow-x: auto;
   white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
 }
 
 .category-scroll {
   display: flex;
   gap: 12px;
   justify-content: center;
+  padding-left: 10px;
 }
 
 .category-link {
@@ -392,6 +394,7 @@ const nextSlide = () => {
   border-radius: 6px;
   font-weight: bold;
   transition: background-color 0.3s;
+  flex-shrink: 0;
 }
 
 .category-link:hover {
@@ -454,7 +457,7 @@ const nextSlide = () => {
     }
     .category-scroll {
     gap: 8px;
-    overflow-x: auto;
+    justify-content: flex-start;
   }
 
   .category-link {
@@ -619,6 +622,7 @@ h4 {
   overflow-x: auto;
   scroll-behavior: smooth;
   padding: 10px;
+  -webkit-overflow-scrolling: touch;
 }
 
 .carousel::-webkit-scrollbar {
