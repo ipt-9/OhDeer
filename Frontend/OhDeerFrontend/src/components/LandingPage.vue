@@ -52,28 +52,28 @@ const slides = [
   {
     title: 'Shop the Latest Furniture Collection',
     description: 'Discover stylish and affordable furniture pieces for every room.',
-    image: 'https://blog.meyerhatchery.com/wp-content/uploads/2022/06/Main-Blog-Images-Always-1200x____-6-1.png',
+    image: 'https://images.pexels.com/photos/45175/hirsch-forest-wild-fallow-deer-45175.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
     link: '/marketplace',
     buttonText: 'Shop Now'
   },
   {
     title: 'Find Trusted Repair Services',
     description: 'Get your items fixed by verified repair shops near you.',
-    image: 'https://blog.meyerhatchery.com/wp-content/uploads/2022/06/Main-Blog-Images-Always-1200x____-6-1.png',
+    image: 'https://images.pexels.com/photos/3329812/pexels-photo-3329812.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
     link: '/repairlistings',
     buttonText: 'Find Repairs'
   },
   {
     title: 'Sell Your Items Quickly and Easily',
     description: 'List your items and connect with local buyers today.',
-    image: 'https://blog.meyerhatchery.com/wp-content/uploads/2022/06/Main-Blog-Images-Always-1200x____-6-1.png',
+    image: 'https://images.pexels.com/photos/682373/pexels-photo-682373.jpeg?cs=srgb&dl=pexels-steve-130217-682373.jpg&fm=jpg',
     link: '/create-listing',
     buttonText: 'Start Selling'
   },
   {
     title: 'Explore Our New Arrivals',
     description: 'Check out the latest additions to our marketplace.',
-    image: 'https://blog.meyerhatchery.com/wp-content/uploads/2022/06/Main-Blog-Images-Always-1200x____-6-1.png',
+    image: 'https://images.pexels.com/photos/735987/pexels-photo-735987.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
     link: '/marketplace',
     buttonText: 'View Now'
   },
@@ -196,11 +196,10 @@ const nextSlide = () => {
     <div class="shopComponent">
       <h3>Items Near You</h3>
       <div class="carousel-wrapper">
-        <button class="carousel-arrow left" @click="scrollLeft('item-carousel')">&#9664;</button>
         <div class="carousel" id="item-carousel">
           <div v-for="item in nonRepairItems" :key="item.id" class="shopCard">
             <img :src="item.image" alt="Product Image" class="productImage" />
-            <h4 class="title">{{ item.title }}</h4>
+            <h4 class="title" style="padding-bottom: 30px;">{{ item.title }}</h4>
             <div class="infoGridItem">
               <p class="desc">{{ item.description }}</p>
               <p class="price">CHF {{ item.price }}</p>
@@ -210,28 +209,25 @@ const nextSlide = () => {
             </div>  
           </div>
         </div>
-        <button class="carousel-arrow right" @click="scrollRight('item-carousel')">&#9654;</button>
       </div>
     </div>
 
     <div class="shopComponent">
-      <h3>Repair Shops Near You</h3>
-      <div class="carousel-wrapper">
-        <button class="carousel-arrow left" @click="scrollLeft('repair-carousel')">&#9664;</button>
-        <div class="carousel" id="repair-carousel">
-          <div v-for="shop in repairItems" :key="shop.id" class="shopCard">
-            <img :src="shop.image" alt="Shop Image" class="productImage" />
-            <h4 class="title">{{ shop.title }}</h4>
-            <div class="infoGridShop">
-              <p class="descShop">{{ shop.description }}</p>
-              <router-link :to="{ path: `/inspectrepair/${slugify(shop.title)}`, query: { id: shop.id } }">
-                <button class="butShop">More Information</button>
-              </router-link>
-            </div>
+    <h3>Repair Shops Near You</h3>
+    <div class="carousel-wrapper">
+      <div class="carousel" id="repair-carousel">
+        <div v-for="shop in repairItems" :key="shop.id" class="shopCard">
+          <img :src="shop.image" alt="Shop Image" class="productImage" />
+          <h4 class="title" style="padding-bottom: 30px;">{{ shop.title }}</h4>
+          <p class="descShop" style="padding-bottom: 40px;">{{ shop.description }}</p>
+          <div class="button-center">
+            <router-link :to="{ path: `/inspectrepair/${slugify(shop.title)}`, query: { id: shop.id } }">
+              <button class="butShop">More Information</button>
+            </router-link>
           </div>
         </div>
-        <button class="carousel-arrow right" @click="scrollRight('repair-carousel')">&#9654;</button>
       </div>
+    </div>
     </div>
   </div>
 </template>
@@ -300,13 +296,36 @@ const nextSlide = () => {
   transition: background-color 0.3s;
 }
 
+.button-center {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.butShop {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  margin-top: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.3s ease;
+  align-items: center;
+}
+
+.butShop:hover {
+  background: linear-gradient(135deg, #0056b3, #00448a);
+}
+
 .slide-button:hover {
   background-color: #2d6a4f;
 }
 
 .arrow {
   position: absolute;
-  top: 193.2px;
+  top: 47.5%;
   background: rgba(0, 0, 0, 0.5);
   color: white;
   border: none;
@@ -377,22 +396,6 @@ const nextSlide = () => {
   padding: 10px;
 }
 
-.shopCard {
-  background: white;
-  border-radius: 12px;
-  padding: 15px;
-  text-align: center;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
-  transition:
-    transform 0.3s,
-    box-shadow 0.3s;
-}
-
-.shopCard:hover {
-  transform: scale(1.025);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
 .categoryGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
@@ -417,13 +420,7 @@ const nextSlide = () => {
   background: #c4c4c4;
 }
 
-.productImage {
-  width: 100%;
-  height: auto;
-  max-height: 300px; 
-  object-fit: contain;
-  border-radius: 12px;
-}
+
 
   button:hover {
     opacity: 0.9;
@@ -572,7 +569,7 @@ const nextSlide = () => {
     max-height: 200px;
   }
 
-  .shopCard, .categoryCard {
+ .categoryCard {
     max-width: 100%;
   }
 }
@@ -605,20 +602,34 @@ h4 {
   gap: 1rem;
   overflow-x: auto;
   scroll-behavior: smooth;
+  padding: 10px;
 }
 
 .carousel::-webkit-scrollbar {
-  display: none;
+  height: 8px;
+}
+
+.carousel::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+.carousel::-webkit-scrollbar-track {
+  background-color: #f4f4f4;
+}
+
+.carousel:hover::-webkit-scrollbar-thumb {
+  background-color: #888;
 }
 
 .carousel-arrow {
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 51%;
   background: rgba(0, 0, 0, 0.5);
   color: white;
   border: none;
-  padding: 0.5rem;
+  padding-top: 0.2rem;
+  padding-bottom: 0.4rem;
   cursor: pointer;
   font-size: 1.5rem;
   border-radius: 50%;
@@ -626,11 +637,15 @@ h4 {
 }
 
 .carousel-arrow.left {
-  left: 10px;
+  right: 15px;
+  padding-left: 0.3rem;
+  padding-right: 0.5rem;
 }
 
 .carousel-arrow.right {
-  right: 10px;
+  right: 15px;
+  padding-left: 0.5rem;
+  padding-right: 0.3rem;
 }
 
 .carousel-arrow:hover {
@@ -640,17 +655,25 @@ h4 {
 .shopCard {
   min-width: 250px;
   max-width: 250px;
+  height: 450px;
   background: white;
   border-radius: 12px;
   padding: 15px;
   text-align: center;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s, box-shadow 0.3s;
+  height: 100%; 
 }
 
 .shopCard:hover {
   transform: scale(1.025);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.button-bottom {
+  display: flex;
+  justify-content: center;
+  margin-top: auto; 
 }
 
 .productImage {
@@ -687,16 +710,13 @@ h4.title {
 @media (max-width: 768px) {
   .carousel-arrow {
     font-size: 1.2rem;
-    padding: 0.4rem;
   }
 
   .productImage {
     height: 150px;
   }
 
-  h4.title {
-    font-size: 1rem;
-  }
+  
 
   .desc, .descShop {
     font-size: 0.8rem;
