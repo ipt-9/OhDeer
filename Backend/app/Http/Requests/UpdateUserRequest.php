@@ -29,7 +29,7 @@ class UpdateUserRequest extends FormRequest
             'postal_code' => 'sometimes|integer|min:0',
             'phone_number' => 'sometimes|string|max:50',
             'iban' => 'sometimes|string|max:40',
-            'website' => 'sometimes|string|max:100',
+            'website' => 'sometimes|string|max:500',
             'user_type_id' => 'sometimes|integer|min:1',
             'language_id' => 'sometimes|integer|min:1',
             'subscription_id' => 'sometimes|integer|min:1',

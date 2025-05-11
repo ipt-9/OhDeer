@@ -13,7 +13,7 @@ const item = ref(null);
 
 async function fetchItemById(id) {
   try {
-    const response = await fetch('https://api.ohdeer-bmsd22a.bbzwinf.ch/api/posts/all', {
+    const response = await fetch(`https://api.ohdeer-bmsd22a.bbzwinf.ch/api/posts/${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -23,9 +23,7 @@ async function fetchItemById(id) {
     if (!response.ok) throw new Error('Failed to fetch items');
     const data = await response.json();
 
-    const item = data.find(item => item.id === Number(id));
-
-    if (!item) throw new Error(`Item with id ${id} not found`);
+    const item = data;
 
     return {
       id: item.id,
@@ -33,9 +31,10 @@ async function fetchItemById(id) {
       link: slugify(item.title),
       description: item.description,
       image: item.image_1 || 'https://api.ohdeer-bmsd22a.bbzwinf.ch/OhDeerPlaceholder.png',
-      address: item.address || 'No address',
-      postalCode: item.postal_code || 'No postal code',
-      phone: item.phone_number || 'No phone number',
+      postalCode: item.user.postal_code || 'No postal code',
+      phone: item.user.phone_number || 'No phone number',
+      price: item.price,
+      email: item.user.email || 'No user E-mail'
     };
 
   } catch (err) {

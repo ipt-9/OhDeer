@@ -6,15 +6,13 @@ import navBar from './nav-bar.vue';
 import { ref, onMounted } from 'vue';
 
 const route = useRoute();
-const title = route.params.title;
 const ID = route.query.id;
 const errorMessage = ref("");
 const item = ref(null);
 
-
 async function fetchItemById(id) {
   try {
-    const response = await fetch('https://api.ohdeer-bmsd22a.bbzwinf.ch/api/posts/all', {
+    const response = await fetch(`https://api.ohdeer-bmsd22a.bbzwinf.ch/api/posts/${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -24,9 +22,7 @@ async function fetchItemById(id) {
     if (!response.ok) throw new Error('Failed to fetch items');
     const data = await response.json();
 
-    const item = data.find(item => item.id === Number(id));
-
-    if (!item) throw new Error(`Item with id ${id} not found`);
+    const item = data;
 
     return {
       id: item.id,
@@ -34,9 +30,10 @@ async function fetchItemById(id) {
       link: slugify(item.title),
       description: item.description,
       image: item.image_1 || 'https://api.ohdeer-bmsd22a.bbzwinf.ch/OhDeerPlaceholder.png',
-      postalCode: item.postal_code || 'No postal code',
-      phone: item.phone_number || 'No phone number',
+      postalCode: item.user.postal_code || 'No postal code',
+      phone: item.user.phone_number || 'No phone number',
       price: item.price,
+      email: item.user.email || 'No user E-mail'
     };
 
   } catch (err) {
@@ -70,13 +67,13 @@ onMounted(async () => {
                                 <p class="desc">{{ item.description }}</p>
                                 
                                 <h4 class="lab2">delivery:</h4>
-                                <p class="deliv"></p>
+                                <p class="deliv">Pickup</p>
                                 
                                 <h4 class="lab3">phone:</h4> 
-                                <p class="inf1">{{ item.phone_number }}</p>    
+                                <p class="inf1">{{ item.postalCode }}</p>    
                                 
                                 <h4 class="lab4">email:</h4>
-                                <p class="inf2"></p>
+                                <p class="inf2">{{ item.email }}</p>
                             </div>
                             <div class="space"></div>
                             <div class="footer">

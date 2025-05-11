@@ -22,8 +22,10 @@
       </div>
 
       <div class="user-dropdown" v-if="isLoggedIn">
-        <img :src="user.profileImage" class="profile-img" alt="Profile" />
-        <span class="user-name">{{ user.name }}</span>
+        <router-link :to="'/profile/' + user.id" exact-active-class="active" class="auth-link">
+          <img :src="user.profileImage" class="profile-img" alt="Profile" />
+          <span class="user-name">{{ user.name }}</span>
+        </router-link>
         <div class="dropdown-menu-profile">
           <router-link to="/settings">Settings</router-link>
           <a href="#" @click.prevent="logout">Logout</a>
@@ -63,6 +65,7 @@ export default {
       dropdownOpen: false,
       errorMessage: '',
       user: {
+        id: 0,
         name: 'User', 
         profileImage: 'https://i.redd.it/87kxdlhrk3z71.jpg', 
       },
@@ -97,6 +100,7 @@ export default {
         const data = await response.json()
 
         this.user.name = data.username ? data.username : 'User'
+        this.user.id = data.id ? data.id : 0
         this.isLoggedIn = true
 
         if (data.profile_image && data.profile_image.startsWith('http')) {
