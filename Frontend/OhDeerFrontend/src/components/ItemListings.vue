@@ -61,7 +61,7 @@ onMounted(() => {
                 <p class="desc">{{ item.description }}</p>
                 <p class="price">${{ item.price }}</p>
                 <router-link
-                  :to="`/inspectitem/${slugify(item.link)}-${item.id}`"
+                  :to="{ path: `/inspectitem/${slugify(item.title)}`, query: { id: item.id } }"
                   custom
                   v-slot="{ navigate }"
                 >

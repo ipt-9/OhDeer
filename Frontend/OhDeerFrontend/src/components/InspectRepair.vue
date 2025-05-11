@@ -1,46 +1,55 @@
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
-import navBar from './nav-bar.vue'
+import { useRoute } from 'vue-router';
+import { RouterLink } from "vue-router";
+import slugify from "slugify";
+import navBar from './nav-bar.vue';
+import { ref, onMounted } from 'vue';
 
-const route = useRoute()
-const repair = ref(null)
-const errorMessage = ref('')
-const { id } = route.params
+const route = useRoute();
+const title = route.params.title;
+const ID = route.query.id;
+const errorMessage = ref("");
+const item = ref(null);
 
-async function fetchRepair() {
+
+async function fetchItemById(id) {
   try {
-    const response = await fetch(`https://api.ohdeer-bmsd22a.bbzwinf.ch/api/posts/${id}`, {
+    const response = await fetch('https://api.ohdeer-bmsd22a.bbzwinf.ch/api/posts/all', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
-    })
+    });
 
-    if (!response.ok) {
-      throw new Error('Failed to fetch repair details')
-    }
+    if (!response.ok) throw new Error('Failed to fetch items');
+    const data = await response.json();
 
-    const data = await response.json()
-    repair.value = {
-      title: data.title,
-      description: data.description,
-      link: data.website || 'No website info', 
-      address: data.address || 'No address info',
-      postalCode: data.postal_code || 'No postal code',
-      email: data.email || 'No email info',
-      phone: data.phone_number || 'No phone info',
-      image: data.image_1 || 'https://api.ohdeer-bmsd22a.bbzwinf.ch/OhDeerPlaceholder.png',
-    }
+    const item = data.find(item => item.id === Number(id));
+
+    if (!item) throw new Error(`Item with id ${id} not found`);
+
+    return {
+      id: item.id,
+      title: item.title,
+      link: slugify(item.title),
+      description: item.description,
+      image: item.image_1 || 'https://api.ohdeer-bmsd22a.bbzwinf.ch/OhDeerPlaceholder.png',
+      address: item.address || 'No address',
+      postalCode: item.postal_code || 'No postal code',
+      phone: item.phone_number || 'No phone number',
+    };
+
   } catch (err) {
-    errorMessage.value = err.message
-    console.error('Error fetching repair:', err)
+    errorMessage.value = 'Error fetching items: ' + err.message;
+    console.error(err);
   }
 }
 
-onMounted(() => {
-  fetchRepair()
-})
+onMounted(async () => {
+  item.value = await fetchItemById(ID);
+});
+
+
 </script>
 <template>
   <main>
@@ -48,33 +57,33 @@ onMounted(() => {
     <div class="container">
       <div class="item">
         <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
-        <div v-else-if="repair" class="grid">
-          <div class="card">
-            <img :src="repair.image" alt="Repair Image" class="image" />
+        <div v-else-if="item" class="grid">
+          <div class="cardImage">
+            <img :src="item.image" alt="Repair Image" class="image" />
           </div>
           <div class="card">
             <div class="infoGrid">
               <div class="title">
-                <h1>{{ repair.title }}</h1>
+                <h1>{{ item.title }}</h1>
               </div>
               <div class="info">
                 <h4 class="lab1">Description:</h4>
-                <p class="desc">{{ repair.description }}</p>
+                <p class="desc">{{ item.description }}</p>
                 
                 <h4 class="lab2">Link:</h4>
-                <p class="inf1"><a :href="repair.link" target="_blank">{{ repair.link }}</a></p>
+                <p class="inf1"><a :href="item.link" target="_blank">{{ item.link }}</a></p>
                 
                 <h4 class="lab3">Address:</h4>
-                <p class="inf2">{{ repair.address }}</p>
+                <p class="inf2">{{ item.address }}</p>
                 
                 <h4 class="lab4">Postal Code:</h4> 
-                <p class="inf3">{{ repair.postalCode }}</p>    
+                <p class="inf3">{{ item.postalCode }}</p>    
                 
                 <h4 class="lab5">Email:</h4>
-                <p class="inf4">{{ repair.email }}</p>
+                <p class="inf4">{{ item.email }}</p>
                 
                 <h4 class="lab6">Phone:</h4>
-                <p class="inf5">{{ repair.phone }}</p>
+                <p class="inf5">{{ item.phone }}</p>
               </div>       
             </div>
           </div>                   
@@ -107,9 +116,9 @@ onMounted(() => {
 }
 
 .image {
-  grid-area: a;
-  width: 100%;
-  height: 600px;
+  padding: 10px;
+  max-width: 100%;
+  max-height: 100%;
   object-fit: contain;
   border-radius: 12px;
 }
@@ -153,6 +162,22 @@ p {
   transition:
     transform 0.3s,
     box-shadow 0.3s;
+}
+
+.cardImage {
+  background: white;
+  border-radius: 12px;
+  padding: 15px;
+  text-align: center;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 720px;  
+  width: 100%;  
 }
 
 .infoGrid {

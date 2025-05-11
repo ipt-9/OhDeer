@@ -70,12 +70,12 @@ const routes = [
     name: 'Marketplace',
   },
   {
-    path: '/inspectitem/:title-:id',
+    path: '/inspectitem/:title',
     component: InspectItem,
     name: 'InspectItem',
   },
   {
-    path: '/inspectrepair/:title-:id',
+    path: '/inspectrepair/:title',
     component: InspectRepair,
     name: 'InspectRepair',
   },

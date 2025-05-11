@@ -3,10 +3,52 @@ import { useRoute } from 'vue-router';
 import { RouterLink } from "vue-router";
 import slugify from "slugify";
 import navBar from './nav-bar.vue';
+import { ref, onMounted } from 'vue';
 
 const route = useRoute();
-const { title, id } = route.params
+const title = route.params.title;
+const ID = route.query.id;
+const errorMessage = ref("");
+const item = ref(null);
 
+
+async function fetchItemById(id) {
+  try {
+    const response = await fetch('https://api.ohdeer-bmsd22a.bbzwinf.ch/api/posts/all', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) throw new Error('Failed to fetch items');
+    const data = await response.json();
+
+    const item = data.find(item => item.id === Number(id));
+
+    if (!item) throw new Error(`Item with id ${id} not found`);
+
+    return {
+      id: item.id,
+      title: item.title,
+      link: slugify(item.title),
+      description: item.description,
+      image: item.image_1 || 'https://api.ohdeer-bmsd22a.bbzwinf.ch/OhDeerPlaceholder.png',
+      postalCode: item.postal_code || 'No postal code',
+      phone: item.phone_number || 'No phone number',
+      price: item.price,
+      // Delivery missing in backend
+    };
+
+  } catch (err) {
+    errorMessage.value = 'Error fetching items: ' + err.message;
+    console.error(err);
+  }
+}
+
+onMounted(async () => {
+  item.value = await fetchItemById(ID);
+});
 </script>
 
 <template>
@@ -14,32 +56,33 @@ const { title, id } = route.params
         <navBar />
         <div class="container">
             <div class="item">
-                <div class="grid">
+                <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
+                <div v-else-if="item" class="grid">
                     <div class="card">
-                        <img class="image" src="https://www.ikea.com/ch/en/images/products/nordviken-chair-antique-stain__0832454_pe777681_s5.jpg">                       
+                        <img class="image" :src="item.image" alt="Item Image">               
                     </div>
                     <div class="card">
                         <div class="infoGrid">
                             <div class="title">
-                                <h1>{{ title }}</h1>
+                                <h1>{{ item.title }}</h1>
                             </div>
                             <div class="info">
                                 <h4 class="lab1">description:</h4>
-                                <p class="desc">huewhu  ezig ehg uirhhu uhih uihrh ui uih uirhui iu iug g ff  ztf tzf tzfft tz ftz ztftf zu tzf zjfz ztt ftz fztu tzt tz ftzztfftjfhj ftzftz f e gzufvgzu guf gwz  v  g erg reg r 4geg fr</p>
+                                <p class="desc">{{ item.description }}</p>
                                 
                                 <h4 class="lab2">delivery:</h4>
-                                <p class="deliv">uebuwfwgbfuzrfberui</p>
+                                <p class="deliv"></p>
                                 
                                 <h4 class="lab3">phone:</h4> 
-                                <p class="inf1">041 273 718 23 76</p>    
+                                <p class="inf1">{{ item.phone_number }}</p>    
                                 
                                 <h4 class="lab4">email:</h4>
-                                <p class="inf2">12345678901234567890123456789012345@12345678901234567890123456789012345@12345678901234567890123456789012345@</p>
+                                <p class="inf2"></p>
                             </div>
                             <div class="space"></div>
                             <div class="footer">
-                                <h4 class="price">850 CHF</h4>
-                                <router-link :to="`/InspectItem`" custom v-slot="{navigate}"> <!-- /${slugify(item.link)}-${item.id} -->
+                                <h4 class="price">{{ item.price }}</h4>
+                                <router-link :to="`/InspectItem`" custom v-slot="{navigate}"> 
                                     <button class="but" @click="navigate">Purchase</button>
                                 </router-link>
                             </div>
@@ -74,9 +117,9 @@ const { title, id } = route.params
     }
 
     .image {
-        grid-area: a;
-        width: 100%;
-        height: 600px;
+        padding: 10px;
+        max-width: 100%;
+        max-height: 100%;
         object-fit: contain;
         border-radius: 12px;
     }
@@ -118,6 +161,22 @@ const { title, id } = route.params
     text-align: center;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .cardImage {
+      background: white;
+      border-radius: 12px;
+      padding: 15px;
+      text-align: center;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+      transition:
+        transform 0.3s,
+        box-shadow 0.3s;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 720px;  
+      width: 100%;  
     }
 
     .infoGrid {

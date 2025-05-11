@@ -65,7 +65,7 @@ onMounted(() => {
                 <p class="inf2">{{ shop.address + ', ' + shop.postalCode }}</p>
                 <p class="desc">{{ shop.description }}</p>
                 <router-link
-                  :to="`/inspectrepair/${slugify(shop.link)}-${shop.id}`"
+                  :to="{ path: `/inspectrepair/${slugify(shop.title)}`, query: { id: shop.id } }"
                   custom
                   v-slot="{ navigate }"
                 >
