@@ -14,7 +14,8 @@ import ComingSoon from './components/ComingSoon.vue'
 import Payment from './components/PaymentScreen.vue'
 import Profile from './components/UserProfile.vue'
 
-import settings from './components/settings.vue'
+import settings from './components/UserSettings.vue'
+import UserSettings from './components/UserSettings.vue'
 
 const routes = [
   {
@@ -37,7 +38,7 @@ const routes = [
   },
   {
     path: '/settings',
-    component: settings,
+    component: UserSettings,
   },
   {
     path: '/search-results',

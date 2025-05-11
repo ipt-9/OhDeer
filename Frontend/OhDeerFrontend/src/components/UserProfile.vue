@@ -1,4 +1,5 @@
 <template>
+  <navBar />
   <div class="page-container">
     <div v-if="loading" class="loading-text">Loading...</div>
     <div v-else-if="error" class="error-text">{{ error }}</div>
@@ -199,6 +200,7 @@
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import slugify from 'slugify'
+import navBar from './nav-bar.vue'
 
 const reviewExtendId = ref(0)
 function isExpanded(id) {
