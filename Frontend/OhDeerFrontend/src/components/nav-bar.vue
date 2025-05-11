@@ -10,7 +10,7 @@
       </div>
     </div>
 
-    <div class="nav-center">
+    <div class="nav-center desktop-search">
       <SearchBar />
     </div>
 
@@ -34,6 +34,9 @@
     <div class="mobile-toggle" @click="toggleMobileMenu()">☰</div>
 
     <div class="mobile-menu" v-show="mobileMenuOpen">
+      <div class="mobile-search">
+        <SearchBar />
+      </div>
       <router-link @click="mobileMenuOpen = false" to="/">Home</router-link>
       <router-link @click="mobileMenuOpen = false" to="/marketplace">Marketplace</router-link>
       <router-link @click="mobileMenuOpen = false" to="/repairlistings">Repair Shops</router-link>
@@ -45,6 +48,7 @@
     </div>
   </nav>
 </template>
+
 
 <script>
 import SearchBar from './search-bar.vue'
@@ -59,10 +63,10 @@ export default {
       dropdownOpen: false,
       errorMessage: '',
       user: {
-        name: 'User',
-        profileImage: 'https://i.redd.it/87kxdlhrk3z71.jpg',
+        name: 'User', 
+        profileImage: 'https://i.redd.it/87kxdlhrk3z71.jpg', 
       },
-      isLoggedIn: ref(false),
+      isLoggedIn: false,
     }
   },
   methods: {
@@ -91,9 +95,19 @@ export default {
         if (!response.ok) throw new Error('Failed to fetch user data')
 
         const data = await response.json()
-        this.user.name = data.name || 'User'
-        this.user.profileImage = data.profile_image || 'https://i.redd.it/87kxdlhrk3z71.jpg'
+
+        this.user.name = data.name ? data.name : 'User'
         this.isLoggedIn = true
+
+        if (data.profile_image && data.profile_image.startsWith('http')) {
+          this.user.profileImage = data.profile_image
+        } else if (data.profile_image) {
+          this.user.profileImage = `https://api.ohdeer-bmsd22a.bbzwinf.ch/${data.profile_image}`
+        } else {
+          this.user.profileImage = 'https://i.redd.it/87kxdlhrk3z71.jpg'
+        }
+
+        console.log('User fetched:', this.user)
       } catch (err) {
         console.error('Error fetching user data:', err)
         this.isLoggedIn = false
@@ -122,7 +136,7 @@ export default {
 
         localStorage.removeItem('token')
         this.isLoggedIn = false
-        this.user = { name: '', profileImage: '' }
+        this.user = { name: 'User', profileImage: 'https://i.redd.it/87kxdlhrk3z71.jpg' }
         this.$router.push('/login')
       } catch (err) {
         console.error('Error during logout:', err)
@@ -140,6 +154,7 @@ export default {
   },
 }
 </script>
+
 
 
 
@@ -250,6 +265,10 @@ export default {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   z-index: 10;
 }
+
+.desktop-search {
+  display: block;
+}
 .dropdown-menu-profile {
   display: none;
   position: absolute;
@@ -327,6 +346,9 @@ export default {
     color: #333;
     padding: 0.3rem;
   }
+  .desktop-search {
+    display: none;
+  }
   .navbar {
     flex-direction: column;
   }
@@ -368,10 +390,20 @@ export default {
 
   .mobile-toggle {
     display: block;
+    font-size: 1.8rem;
+    cursor: pointer;
   }
 
   .mobile-menu {
     display: flex;
+  }
+  .mobile-menu a:hover {
+    background-color: #f4f4f4;
+  }
+
+  .mobile-search {
+    display: block;
+    margin: 0.5rem 0;
   }
 }
 .dropdown-menu label {

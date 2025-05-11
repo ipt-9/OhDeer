@@ -37,7 +37,6 @@ async function fetchItemById(id) {
       postalCode: item.postal_code || 'No postal code',
       phone: item.phone_number || 'No phone number',
       price: item.price,
-      // Delivery missing in backend
     };
 
   } catch (err) {

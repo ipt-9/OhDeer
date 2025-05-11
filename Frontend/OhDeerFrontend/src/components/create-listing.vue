@@ -1,4 +1,5 @@
 <template>
+  <navBar></navBar>
   <div class="create-listing">
     <h2>Create New Listing</h2>
 
@@ -35,6 +36,7 @@
 </template>
 
 <script setup>
+import navBar from "./nav-bar.vue";
 import { ref, onMounted } from 'vue'
 
 const token = ref('')
