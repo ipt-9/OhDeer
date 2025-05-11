@@ -216,6 +216,7 @@ const posts = ref(null)
 const fetchUrl = 'https://api.ohdeer-bmsd22a.bbzwinf.ch'
 
 function shortenComment(comment) {
+  if (comment === null) return null;
   return comment.length > 100 ? comment.substring(0, 100) + '...' : comment
 }
 
@@ -240,6 +241,7 @@ async function fetchFromApi(path = '') {
     }
 
     return data
+    
   } catch (err) {
     error.value = err.message
     return null
